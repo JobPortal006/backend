@@ -8,54 +8,6 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from data import query, response
 
-@csrf_exempt
-def signup(request):
-    try:
-        if request.method == 'POST':
-            data = json.loads(request.body)
-            first_name = data.get('first_name')
-            last_name = data.get('last_name')
-            mobile = data.get('mobile')
-            password = data.get('password')
-            confirm_password = data.get('confirm_password')
-            email = data.get('email')
-            if email != '' and email != None:
-                email_check = query.email_check(email)
-                if email_check:
-                    return response.errorResponse("Email already exists. Please use a different email address.")
-                else :
-                    if first_name != "" and first_name != None and last_name != "" and last_name != None and mobile != '' and password != '' and confirm_password != '' and email != '' :
-                        query.myquery(first_name, last_name, mobile, password, confirm_password, email)
-                        subject = 'Sign up Successfully'
-                        message_html = render_to_string('email.html', {'name': first_name})
-                        message_plain = strip_tags(message_html)
-                        from_email = 'brochill547@gmail.com'
-                        recipient_list = [email]
-                        send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
-                        return response.handleSuccess("Signup Successfully")
-                    else:
-                        return response.errorResponse("internal error")
-    except Exception:
-        return response.serverErrorResponse("Server error")
-  
-@csrf_exempt
-def login(request):
-    try :
-        if request.method == 'POST':
-            data = json.loads(request.body)
-            email = data.get('email')
-            password = data.get('password')
-            print(email,password)
-            if email != '' and password != '':
-                val = query.select(email,password)
-                if val:
-                    return response.handleSuccess("Login Successful")
-                else:
-                    return response.errorResponse("Invalid email or password")
-        else :
-                return response.errorResponse("Input should not be empty")
-    except Exception:
-       return response.serverErrorResponse("Server error")
 
 orgemail = ""
 @csrf_exempt
