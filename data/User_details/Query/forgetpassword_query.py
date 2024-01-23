@@ -1,4 +1,5 @@
 from django.db import connection
+import bcrypt
 
 con = connection.cursor()
 
@@ -9,9 +10,10 @@ def email_check(email) :
   return query
 
 #Update the password from signup table
+#Password is inserted in hash format
 def update_password(password,email):
-      sql="UPDATE signup SET password=%s WHERE email=%s"
-      value=(password, email)
-      print(value)
-      con.execute(sql,value) 
-      return True
+  hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+  sql="UPDATE signup SET password=%s WHERE email=%s"
+  value=(hashed_password.decode('utf-8'), email)
+  con.execute(sql,value) 
+  return True

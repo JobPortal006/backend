@@ -18,16 +18,16 @@ def signup(request):
         if request.method == 'POST':
             data = json.loads(request.body)
             email = data.get('email')
-            mobileNumber = data.get('mobileNumber')
+            mobile_number = data.get('mobile_number')
             password = data.get('password')
-            signupBy = data.get('signupBy')
-            print(email,password,mobileNumber,signupBy)
+            signup_by = data.get('signup_by')
+            print(email,password,mobile_number,signup_by)
             email_check = signup_query.email_check(email) 
             if email_check:
                 error=message.emailError()
-                return response.errorResponse(error)
+                return message.errorResponse(error)
             else:
-                signup_query.signup_query(email,mobileNumber,password,signupBy)
+                signup_query.signup_query(email,mobile_number,password,signup_by)
                 subject = 'Sign up Successfully'
                 message_html = render_to_string('email.html')
                 message_plain = strip_tags(message_html)
@@ -35,10 +35,10 @@ def signup(request):
                 recipient_list = [email]
                 send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
                 success=message.Signup()
-                return response.handleSuccess(success)
+                return message.handleSuccess(success)
         else:
             error=message.Error()
-            return response.errorResponse(error)
+            return message.errorResponse(error)
     except Exception:
-        return response.serverErrorResponse()
+        return message.serverErrorResponse()
     

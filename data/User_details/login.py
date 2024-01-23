@@ -16,15 +16,36 @@ def login(request):
         data = json.loads(request.body)
         email = data.get('email')
         password = data.get('password')
+        print(email,password)
         val = login_query.login(email,password)
         if val:
           success=message.Login()
-          return response.handleSuccess(success)
+          return message.handleSuccess(success)
         else:
           error=message.loginError()
-          return response.errorResponse(error)
+          return message.errorResponse(error)
       else:
         error=message.Error()
-        return response.errorResponse(error)
+        return message.errorResponse(error)
     except Exception:
-       return response.serverErrorResponse()
+       return message.serverErrorResponse()
+
+#Check mobile number is already registered or not in signup table 
+@csrf_exempt
+def loginWithOTP(request):
+    try :
+      if request.method == 'POST':
+        data = json.loads(request.body)
+        mobile_number = data.get('mobile_number')
+        val = login_query.loginWithOTP(mobile_number)
+        if val:
+          success=message.loginWithOTP()
+          return message.handleSuccess(success)
+        else:
+          error=message.loginWithOTPError()
+          return message.errorResponse(error)
+      else:
+        error=message.Error()
+        return message.errorResponse(error)
+    except Exception:
+       return message.serverErrorResponse()

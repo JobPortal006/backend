@@ -10,10 +10,10 @@ def email_check(email) :
   return query
 
 #Insert the data into signup table
-def signup_query(email,mobileNumber,password,signupBy):
+def signup_query(email,mobile_number,password,signup_by):
   hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-  sql = "INSERT INTO signup(email,mobileNumber,password,signupBy) VALUES(%s,%s,%s,%s)"
-  value = (email,mobileNumber,hashed_password.decode('utf-8'),signupBy)
+  sql = "INSERT INTO signup(email,mobile_number,password,signup_by) VALUES(%s,%s,%s,%s)"
+  value = (email,mobile_number,hashed_password.decode('utf-8'),signup_by)
   con.execute(sql,value)
   return True
 
