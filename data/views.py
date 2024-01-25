@@ -9,61 +9,41 @@ from django.utils.html import strip_tags
 from data import query, response
 
 
-orgemail = ""
-@csrf_exempt
-def email(request):
-    try:
-        if request.method == 'POST':
-            data = json.loads(request.body)
-            email = data.get('email')
-            global orgemail
-            orgemail=email
-            print(orgemail)
-            if email != '' and email != None:
-                email_check = query.email_check(email)
-                if email_check:
-                    if email != '':
-                        subject = 'Email Verification'
-                        message_html = render_to_string('verify_email.html')
-                        message_plain = strip_tags(message_html)
-                        from_email = 'brochill547@gmail.com'
-                        recipient_list = [email]
-                        send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
-                        return response.handleSuccess("Email Sent Successfully")
-                else :
-                    return response.errorResponse("Email is not registered")
-            else:
-                return response.errorResponse("Email is not empty")
-        else :
-            return response.errorResponse("Input should not be empty")
-    except Exception:
-        return response.serverErrorResponse("Server error")
-   
-    
-@csrf_exempt
-def updatepassword(request):
-    try :
-        if request.method == 'POST':
-            data = json.loads(request.body)
-            password = data.get('password')
-            cpassword = data.get('confirmPassword')
-            email = orgemail 
-            print(f"Email retrieved from session: {email}") 
-            email_check = query.email_check(email)
-            if email_check:
-                print(password)
-                if password != '' and cpassword != '':
-                    val = query.password(password,cpassword,email)
-                    if val: 
-                        return response.handleSuccess("Password updated successfully!")
-                    else :
-                        return response.handleSuccess("Password not updated")
-                else :
-                    return response.handleSuccess("Input should not be empty")
-            else :
-                return response.errorResponse("Email is not registered")
-    except Exception:
-        return response.serverErrorResponse("Server error")
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.core.files.storage import FileSystemStorage
+from django.db import connection
+import os
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ImageUploadView(View):
+    def post(self, request, *args, **kwargs):
+        image = request.FILES.get('file')
+        print(image)
+        fs = FileSystemStorage()
+        desired_location = r'D:\Django project\demo\Images'
+        full_file_path = os.path.join(desired_location, image.name)
+        print(desired_location,"------------------ ",full_file_path)
+        
+        with open(full_file_path, 'wb+') as destination:
+            for chunk in image.chunks():
+                destination.write(chunk)
+        filename = fs.save('images/' + image.name, image)
+
+        saved_image_path = fs.url(filename)
+
+        save_image_path(saved_image_path)
+
+        return JsonResponse({'message': 'File uploaded successfully.'}, status=200)
+
+def save_image_path(image_path):
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO your_table_name (image_path) VALUES (%s)", (image_path,))
+    connection.commit()
+    cursor.close()
+    connection.close()
 
 
 @csrf_exempt
@@ -144,8 +124,8 @@ def post_job(request):
                 message_html = render_to_string('account.html')
                 message_plain = strip_tags(message_html)
                 from_email = 'brochill547@gmail.com'
-                recipient_list = [email]
-                send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
+                # recipient_list = [email]
+                # send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
                 return response.handleSuccess("Job posted Successfully")
             else:
                 return response.errorResponse("Invalid input data")

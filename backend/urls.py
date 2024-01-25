@@ -12,6 +12,9 @@ urlpatterns = [
     path('loginWithOTP/',login.loginWithOTP),
     path('forgetpassword/',forget_password.forgetpassword),
     path('updatepassword/',forget_password.updatepassword),
-    path('userRegister/', create_account_user.user_register),
+    path('userRegister/', create_account_user.user_register.as_view()),
+    path('upload-image/', views.ImageUploadView.as_view()),
 ]
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

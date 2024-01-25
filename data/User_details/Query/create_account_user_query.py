@@ -47,7 +47,8 @@ def address_details(user_id,registered_by,street,city,state,country,pincode,addr
 def education_details(user_id, sslc_school_name, sslc_start_year, sslc_end_year, sslc_percentage, hsc_school_name, 
                       hsc_start_year, hsc_end_year, hsc_percentage, college_name, start_year, end_year,
                       percentage, department, degree, education_type,pg_college_name,pg_college_start_year,pg_college_end_year,
-                        pg_college_percentage,pg_college_department,pg_college_degree):
+                        pg_college_percentage,pg_college_department,pg_college_degree,diploma_college_name,diploma_college_start_year,
+                        diploma_college_end_year,diploma_college_percentage,diploma_college_department,diploma_college_degree):
     try:
         # Insert into education_details table
         education_sql = "INSERT INTO education_details (user_id, sslc_school_name, sslc_start_year, sslc_end_year, sslc_percentage, hsc_school_name, hsc_start_year, hsc_end_year, hsc_percentage) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
@@ -66,6 +67,12 @@ def education_details(user_id, sslc_school_name, sslc_start_year, sslc_end_year,
           education_type='PG'
           college_sql = "INSERT INTO college_details (user_id, education_id, college_name, start_year, end_year, percentage, department, degree, education_type) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
           college_values = (user_id,education_id,pg_college_name,pg_college_start_year,pg_college_end_year,pg_college_percentage,pg_college_department,pg_college_degree,education_type)
+          con.execute(college_sql, college_values)
+        if diploma_college_name != '' and diploma_college_name != None:
+          education_type='Diploma'
+          college_sql = "INSERT INTO college_details (user_id, education_id, college_name, start_year, end_year, percentage, department, degree, education_type) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+          college_values = (user_id,education_id,diploma_college_name,diploma_college_start_year,
+                        diploma_college_end_year,diploma_college_percentage,diploma_college_department,diploma_college_degree,education_type)
           con.execute(college_sql, college_values)
         # Commit the transaction
         connection.commit()
