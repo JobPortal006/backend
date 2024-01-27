@@ -36,7 +36,7 @@ def signup(request):
                 from_email = 'brochill547@gmail.com'
                 recipient_list = [email]
                 send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
-                return message.Signup()
+                return message.success('Signup')
         else:
             return message.Error()
     except Exception:

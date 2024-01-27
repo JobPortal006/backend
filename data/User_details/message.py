@@ -59,3 +59,31 @@ def emailSentError():
 def passwordUpdateError():
     parameter_value = "Password is not updated"
     return errorResponse(parameter_value)
+
+def success(key):
+    key_value_mapping = {
+        'Signup': 'Signup Successfully',
+        'Login': 'Login Successfully',
+        'loginWithOTP': 'Mobile Number is registered',
+        'emailSent': 'Email sent Successfully',
+        'passwordUpdate':'Password updated successfully!',
+        'accountCreation':'Account Created Successfully'
+    }
+    if key in key_value_mapping:
+        return handleSuccess(key_value_mapping[key])
+    else:
+        return None
+
+def error(key):
+    key_value_mapping = {
+        'emailError': 'Email already exists. Please use a different email address.',
+        'loginError': 'Invalid email or password',
+        'loginWithOTPError': 'Mobile Number is not registered',
+        'emailSentError': 'Email is not registered',
+        'passwordUpdateError':'Password is not updated',
+        'Error':'Request method should be POST'
+    }
+    if key in key_value_mapping:
+        return handleSuccess(key_value_mapping[key])
+    else:
+        return None
