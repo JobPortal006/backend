@@ -17,7 +17,7 @@ class user_register(View):
             if request.method == 'POST':
                 # Extract profile picture
                 profile_picture = request.FILES.get('profilePicture')
-                print(profile_picture, '-------------')
+                print(profile_picture)
 
                 # Check if a file is uploaded
                 if not profile_picture:

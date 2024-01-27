@@ -10,8 +10,10 @@ from data.User_details import message
 
 con = connection.cursor()
 
-#Insert the data into signup table
-#Once registerd - Send mail to registered email (Signup Successfully message)
+# Insert the data into signup table
+# Data will store both User and Recruiter on same table
+# Check email is already registered in table or not
+# Once registered - Send mail to registered email as (Signup Successfully message)
 @csrf_exempt
 def signup(request):
     try:

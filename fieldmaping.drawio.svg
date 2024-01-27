@@ -1,69 +1,72 @@
-<svg host="65bd71144e" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="731px" height="861px" viewBox="-0.5 -0.5 731 861" content="&lt;mxfile&gt;&lt;diagram id=&quot;aUwSfaSsRaQe-Z4--mOb&quot; name=&quot;Page-1&quot;&gt;7Vpbc5s6EP41nul5OB0uxo4f60vSTNM0U+fMeWQUszaaCsQIEdv99Wcx4Asop8IGJ63zkIxZtLD6dvfTalHHHgWrG0Ei/yv3gHUsw1t17HHHsq66XfyfCtaZoNtzMsFCUC8TmTvBlP6EXGjk0oR6EB8MlJwzSaND4YyHIczkgYwIwZeHw+acHb41IguoCKYzwqrSf6kn/XxajrGTfwa68Is3m0Z+JyDF4FwQ+8Tjyz2RPenYI8G5zH4FqxGwFLsCl0zv+oW7W8MEhFJHIXfEM2FJPrfcLrkuJrv0qYRpRGbp9RL92bGHvgwYXpn4k8RRBvGcrgCfOqyakFv1DELCak+Um3QDPAAp1jgkv9vN0Vlv8cuulzuwzUEu8/eBLoQkd/Bi++gdBvgjh0ENia2ApMfwDUOOw3oLuZljJmG0kKC2ZfyNfw+CBmQzmS+wLsbhO3dDq8rXVMTyngSgOf6O1Bo+JhJcPneHVCB8ejo3EHogNAc/CD6nDNwHOpOJ0DXrnxiEu8Xtmgv0ZKiBGwr3PVEKVwyxVB5LwX/AiDMuUB7yEG8P0UhWEu1FsirQ05ilmPifWGqbPQ6o56VvGnK8M2eb1PVRBuH5Ir/fVuT3KpH/ACLmIWFjkISy+CWw9+kgB2qGGGD8/A+CAmL6kzxtHmXgdcRpKDfWO8OOM06flUgeZ+Rv1nBp827oK7xgKrxgN+CEq7YYuTJ7BUYvAmIVK/Q2MJ0qJD1VYPYawKR/fkqeBBjwmmO/8qeU/e6T4EmbMiMSx0suPM3hj+sIPkyCiPE1IL8aGO+WkRLoX7pLBl/QlFwf6S+WjTfOridGsQa9dlVR3G8gigdvMrMdo4SJpcCktcwuHFAztW918+aT5+E6E2uOHlGpyw9TiUWV7mN5Em5wqWNymvGXXUidFNbdwbGVVBOpbpqVsC4I+DcspRqtHBS1lGor10QpZVoVL+TJdWlOKJO8qqA12vJCdUM98ZIZkZSHl+YH+9ANtn3GjYXZWq/nNKIuQdKrQmKrQ7MJTJx2y4/p9G7kTmc+58yt0bDJ1CQR0h3rlxkbLdyxpymSNjD1tD5Pj7Fwo1XXwFSptn2YhAwWUMe4QqW2gYXiJPSOUas9tzFgnsggzRRdhYUA3acn72VhhW1KG0DbMStsYynZxmyCbRQNNsHnWI/Q37TJdtpiODisDG3VztNuazVU9ZRefzWsYKJYDlvcjauaj3qNNr3vHBiOftoiu56sIhAUwpkumX2HONH/PpLutY6hvpMbbn8yd9pXpdh0FLHpOIrYbGRLXW2fXTJ59szSSnZO8ize9cbIs2f8ei/RHnla1Z5Po+SJ3OVOf2Aw6XYzb0MvifX7jrti9MPto+5nhQcBcxACPPeOZ1t6XeuO5ug/mWKdV6XYIov3InjEg4iE60tjV+eQSPrGGfs0ygMor0+uZUi6CkhaO5OjPKfUILfmYe7eB0R/05+pFLynqXbP3W9ztygstT9M5S+rTekxJl0d83azWnBNlWIu71xeamxaH0tfPlTd3n7/o4LOrSaam1a1ubnbdl0ao1uD8mcohTOstii92vh5C5Ru9csBqjjUM1BVG4XwJFCOP9WjW5o+U57E7pbc9TvIx7H0d860e/V1Cvn3dkYrh4H6pYrGUkV/QycE8HJ3qHtzb+9kvD35Dw==&lt;/diagram&gt;&lt;/mxfile&gt;">
+<svg host="65bd71144e" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="691px" height="811px" viewBox="-0.5 -0.5 691 811" content="&lt;mxfile&gt;&lt;diagram id=&quot;aUwSfaSsRaQe-Z4--mOb&quot; name=&quot;Page-1&quot;&gt;5Vtbc+o2EP41zKQPzWAbG/J4Akk602kn0/RM2yePsBejRrY8snwC59d35QsXW8mRi0kgPISgz1pZ2tV+Wq3EwJnGqwdB0uVvPAQ2sIfhauDMBrbtjj38VMC6BEbeuAQiQcMSsrbAE/0OFTis0JyGkO1VlJwzSdN9MOBJAoHcw4gQ/GW/2oKz/bemJIIW8BQQ1kb/oqFclujEHW7xX4BGy/rN1rB6EpO6cgVkSxLylx3IuRs4U8G5LL/FqykwpbtaL6Xc/StPNx0TkEgTgVEp8I2wvBpb1S+5rgf7sqQSnlISqPIL2nPg3C5lzLBk4VeSpaWKF3QF2OptuwtVr76BkLDagaouPQCPQYo1VqmejirtrDf6K8svW2VbNxW23FV0DZLKwNGm6a0O8EulBr1KJiepEnvykTpxNDrxGL7hlmM1L5LFIEuE0RpBaXv4M/49ChqTYjS/wrquh+/cVm0L5xkIf9PCPRc4pqRTCwIimkkQEPpz9e6rr9gk/ufq4w8IRI5WFD8ZtragIpN+QmIwFGCkW/2QSPD5wp9TgQY1k4kgCdWYjCqngi8oAz+lgczF291CcNeyjfmPc1bhmRT8GaacoUadWcITKPTEWAPacQ2d5ygnoEiuX5iysDOLaRiqN91yfLJgBT0uEYOkL1caX7v7zjS0a2TXncYad7KH7uHu5LXc6QmHnqeI/UnmOPZXFL7LMZWyAtQDzoA3tCggo9+LVp3ZUE0DThNZdN69Hbgz1VYueVYuslYHs/ZP9OM2p+kozemB0cbvz2hZYeM+uAhiQplh3ZjPldP/nsdzc6YgWfbCRWjKdDyKIKSJL+kP2O4z08rIbrKKZcgpG/CQCX1zkmGLa/04bNmE9Xs8a/Wgk7qNS45b0JsApGHlgEpjNpMYr5g2y/OkMJ0Z+9AkwB2jYW0ShrjCZb5cp6CU9QgiJomasZXGprlQE/htfX1mYnKHDR8canzQ0flgHwutZbV8EE2U8YQwPwSJC1l2cWFPczOniXus0ZECH8tu2eNL6UIXZ4bm4qQzw/BYZmhvqSHMAyIpTy7WL9xmCOU4GpO4xzLJWSTDnPFYs1c9In+75xhDZRkL/CxYcs665GBKMUmE9NdATLdLhRQkYTeZgPkpCOWwKttsJrXM/s+oCqmug1JCHcekRAyH9KnjrRaLjXXpJVu3tNhOD+klq51fQtbPY7jYhWW0bxDPfc+AS5dqOoFlpTlLvYk2CTrRJSwmfehFd9By8gtLv5tziFPG1zFaURG0zJVnXt2jJy23jd6tkFMpJAGY5uNKZ79Y/m0ETN5EM6u9zVzvPRFntTNx6uQFN1j0oje9botxHMe7tnXGORIT27p04MczsUYx2hjf2p5b7ZPxBj5IOe08zRnQccDjlCTrLtGwCmgzddAKG2I1lPyXz33BmfFm4hn9KHvHdeUzk7rGSSa63MCxWL2mih33qOfexRK6bRBVHytZo72ScgJc3tTJRMvkR7uoo73QdWQWL4NYgHdn8lqE8TJvaiiW8IL9q16bEnT9MpqEeWZ+mBWCOvbv0r3tqCJ+uXRvN4N4DbeMtfHQJq9ykB+1s55q9U8FLHCNxpDh8ujennxgEkVzZeoU6L55kKfda461MUkfIfsHXGI6PGR/hrXfKTTuzLhoUhkXNwAM70Uqp1aRd72QvN2zz8y79rh5N9K70U1pffrE68PTJy2VQhjBU1Vsqw1WVP6t+BK7VJb+2XkyW1VUWhTWdUFdRymFHMurgULuergFtsJFaU/6EfeOODjF5wVY9lp1dU/1GmtkPBdBVavKFUkiIpA7UNtAAhjOzW/7rR+k6HaeKuCMQXTWxwStqa4xweuz/8bg+Fl30trHEuccLTt1kE6cxu2hV86fLS0j7MAHqeZMc1OlN3U5f+56StvxhLbzgXPnxTSESIBp69sbL+r23tXXh4E9fXyos14ziju0mJx1zqtfOvK0+fLeDpKxuP3lWfFs5+d7zt1/&lt;/diagram&gt;&lt;/mxfile&gt;">
     <defs/>
     <g>
-        <rect x="10" y="40" width="190" height="190" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
-        <rect x="10" y="40" width="170" height="190" fill="none" stroke="none" pointer-events="all"/>
+        <rect x="0" y="40" width="190" height="190" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="240" y="40" width="190" height="190" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="247.5" y="32.5" width="170" height="205" fill="none" stroke="none" pointer-events="all"/>
         <g transform="translate(-0.5 -0.5)">
             <switch>
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 168px; height: 1px; padding-top: 135px; margin-left: 12px;">
-                        <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left; max-height: 186px; overflow: hidden;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 168px; height: 1px; padding-top: 135px; margin-left: 250px;">
+                        <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left; max-height: 201px; overflow: hidden;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
                                 <ol>
                                     <li>
                                         id - Primary Key
                                     </li>
                                     <li>
-                                        FirstName
+                                        user_id - Foreign Key
                                     </li>
                                     <li>
-                                        LastName
+                                        registered_by (User or Recruiter)
                                     </li>
                                     <li>
-                                        Date_of_Birth
+                                        first_name
                                     </li>
                                     <li>
-                                        Gender
+                                        last_name
                                     </li>
                                     <li>
-                                        Profile_Picture
+                                        date_of_birth
                                     </li>
                                     <li>
-                                        User_id - Foreign Key
+                                        gender
+                                    </li>
+                                    <li>
+                                        profile_picture
                                     </li>
                                 </ol>
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="12" y="139" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
-                    id - Primary KeyFirstNameLas...
+                <text x="250" y="139" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
+                    id - Primary Keyuser_id - Fo...
                 </text>
             </switch>
         </g>
-        <rect x="10" y="0" width="110" height="30" fill="none" stroke="none" pointer-events="all"/>
+        <rect x="0" y="0" width="90" height="30" fill="none" stroke="none" pointer-events="all"/>
         <g transform="translate(-0.5 -0.5)">
             <switch>
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 15px; margin-left: 65px;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 15px; margin-left: 45px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;">
-                                PersonalDetails
+                                Signup Table
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="65" y="19" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
-                    PersonalDetails
+                <text x="45" y="19" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
+                    Signup Table
                 </text>
             </switch>
         </g>
-        <rect x="235" y="45" width="160" height="160" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
-        <rect x="230" y="40" width="140" height="170" fill="none" stroke="none" pointer-events="all"/>
+        <rect x="2.5" y="45" width="170" height="170" fill="none" stroke="none" pointer-events="all"/>
         <g transform="translate(-0.5 -0.5)">
             <switch>
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 138px; height: 1px; padding-top: 125px; margin-left: 232px;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 168px; height: 1px; padding-top: 130px; margin-left: 5px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left; max-height: 166px; overflow: hidden;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
                                 <ol>
@@ -71,84 +74,90 @@
                                         id - Primary Key
                                     </li>
                                     <li>
-                                        Email
+                                        signup_by (User or Recruiter)
                                     </li>
                                     <li>
-                                        Mobile_Number
+                                        email
+                                    </li>
+                                    <li>
+                                        mobile_Number
                                     </li>
                                     <li>
                                         password
                                     </li>
                                     <li>
-                                        Type(Employee or User)
-                                    </li>
-                                    <li>
-                                        Login Time
+                                        loggedin_time
                                     </li>
                                 </ol>
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="232" y="129" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
-                    id - Primary KeyEmailMo...
+                <text x="5" y="134" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
+                    id - Primary Keysignup_by (U...
                 </text>
             </switch>
         </g>
-        <rect x="470" y="50" width="160" height="160" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
-        <rect x="460" y="40" width="170" height="170" fill="none" stroke="none" pointer-events="all"/>
+        <rect x="470" y="40" width="210" height="210" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="460" y="30" width="230" height="230" fill="none" stroke="none" pointer-events="all"/>
         <g transform="translate(-0.5 -0.5)">
             <switch>
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 168px; height: 1px; padding-top: 125px; margin-left: 462px;">
-                        <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left; max-height: 166px; overflow: hidden;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 228px; height: 1px; padding-top: 145px; margin-left: 462px;">
+                        <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left; max-height: 226px; overflow: hidden;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
                                 <ol>
                                     <li>
-                                        Id
+                                        id - Primary Key
                                     </li>
                                     <li>
-                                        Address
+                                        user_id - Foreign Key
                                     </li>
                                     <li>
-                                        City
+                                        registered_by (User or Recruiter)
                                     </li>
                                     <li>
-                                        State
+                                        street
                                     </li>
                                     <li>
-                                        Country
+                                        city
                                     </li>
                                     <li>
-                                        AddressType
+                                        state
                                     </li>
                                     <li>
-                                        User_id - Foreign Key
+                                        country
+                                    </li>
+                                    <li>
+                                        pincode
+                                    </li>
+                                    <li>
+                                        address_type (Permanent or Current)
                                     </li>
                                 </ol>
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="462" y="129" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
-                    IdAddressCityStateCountryAdd...
+                <text x="462" y="149" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
+                    id - Primary Keyuser_id - Foreign Keyr...
                 </text>
             </switch>
         </g>
-        <rect x="235" y="0" width="90" height="30" fill="none" stroke="none" pointer-events="all"/>
+        <rect x="240" y="0" width="140" height="30" fill="none" stroke="none" pointer-events="all"/>
         <g transform="translate(-0.5 -0.5)">
             <switch>
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 15px; margin-left: 280px;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 15px; margin-left: 310px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;">
-                                Login Details
+                                Personal_details Table
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="280" y="19" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
-                    Login Details
+                <text x="310" y="19" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
+                    Personal_details Table
                 </text>
             </switch>
         </g>
@@ -159,313 +168,366 @@
                     <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 15px; margin-left: 520px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;">
-                                AddressDetails
+                                Address Table
                             </div>
                         </div>
                     </div>
                 </foreignObject>
                 <text x="520" y="19" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
-                    AddressDetails
+                    Address Table
                 </text>
             </switch>
         </g>
-        <rect x="0" y="260" width="110" height="30" fill="none" stroke="none" pointer-events="all"/>
+        <rect x="12.5" y="260" width="150" height="30" fill="none" stroke="none" pointer-events="all"/>
         <g transform="translate(-0.5 -0.5)">
             <switch>
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 275px; margin-left: 55px;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 275px; margin-left: 88px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;">
-                                EducationDetails
+                                education_details Table
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="55" y="279" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
-                    EducationDetails
+                <text x="88" y="279" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
+                    education_details Table
                 </text>
             </switch>
         </g>
-        <rect x="10" y="290" width="300" height="300" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
-        <rect x="30" y="281" width="200" height="310" fill="none" stroke="none" pointer-events="all"/>
+        <rect x="0" y="307.5" width="230" height="230" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="12.5" y="302.5" width="200" height="235" fill="none" stroke="none" pointer-events="all"/>
         <g transform="translate(-0.5 -0.5)">
             <switch>
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 198px; height: 1px; padding-top: 436px; margin-left: 32px;">
-                        <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left; max-height: 306px; overflow: hidden;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 198px; height: 1px; padding-top: 420px; margin-left: 15px;">
+                        <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left; max-height: 231px; overflow: hidden;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
                                 <ol>
                                     <li>
-                                        Id
-                                    </li>
-                                    <li>
-                                        SSLC_School_Name
-                                    </li>
-                                    <li>
-                                        SSLC_Start_Date
-                                    </li>
-                                    <li>
-                                        SSLC_Percentage
-                                    </li>
-                                    <li>
-                                        HSC_School_Name
-                                    </li>
-                                    <li>
-                                        HSC_Start_Date
-                                    </li>
-                                    <li>
-                                        HSC_Percentage
-                                    </li>
-                                    <li>
-                                        College_Name
-                                    </li>
-                                    <li>
-                                        College_Start_Date
-                                    </li>
-                                    <li>
-                                        College_End_Date
-                                    </li>
-                                    <li>
-                                        College_Percentage
-                                    </li>
-                                    <li>
-                                        Department
-                                    </li>
-                                    <li>
-                                        Degree
+                                        id - Primary Key
                                     </li>
                                     <li>
                                         user_id - Foreign Key
                                     </li>
+                                    <li>
+                                        sslc_school_name
+                                    </li>
+                                    <li>
+                                        sslc_start_year
+                                    </li>
+                                    <li>
+                                        sslc_end_year
+                                    </li>
+                                    <li>
+                                        sscl_percentage
+                                    </li>
+                                    <li>
+                                        hsc_school_name
+                                    </li>
+                                    <li>
+                                        hsc_start_year
+                                    </li>
+                                    <li>
+                                        hsc_end_year
+                                    </li>
+                                    <li>
+                                        hsc_percentage
+                                    </li>
                                 </ol>
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="32" y="440" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
-                    IdSSLC_School_NameSSLC_Start_Date...
+                <text x="15" y="424" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
+                    id - Primary Keyuser_id - Foreign...
                 </text>
             </switch>
         </g>
-        <rect x="365" y="250" width="130" height="30" fill="none" stroke="none" pointer-events="all"/>
+        <rect x="5" y="580" width="140" height="30" fill="none" stroke="none" pointer-events="all"/>
         <g transform="translate(-0.5 -0.5)">
             <switch>
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 265px; margin-left: 430px;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 595px; margin-left: 75px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;">
-                                ProfessionalDetails
+                                resume_details Table
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="430" y="269" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
-                    ProfessionalDetails
+                <text x="75" y="599" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
+                    resume_details Table
                 </text>
             </switch>
         </g>
-        <rect x="365" y="290" width="160" height="160" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
-        <rect x="355" y="280" width="155" height="170" fill="none" stroke="none" pointer-events="all"/>
+        <rect x="2.5" y="612.5" width="180" height="180" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="0" y="615" width="162.5" height="170" fill="none" stroke="none" pointer-events="all"/>
         <g transform="translate(-0.5 -0.5)">
             <switch>
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 153px; height: 1px; padding-top: 365px; margin-left: 357px;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 161px; height: 1px; padding-top: 700px; margin-left: 2px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left; max-height: 166px; overflow: hidden;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
                                 <ol>
                                     <li>
-                                        id
+                                        id - Primary Key
                                     </li>
                                     <li>
-                                        Fresher/Experience
+                                        user_id - Foreign Key
                                     </li>
                                     <li>
-                                        Resume
+                                        registered_by (User or Recruiter)
                                     </li>
                                     <li>
-                                        Login_id - Foreign Key
+                                        employment_status (Fresher or Experienced
                                     </li>
                                     <li>
-                                        Type(Employee or User)
+                                        resume
                                     </li>
                                 </ol>
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="357" y="369" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
-                    idFresher/ExperienceResume...
+                <text x="2" y="704" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
+                    id - Primary Keyuser_id - F...
                 </text>
             </switch>
         </g>
-        <rect x="580" y="250" width="130" height="30" fill="none" stroke="none" pointer-events="all"/>
+        <rect x="502.5" y="266.25" width="160" height="30" fill="none" stroke="none" pointer-events="all"/>
         <g transform="translate(-0.5 -0.5)">
             <switch>
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 265px; margin-left: 645px;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 281px; margin-left: 583px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;">
-                                ProfessionalDetails
+                                professional_details Table
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="645" y="269" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
-                    ProfessionalDetails
+                <text x="583" y="285" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
+                    professional_details Table
                 </text>
             </switch>
         </g>
-        <rect x="570" y="290" width="160" height="160" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
-        <rect x="555" y="280" width="155" height="170" fill="none" stroke="none" pointer-events="all"/>
+        <rect x="502.5" y="307.5" width="187.5" height="187.5" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="502.5" y="310" width="155" height="170" fill="none" stroke="none" pointer-events="all"/>
         <g transform="translate(-0.5 -0.5)">
             <switch>
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 153px; height: 1px; padding-top: 365px; margin-left: 557px;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 153px; height: 1px; padding-top: 395px; margin-left: 505px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left; max-height: 166px; overflow: hidden;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
                                 <ol>
                                     <li>
-                                        id
+                                        id - Primary Key
                                     </li>
                                     <li>
-                                        Key_Skills
+                                        user_id - Foreign Key
                                     </li>
                                     <li>
-                                        Industry
+                                        company_name
                                     </li>
                                     <li>
-                                        Department(IT)
+                                        years_of_experience
                                     </li>
                                     <li>
-                                        Preferred_Locations
+                                        job_role
                                     </li>
                                     <li>
-                                        Login_id - Foreign Key
+                                        skills
+                                    </li>
+                                    <li>
+                                        registered_by (User or Recruiter)
                                     </li>
                                 </ol>
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="557" y="369" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
-                    idKey_SkillsIndustryDepart...
+                <text x="505" y="399" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
+                    id - Primary Keyuser_id -...
                 </text>
             </switch>
         </g>
-        <rect x="20" y="630" width="110" height="30" fill="none" stroke="none" pointer-events="all"/>
+        <rect x="485" y="580" width="150" height="30" fill="none" stroke="none" pointer-events="all"/>
         <g transform="translate(-0.5 -0.5)">
             <switch>
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 645px; margin-left: 75px;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 595px; margin-left: 560px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;">
-                                CompanyDetails
+                                company_details Table
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="75" y="649" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
-                    CompanyDetails
+                <text x="560" y="599" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
+                    company_details Table
                 </text>
             </switch>
         </g>
-        <rect x="20" y="670" width="190" height="190" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
-        <rect x="12.5" y="660" width="177.5" height="200" fill="none" stroke="none" pointer-events="all"/>
+        <rect x="485" y="617.5" width="190" height="190" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="480" y="610" width="177.5" height="200" fill="none" stroke="none" pointer-events="all"/>
         <g transform="translate(-0.5 -0.5)">
             <switch>
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 176px; height: 1px; padding-top: 760px; margin-left: 15px;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 176px; height: 1px; padding-top: 710px; margin-left: 482px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left; max-height: 196px; overflow: hidden;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
                                 <ol>
                                     <li>
-                                        id
+                                        id - Primary Key
                                     </li>
                                     <li>
-                                        Company_Nmae
+                                        employee_id - Foreign Key
                                     </li>
                                     <li>
-                                        Company_Location
+                                        company_name
                                     </li>
                                     <li>
-                                        No_Of_Employees
+                                        company_location
                                     </li>
                                     <li>
-                                        Company_Industry
+                                        no_of_employees
                                     </li>
                                     <li>
-                                        Designation
+                                        company_industry
                                     </li>
                                     <li>
-                                        Company_Logo
+                                        designation
                                     </li>
                                     <li>
-                                        Employee_id - Foreign Key
+                                        company_logo
                                     </li>
                                 </ol>
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="15" y="764" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
-                    idCompany_NmaeCompany_Locatio...
+                <text x="482" y="714" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
+                    id - Primary Keyemployee_id -...
                 </text>
             </switch>
         </g>
-        <rect x="265" y="630" width="120" height="30" fill="none" stroke="none" pointer-events="all"/>
+        <rect x="245" y="580" width="140" height="30" fill="none" stroke="none" pointer-events="all"/>
         <g transform="translate(-0.5 -0.5)">
             <switch>
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 645px; margin-left: 325px;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 595px; margin-left: 315px;">
                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;">
-                                ExperienceDetails
+                                job_preferences Table
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="325" y="649" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
-                    ExperienceDetails
+                <text x="315" y="599" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
+                    job_preferences Table
                 </text>
             </switch>
         </g>
-        <rect x="245" y="665" width="195" height="195" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
-        <rect x="240" y="655" width="190" height="170" fill="none" stroke="none" pointer-events="all"/>
+        <rect x="240" y="615" width="175" height="175" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="237.5" y="625" width="172.5" height="160" fill="none" stroke="none" pointer-events="all"/>
         <g transform="translate(-0.5 -0.5)">
             <switch>
                 <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 188px; height: 1px; padding-top: 740px; margin-left: 242px;">
-                        <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left; max-height: 166px; overflow: hidden;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 171px; height: 1px; padding-top: 705px; margin-left: 240px;">
+                        <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left; max-height: 156px; overflow: hidden;">
                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
                                 <ol>
                                     <li>
-                                        id
+                                        id - Primary Key
                                     </li>
                                     <li>
-                                        Previous_Company_Name
+                                        user_id - Foreign Key
                                     </li>
                                     <li>
-                                        No_Of_Employees
+                                        key_skills
                                     </li>
                                     <li>
-                                        Role
+                                        industry
                                     </li>
                                     <li>
-                                        Skills
+                                        department
                                     </li>
                                     <li>
-                                        Login_id - Foreign Key
-                                    </li>
-                                    <li>
-                                        Type(Employee or User)
+                                        preferred_locations
                                     </li>
                                 </ol>
                             </div>
                         </div>
                     </div>
                 </foreignObject>
-                <text x="242" y="744" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
-                    idPrevious_Company_NameNo_Of_Em...
+                <text x="240" y="709" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
+                    id - Primary Keyuser_id - For...
+                </text>
+            </switch>
+        </g>
+        <path d="M 575 250 L 542.7 252.81" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 537.47 253.26 L 544.14 249.17 L 542.7 252.81 L 544.75 256.14 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <rect x="255" y="260" width="130" height="30" fill="none" stroke="none" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 275px; margin-left: 320px;">
+                        <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;">
+                                college_details Table
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="320" y="279" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px" text-anchor="middle">
+                    college_details Table
+                </text>
+            </switch>
+        </g>
+        <rect x="260" y="307.5" width="212.5" height="212.5" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <rect x="255" y="296.25" width="200" height="235" fill="none" stroke="none" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 198px; height: 1px; padding-top: 414px; margin-left: 257px;">
+                        <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left; max-height: 231px; overflow: hidden;">
+                            <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
+                                <ol>
+                                    <li>
+                                        id - Primary Key
+                                    </li>
+                                    <li>
+                                        user_id - Foreign Key
+                                    </li>
+                                    <li>
+                                        college_name
+                                    </li>
+                                    <li>
+                                        start_year
+                                    </li>
+                                    <li>
+                                        end_year
+                                    </li>
+                                    <li>
+                                        percentage
+                                    </li>
+                                    <li>
+                                        department
+                                    </li>
+                                    <li>
+                                        degree
+                                    </li>
+                                    <li>
+                                        education_type(UG,PG or Diploma)
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="257" y="417" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="12px">
+                    id - Primary Keyuser_id - Foreign...
                 </text>
             </switch>
         </g>

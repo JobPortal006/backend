@@ -3,12 +3,6 @@ import bcrypt
 
 con = connection.cursor()
 
-#Check email is already registered in the table or not
-def email_check(email) :
-  check_sql = "SELECT * FROM signup WHERE email = %s"
-  query=con.execute(check_sql,[email])
-  return query
-
 #Update the password from signup table
 #Password is inserted in hash format
 def update_password(password,email):

@@ -6,11 +6,11 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from data import response
 from data.User_details import message
-from data.User_details.Query import forgetpassword_query
+from data.User_details.Query import signup_query
 
 orgemail = ""
-# Check email is registered or not from Signup table
-# Sent mail to registered email address for change the password
+# Check email is registered or not in Signup table
+# Sent mail to registered email for change password
 @csrf_exempt
 def forgetpassword(request):
   try:
@@ -20,7 +20,7 @@ def forgetpassword(request):
       global orgemail
       orgemail=email
       print(orgemail)
-      email_check = forgetpassword_query.email_check(email)
+      email_check = signup_query.email_check(email)
       if email_check:
         subject = 'Email Verification'
         message_html = render_to_string('verify_email.html')
@@ -39,7 +39,7 @@ def forgetpassword(request):
   except Exception:
       return message.serverErrorResponse()   
    
-# Update the password in signup Table
+# Update password in signup Table
 @csrf_exempt
 def updatepassword(request):
     try :
