@@ -4,15 +4,15 @@ con = connection.cursor()
 
 #Get id in signup table using mobile number
 def mobileNumber(mobile_number):
-    check_sql = "SELECT id, signup_by FROM signup WHERE mobile_number = %s"
+    check_sql = "SELECT id, signup_by, email FROM signup WHERE mobile_number = %s"
     con.execute(check_sql, [mobile_number])
     user = con.fetchone()
     if user:
-        user_id, registered_by = user
-        print(f"User ID: {user_id}, Signup By: {registered_by}")
-        return user_id, registered_by
+        user_id, registered_by, email = user 
+        print(f"User ID: {user_id}, Signup By: {registered_by}, Email: {email}")
+        return user_id, registered_by, email
     else:
-        return None, None
+        return None, None, None
 
 # Insert the data into personal_details table
 def personal_details(user_id, registered_by, first_name, last_name, date_of_birth, gender, profile_picture):
@@ -91,28 +91,24 @@ def job_preference_details(user_id,key_skills, department, industry, prefered_lo
 def professional_details(user_id, registered_by, company_name, years_of_experience, job_role, skills):
     sql = "INSERT INTO professional_details (user_id, registered_by, company_name, years_of_experience, job_role, skills) VALUES (%s, %s, %s, %s, %s, %s)"
     values = (user_id, registered_by, company_name, years_of_experience, job_role, skills)
-
     try:
         con.execute(sql, values)
-        # Commit the transaction
         connection.commit()
         return True
     except Exception as e:
         print(f"Error inserting data: {e}")
-        # Rollback the transaction in case of an error
         connection.rollback()
         return False
     
+# Insert the data into resume_details table
 def employment_status(user_id,registered_by,employment_status,resume):
     sql = "INSERT INTO resume_details (user_id,registered_by,employment_status,resume) VALUES (%s, %s, %s, %s)"
     values = (user_id,registered_by,employment_status,resume)
     try:
         con.execute(sql, values)
-        # Commit the transaction
         connection.commit()
         return True
     except Exception as e:
         print(f"Error inserting data: {e}")
-        # Rollback the transaction in case of an error
         connection.rollback()
         return False

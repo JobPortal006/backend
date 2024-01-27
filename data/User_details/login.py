@@ -35,21 +35,19 @@ def login(request):
           token, created = Token.objects.get_or_create(user=user)
           success_message = message.Login()
           response_data = {
-              'message': success_message,
-              'token': token.key  # Include the token in the response
+            'message': success_message,
+            'token': token.key  # Include the token in the response
           }
           return message.handleSuccess(response_data)
         else:
-            error_message = message.loginError()
-            return message.errorResponse(error_message)
+          return message.loginError()
       else:
-          error_message = message.Error()
-          return message.errorResponse(error_message)
+        return message.Error()
     except Exception as e:
       print(f"Exception: {str(e)}")
       return message.serverErrorResponse()
 
-#Check mobile number is already registered or not in signup table 
+# Check mobile number is already registered or not in signup table 
 @csrf_exempt
 def loginWithOTP(request):
     try :
@@ -59,13 +57,10 @@ def loginWithOTP(request):
         print(mobile_number)
         val = login_query.loginWithOTP(mobile_number)
         if val:
-          success=message.loginWithOTP()
-          return message.handleSuccess(success)
+          return message.loginWithOTP()
         else:
-          error=message.loginWithOTPError()
-          return message.errorResponse(error) 
+          return message.loginWithOTPError()
       else:
-        error=message.Error()
-        return message.errorResponse(error)
+        return message.Error()
     except Exception:
        return message.serverErrorResponse()

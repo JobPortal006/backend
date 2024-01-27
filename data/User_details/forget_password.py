@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from data import response
 from data.User_details import message
-from data.User_details.Query import signup_query
+from data.User_details.Query import signup_query,forgetpassword_query
 
 orgemail = ""
 # Check email is registered or not in Signup table
@@ -28,18 +28,15 @@ def forgetpassword(request):
         from_email = 'brochill547@gmail.com'
         recipient_list = [email]
         send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
-        success=message.emailSent()
-        return message.handleSuccess(success)
+        return message.emailSent()
       else :
-        error=message.emailSentError()  
-        return message.errorResponse(error)
+        return message.emailSentError()  
     else:
-      error=message.Error()
-      return message.errorResponse(error)
+      return message.Error()
   except Exception:
       return message.serverErrorResponse()   
    
-# Update password in signup Table
+# Update password in signup Table and inserted in hash format
 @csrf_exempt
 def updatepassword(request):
     try :
@@ -50,10 +47,8 @@ def updatepassword(request):
         print(f"Email retrieved from session: {email}") 
         password_update = forgetpassword_query.update_password(password,email)
         if password_update:
-          success=message.passwordUpdate()
-          return message.handleSuccess(success)
+          return message.passwordUpdate()
         else :
-          error=message.passwordUpdateError()
-          return message.errorResponse(error)
+          return message.passwordUpdateError()
     except Exception:
       return message.serverErrorResponse()

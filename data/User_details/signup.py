@@ -12,6 +12,7 @@ con = connection.cursor()
 
 # Insert the data into signup table
 # Data will store both User and Recruiter on same table
+# Password is inserted in hash format
 # Check email is already registered in table or not
 # Once registered - Send mail to registered email as (Signup Successfully message)
 @csrf_exempt
@@ -26,8 +27,7 @@ def signup(request):
             print(email,password,mobile_number,signup_by)
             email_check = signup_query.email_check(email) 
             if email_check:
-                error=message.emailError()
-                return message.errorResponse(error)
+                return message.emailError()
             else:
                 signup_query.signup_query(email,mobile_number,password,signup_by)
                 subject = 'Sign up Successfully'
@@ -36,11 +36,9 @@ def signup(request):
                 from_email = 'brochill547@gmail.com'
                 recipient_list = [email]
                 send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
-                success=message.Signup()
-                return message.handleSuccess(success)
+                return message.Signup()
         else:
-            error=message.Error()
-            return message.errorResponse(error)
+            return message.Error()
     except Exception:
         return message.serverErrorResponse()
     
