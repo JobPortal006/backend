@@ -2,7 +2,6 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
-from data import response
 from django.db import connection
 from data.User_details.Query import login_query
 from data.User_details import message
@@ -19,7 +18,7 @@ def login(request):
         data = json.loads(request.body)
         email = data.get('email')
         password = data.get('password')
-        print(email, password)
+        print(email)
         # Use your login_query function to validate credentials
         user = login_query.login(email, password)
         if user:
@@ -40,9 +39,9 @@ def login(request):
           }
           return message.handleSuccess(response_data)
         else:
-          return message.loginError()
+          return message.error('loginError')
       else:
-        return message.Error()
+        return message.error('Error')
     except Exception as e:
       print(f"Exception: {str(e)}")
       return message.serverErrorResponse()
@@ -57,10 +56,10 @@ def loginWithOTP(request):
         print(mobile_number)
         val = login_query.loginWithOTP(mobile_number)
         if val:
-          return message.loginWithOTP()
+          return message.success('loginWithOTP')
         else:
-          return message.loginWithOTPError()
+          return message.error('loginWithOTPError')
       else:
-        return message.Error()
+        return message.error('Error')
     except Exception:
        return message.serverErrorResponse()

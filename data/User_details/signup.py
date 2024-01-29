@@ -3,7 +3,6 @@ import json
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from data import response
 from django.db import connection
 from data.User_details.Query import signup_query
 from data.User_details import message
@@ -13,7 +12,7 @@ con = connection.cursor()
 # Insert the data into signup table
 # Data will store both User and Recruiter on same table
 # Password is inserted in hash format
-# Check email is already registered in table or not
+# Check email is already registered in table or not 
 # Once registered - Send mail to registered email as (Signup Successfully message)
 @csrf_exempt
 def signup(request):
@@ -24,7 +23,7 @@ def signup(request):
             mobile_number = data.get('mobile_number')
             password = data.get('password')
             signup_by = data.get('signup_by')
-            print(email,password,mobile_number,signup_by)
+            print(email,mobile_number,signup_by)
             email_check = signup_query.email_check(email) 
             if email_check:
                 return message.emailError()
@@ -38,7 +37,7 @@ def signup(request):
                 send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
                 return message.success('Signup')
         else:
-            return message.Error()
+            return message.error('Error')
     except Exception:
         return message.serverErrorResponse()
     

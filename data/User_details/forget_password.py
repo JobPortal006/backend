@@ -28,11 +28,11 @@ def forgetpassword(request):
         from_email = 'brochill547@gmail.com'
         recipient_list = [email]
         send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
-        return message.emailSent()
+        return message.success('emailSent')
       else :
-        return message.emailSentError()  
+        return message.error('emailSentError')  
     else:
-      return message.Error()
+      return message.error('Error')
   except Exception:
       return message.serverErrorResponse()   
    
@@ -47,8 +47,8 @@ def updatepassword(request):
         print(f"Email retrieved from session: {email}") 
         password_update = forgetpassword_query.update_password(password,email)
         if password_update:
-          return message.passwordUpdate()
+          return message.success('passwordUpdate')
         else :
-          return message.passwordUpdateError()
+          return message.error('passwordUpdateError')
     except Exception:
       return message.serverErrorResponse()

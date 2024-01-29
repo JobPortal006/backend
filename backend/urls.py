@@ -13,7 +13,7 @@ urlpatterns = [
     path('forgetpassword/',forget_password.forgetpassword),
     path('updatepassword/',forget_password.updatepassword),
     path('userRegister/', create_account_user.user_register.as_view()),
-    path('upload-image/', views.ImageUploadView.as_view()),
+    # path('upload-image/', views.ImageUploadView.as_view()),
 ]
 
 if settings.DEBUG:

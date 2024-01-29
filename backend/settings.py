@@ -35,7 +35,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'brochill547@gmail.com'
 EMAIL_HOST_PASSWORD = 'irvf jinb zccd aqra'
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.36']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.36','http://192.168.1.73:3000/Password/']
 
 
 # Application definition

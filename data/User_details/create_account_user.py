@@ -40,6 +40,11 @@ class user_register(View):
                 if mobile_number:
                     user_id, registered_by , email= create_account_user_query.mobileNumber(mobile_number)
                     print(user_id, registered_by, email)
+                    first_name = user_details.get('first_name')
+                    last_name = user_details.get('last_name')
+                    gender = user_details.get('gender')
+                    date_of_birth = user_details.get('date_of_birth')
+                    profile_picture = request.FILES.get('profilePicture')
                     fs = FileSystemStorage()
                     full_file_path = os.path.join(r'D:\python check\backend\Profile Pictures', profile_picture.name)
                     # Save the file
@@ -47,14 +52,9 @@ class user_register(View):
                         for chunk in profile_picture.chunks():
                             destination.write(chunk)
                     # Update the profile_picture variable to the correct URL
-                    profile_picture = fs.url(full_file_path)
-                    # Extract and insert personal details
-                    first_name = user_details.get('first_name')
-                    last_name = user_details.get('last_name')
-                    gender = user_details.get('gender')
-                    date_of_birth = user_details.get('date_of_birth')
-                    profile_picture = request.FILES.get('profilePicture')
-                    print('User Details Data ----->', first_name, last_name, mobile_number, gender, date_of_birth,profile_picture)
+                    profile_picture = profile_picture.name
+                    # Extract and insert User details
+                    # print('User Details Data ----->', first_name, last_name, mobile_number, gender, date_of_birth,profile_picture)
                     personal_details_result = create_account_user_query.personal_details(
                         user_id, registered_by, first_name, last_name, date_of_birth, gender, profile_picture
                     )
@@ -170,12 +170,11 @@ class user_register(View):
                     from_email = 'brochill547@gmail.com'
                     recipient_list = [email]
                     send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
-                    return message.accountCreation()
+                    return message.success('accountCreation')
                 else:
-                    return message.loginWithOTPError()
+                    return message.error('loginWithOTPError')
             else:
-                error=message.Error()
-                return message.errorResponse(error)
+                return message.error('Error')
         except Exception as e:
             print(str(e))
             return message.serverErrorResponse()
