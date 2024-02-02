@@ -34,7 +34,10 @@ def login(email, password):
         return False
 
 # Check mobile is already registered in table or not
-def loginWithOTP(mobile_number) :
-  check_sql = "SELECT * FROM signup WHERE mobile_number = %s"
-  query=con.execute(check_sql,[mobile_number])
-  return query
+def loginWithOTP(mobile_number):
+    check_sql = "SELECT * FROM signup WHERE mobile_number = %s"
+    query = con.execute(check_sql, [mobile_number])
+    if query:
+        return True
+    else:
+        return False

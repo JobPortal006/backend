@@ -21,11 +21,11 @@ class Command(BaseCommand):
                 r.employment_status, r.resume
             FROM personal_details p
             LEFT JOIN address a ON a.user_id = p.user_id
-            LEFT JOIN education_details e ON e.user_id = a.user_id
-            LEFT JOIN college_details c ON c.user_id = e.user_id
-            LEFT JOIN resume_details r ON r.user_id = c.user_id
-            LEFT JOIN job_preferences j ON j.user_id = r.user_id
-            LEFT JOIN professional_details d ON d.user_id = j.user_id;
+            LEFT JOIN education_details e ON e.user_id = p.user_id
+            LEFT JOIN college_details c ON c.user_id = p.user_id
+            LEFT JOIN resume_details r ON r.user_id = p.user_id
+            LEFT JOIN job_preferences j ON j.user_id = p.user_id
+            LEFT JOIN professional_details d ON d.user_id = p.user_id;
             """
             con.execute(sql)
             result = con.fetchall()

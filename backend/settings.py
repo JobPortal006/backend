@@ -35,7 +35,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'brochill547@gmail.com'
 EMAIL_HOST_PASSWORD = 'irvf jinb zccd aqra'
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.36','http://192.168.1.73:3000/Password/']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.38','http://192.168.1.73:3000/Password/','13.60.28.213']
 
 
 # Application definition
@@ -82,7 +82,6 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
@@ -92,14 +91,23 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Job_Portal',
+        'NAME': 'jobportal',
         'USER': 'root',
-        'PASSWORD': 'mysqllocal',
-        'HOST': 'localhost',
+        'PASSWORD': 'root@123',
+        'HOST': '13.60.28.213',
         'PORT': '3306',
     }
 }
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'mysql_test',
+#         'USER': 'root',
+#         'PASSWORD': 'user123',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -141,3 +149,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

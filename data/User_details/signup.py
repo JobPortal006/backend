@@ -4,8 +4,9 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.db import connection
-from data.User_details.Query import signup_query
+from data.User_details.Query import signup_query,login_query
 from data.User_details import message
+# from data.User_details.signup import send_signup_email
 
 con = connection.cursor()
 
@@ -21,23 +22,33 @@ def signup(request):
             data = json.loads(request.body)
             email = data.get('email')
             mobile_number = data.get('mobile_number')
-            password = data.get('password')
-            signup_by = data.get('signup_by')
+            password = data.get('password')  
+            signup_by = data.get('signup_by') 
             print(email,mobile_number,signup_by)
-            email_check = signup_query.email_check(email) 
-            if email_check:
-                return message.emailError()
+            data_check = message.data_check(email,mobile_number,password,signup_by) 
+            if data_check:
+                email_exists = signup_query.email_check(email)
+                mobile_exists = login_query.loginWithOTP(mobile_number)
+                if email_exists:  
+                    return message.error('emailError')
+                elif mobile_exists:
+                    return message.error('mobileError')
+                else:
+                    signup_query.signup_query(email,mobile_number,password,signup_by)
+                    send_signup_email(email)
+                    return message.success('Signup')
             else:
-                signup_query.signup_query(email,mobile_number,password,signup_by)
-                subject = 'Sign up Successfully'
-                message_html = render_to_string('email.html')
-                message_plain = strip_tags(message_html)
-                from_email = 'brochill547@gmail.com'
-                recipient_list = [email]
-                send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
-                return message.success('Signup')
+                return message.error('InputError')
         else:
             return message.error('Error')
-    except Exception:
+    except Exception: 
         return message.serverErrorResponse()
-    
+
+@csrf_exempt   
+def send_signup_email(email):
+    subject = 'Sign up Successfully'
+    message_html = render_to_string('email.html')
+    message_plain = strip_tags(message_html)
+    from_email = 'brochill547@gmail.com'
+    recipient_list = [email]
+    send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)

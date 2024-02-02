@@ -1,35 +1,13 @@
-# import json
-# import pytest
-# from django.test import Client
-# from django import urls
-# from django.db import connection
-
-# @pytest.mark.django_db
-# @pytest.mark.parametrize('param', [
-#     ('signup'),
-#     ('login'),
-#     ('loginWithOTP'),
-#     ('forgetpassword')
-# ])
-# def test_render_views(param):
-#     client = Client()
-#     temp_url = urls.reverse(param)
-#     resp = client.get(temp_url)
-#     assert resp.status_code == 200
-    
 import pytest
 import requests
 
-def test_signup():
+def test_forgetpassword():
     # Define the API endpoint
-    api_url = "http://192.168.1.38:8000/signup/"
+    api_url = "http://192.168.1.38:8000/forgetpassword/"
 
     # Define the data to be sent
     data = {
-        "email":"ragul@gmail.com",
-        "mobile_number":"8072850717",
-        "password":"vimal",
-        "signup_by":"User"
+        "email":"brochill547@gmail.com"
     }
     # Send a POST request with the data
     response = requests.post(api_url, json=data)
@@ -47,4 +25,3 @@ def test_signup():
         assert 'message' in response_data
         assert response_data['message'] == message
 
-    

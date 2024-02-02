@@ -3,11 +3,17 @@ import bcrypt
 
 con = connection.cursor()
 
+def demo():
+  assert 1==1
+
 # Check email is already registered in the table or not
 def email_check(email) :
   check_sql = "SELECT * FROM signup WHERE email = %s"
   query=con.execute(check_sql,[email])
-  return query
+  if query:
+    return True
+  else:
+    return False
 
 # Insert the signup data into signup table
 # Store the password as hashed format
@@ -21,4 +27,3 @@ def signup_query(email,mobile_number,password,signup_by):
   except Exception as e:
     print(f"Error during Signup: {e}")
     return False
-
