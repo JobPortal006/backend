@@ -1,6 +1,7 @@
 from django.db import connection
 import bcrypt
 from datetime import datetime
+from data.User_details import message
 
 con = connection.cursor()
 
@@ -24,7 +25,9 @@ def login(email, password):
             if bcrypt.checkpw(password.encode('utf-8'), hashed_password_from_db.encode('utf-8')):
                 value_update = (current_time, email)
                 con.execute(sql_update, value_update)
-                return True
+                rows_affected = con.rowcount
+                insert=message.rowcount(rows_affected) 
+                return True,insert
             else: 
                 return False
         else:

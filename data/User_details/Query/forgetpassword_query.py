@@ -1,7 +1,8 @@
 from django.db import connection
 import bcrypt
+from data.User_details import message
 
-con = connection.cursor()
+con = connection.cursor()  
 
 #Update the password from signup table
 #Password is inserted in hash format
@@ -10,4 +11,6 @@ def update_password(password,email):
   sql="UPDATE signup SET password=%s WHERE email=%s"
   value=(hashed_password.decode('utf-8'), email)
   con.execute(sql,value) 
-  return True
+  rows_affected = con.rowcount
+  insert=message.rowcount(rows_affected) 
+  return True,insert

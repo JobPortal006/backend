@@ -15,6 +15,7 @@ def test_send_data_to_api():
     assert response.status_code == 200
     response_data = response.json()
     message = response_data['message']
+    data = response_data['data']
     print(message)
     if response_data['statusCode'] == 200:
         assert 'message' in response_data
@@ -26,3 +27,4 @@ def test_send_data_to_api():
         assert response_data['statusCode'] == 500
         assert 'message' in response_data
         assert response_data['message'] == message
+    assert response_data['data'] == data

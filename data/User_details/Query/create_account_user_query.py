@@ -1,4 +1,5 @@
 from django.db import connection
+from data.User_details import message
 
 con = connection.cursor()
 
@@ -21,7 +22,9 @@ def personal_details(user_id, registered_by, first_name, last_name, date_of_birt
     try:
         con.execute(sql, values)
         connection.commit()
-        return True
+        rows_affected = con.rowcount
+        insert=message.rowcount(rows_affected) 
+        return True,insert
     except Exception as e:
         print(f"Error inserting data: {e}")
         connection.rollback()
@@ -115,6 +118,7 @@ def employment_status(user_id,registered_by,employment_status,resume):
         connection.rollback()
         return False
     
+#Check user_id is already exists in table or not
 def userid_check(user_id):
     check_sql_personal = "SELECT * FROM personal_details WHERE user_id = %s"
     check_sql_job_preferences = "SELECT * FROM job_preferences WHERE user_id = %s"
@@ -125,9 +129,14 @@ def userid_check(user_id):
     query_job_preferences = con.execute(check_sql_job_preferences, [user_id])
     query_professional_details = con.execute(check_sql_professional_details, [user_id])
     query_resume_details = con.execute(check_sql_resume_details, [user_id])
-    print(query_personal,query_job_preferences,query_professional_details,query_resume_details,'1-----------')
-    if query_personal and query_job_preferences and query_professional_details and query_resume_details:
-        return True
-    else:
+    print(query_personal,query_job_preferences,query_professional_details,query_resume_details)
+    if query_personal:
         return False
-  
+    elif query_job_preferences:
+        return False
+    elif query_professional_details:
+        return False
+    elif query_resume_details:
+        return False
+    else:
+        return True

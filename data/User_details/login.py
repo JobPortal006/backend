@@ -20,7 +20,7 @@ def login(request):
         password = data.get('password')
         print(email)
         # Use your login_query function to validate credentials
-        user = login_query.login(email, password)
+        user,insert = login_query.login(email, password)
         if user:
           # Ensure 'user' is an instance of the User model
           if not isinstance(user, User):
@@ -36,8 +36,9 @@ def login(request):
           response_data = {
             'message': success_message,
             'token': token.key  # Include the token in the response
+            
           }
-          return message.handleSuccess(response_data)
+          return message.handleSuccess(response_data,insert)
         else:
           return message.error('loginError')
       else:

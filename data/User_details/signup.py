@@ -34,9 +34,9 @@ def signup(request):
                 elif mobile_exists:
                     return message.error('mobileError')
                 else:
-                    signup_query.signup_query(email,mobile_number,password,signup_by)
+                    val,insert= signup_query.signup_query(email,mobile_number,password,signup_by)
                     send_signup_email(email)
-                    return message.success('Signup')
+                    return message.success('Signup',insert)
             else:
                 return message.error('InputError')
         else:

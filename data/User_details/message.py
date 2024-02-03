@@ -1,8 +1,8 @@
 from django.http import JsonResponse
 
 #dynamic success response
-def handleSuccess(success):
-    return JsonResponse({"status":True,"statusCode":200,"message":success},safe=False)
+def handleSuccess(success,data):
+    return JsonResponse({"status":True,"statusCode":200,"message":success,"data":data},safe=False)
 
 #dynamic error response
 def errorResponse(error):
@@ -16,7 +16,7 @@ def Login():
     parameter_value = "Login Successfully"
     return parameter_value
 
-def success(key):
+def success(key,insert):
     key_value_mapping = {
         'Signup': 'Signup Successfully',
         'Login': 'Login Successfully',
@@ -25,8 +25,10 @@ def success(key):
         'passwordUpdate':'Password updated successfully!',
         'accountCreation':'Account Created Successfully'
     }
+    
     if key in key_value_mapping:
-        return handleSuccess(key_value_mapping[key])
+        data = insert
+        return handleSuccess(key_value_mapping[key],data)
     else:
         return None
 
@@ -40,9 +42,11 @@ def error(key):
         'passwordUpdateError':'Password is not updated',
         'Error':'Request method should be POST',
         'InputError':'Input Should not be empty',
-        'FileError':' Invalid file format. Allowed formats: jpg, jpeg, png, pdf'
+        'FileError':' Invalid file format. Allowed formats: jpg, jpeg, png, pdf',
+        'UserIdError':'User Id is already exists'
     }
     if key in key_value_mapping:
+
         return errorResponse(key_value_mapping[key])
     else:
         return None
@@ -88,3 +92,8 @@ def job_preference_details(key_skills, department, industry, prefered_locations)
         return True
     else:
         return False
+    
+def rowcount(rows_affected):
+  if rows_affected > 0:
+    data = f'Data is affected in {rows_affected} row in the table'
+    return data

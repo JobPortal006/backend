@@ -13,3 +13,11 @@ class User(models.Model):
         return f"{self.first_name} {self.last_name}"
 
     # Add other methods or fields as needed
+
+from django.db import models
+
+class demo(models.Model):
+    email = models.EmailField()
+    mobile_number = models.CharField(max_length=15)
+    password = models.CharField(max_length=255) 
+    signup_by = models.CharField(max_length=50)

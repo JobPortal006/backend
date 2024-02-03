@@ -117,100 +117,103 @@ class user_register(View):
                     user_id, registered_by , email= create_account_user_query.mobile_number(mobile_number)
                     print(user_id, registered_by, email)
                     userid_check = create_account_user_query.userid_check(user_id)
-                    print(userid_check)
-                    # def is_valid_file_format(file_name):
-                    #     allowed_extensions = ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'] 
-                    #     file_extension = file_name.split('.')[-1].lower()
-                    #     return file_extension in allowed_extensions
+                    print(userid_check,'user id ---------------')
+                    if userid_check:
+                        def is_valid_file_format(file_name):
+                            allowed_extensions = ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'] 
+                            file_extension = file_name.split('.')[-1].lower()
+                            return file_extension in allowed_extensions
 
-                    # if profile_picture and not is_valid_file_format(profile_picture.name):
-                    #     # Handle invalid profile picture format
-                    #     return message.error('FileError')
+                        if profile_picture and not is_valid_file_format(profile_picture):
+                            # Handle invalid profile picture format
+                            return message.error('FileError')
 
-                    # if resume and not is_valid_file_format(resume.name):
-                    #     # Handle invalid resume format
-                    #     return message.error('FileError')
-                    # profile_picture = profile_picture1.name
-                    # resume = resume.name
-                    # fs = FileSystemStorage()
-                    # full_file_path = os.path.join(r'D:\python check\backend\Profile Pictures', profile_picture.name)
-                    # # Save the file
-                    # with open(full_file_path, 'wb') as destination:
-                    #     for chunk in profile_picture.chunks():
-                    #         destination.write(chunk)
-                    # Update the profile_picture variable to the correct URL 
-                    # Check user details data is empty or not
-                    personal_details_data = message.personal_details(first_name, last_name,date_of_birth, gender) 
-                    # Check permanent address details data is empty or not
-                    address_details_permanent_data= message.address_details_permanent(
-                            street_permanent, city_permanent, state_permanent, country_permanent,
-                            pincode_permanent, address_type_permanent)
-                    # Check educational details data is empty or not
-                    educational_details_data = message.educational_details(sslc_school_name, sslc_start_year, sslc_end_year, sslc_percentage, hsc_school_name,
-                        hsc_start_year, hsc_end_year, hsc_percentage, college_name, college_start_year, college_end_year,college_percentage, department, degree)
-                    # Check job preference details data is empty or not
-                    job_preference_data = message.job_preference_details(key_skills, department, industry, prefered_locations)
-                    print(personal_details_data,address_details_permanent_data,educational_details_data,job_preference_data)
-                    if personal_details_data and address_details_permanent_data and educational_details_data and job_preference_data:
-                        personal_details_result = create_account_user_query.personal_details(
-                            user_id, registered_by, first_name, last_name, date_of_birth, gender, profile_picture)
-                        print('Personal_details ->', personal_details_result)
+                        if resume and not is_valid_file_format(resume):
+                            # Handle invalid resume format
+                            return message.error('FileError')
+                        # profile_picture = profile_picture1.name
+                        # resume = resume.name
+                        # fs = FileSystemStorage()
+                        # full_file_path = os.path.join(r'D:\python check\backend\Profile Pictures', profile_picture.name)
+                        # # Save the file
+                        # with open(full_file_path, 'wb') as destination:
+                        #     for chunk in profile_picture.chunks():
+                        #         destination.write(chunk)
+                        # Update the profile_picture variable to the correct URL 
+                        # Check user details data is empty or not
+                        personal_details_data = message.personal_details(first_name, last_name,date_of_birth, gender) 
+                        # Check permanent address details data is empty or not
+                        address_details_permanent_data= message.address_details_permanent(
+                                street_permanent, city_permanent, state_permanent, country_permanent,
+                                pincode_permanent, address_type_permanent)
+                        # Check educational details data is empty or not
+                        educational_details_data = message.educational_details(sslc_school_name, sslc_start_year, sslc_end_year, sslc_percentage, hsc_school_name,
+                            hsc_start_year, hsc_end_year, hsc_percentage, college_name, college_start_year, college_end_year,college_percentage, department, degree)
+                        # Check job preference details data is empty or not
+                        job_preference_data = message.job_preference_details(key_skills, department, industry, prefered_locations)
+                        print(personal_details_data,address_details_permanent_data,educational_details_data,job_preference_data)
+                        if personal_details_data and address_details_permanent_data and educational_details_data and job_preference_data:
+                            personal_details_result,data = create_account_user_query.personal_details(
+                                user_id, registered_by, first_name, last_name, date_of_birth, gender, profile_picture)
+                            print('Personal_details ->', personal_details_result)
 
-                        address_details_current_result = create_account_user_query.address_details(
-                        user_id, registered_by, street_current, city_current, state_current, country_current,
-                        pincode_current, address_type_current)
-                        print('Address_details_current ->', address_details_current_result)
+                            address_details_current_result = create_account_user_query.address_details(
+                            user_id, registered_by, street_current, city_current, state_current, country_current,
+                            pincode_current, address_type_current)
+                            print('Address_details_current ->', address_details_current_result)
 
-                        address_details_permanent_result = create_account_user_query.address_details(
-                            user_id, registered_by, street_permanent, city_permanent, state_permanent, country_permanent,
-                            pincode_permanent, address_type_permanent)
-                        print('Address_details_permanent ->', address_details_permanent_result)
+                            address_details_permanent_result = create_account_user_query.address_details(
+                                user_id, registered_by, street_permanent, city_permanent, state_permanent, country_permanent,
+                                pincode_permanent, address_type_permanent)
+                            print('Address_details_permanent ->', address_details_permanent_result)
 
-                        education_details_result = create_account_user_query.education_details(
-                        user_id, sslc_school_name, sslc_start_year, sslc_end_year, sslc_percentage, hsc_school_name,
-                        hsc_start_year, hsc_end_year, hsc_percentage, college_name, college_start_year, college_end_year,
-                        college_percentage, department, degree, education_type, pg_college_name, pg_college_start_year,
-                        pg_college_end_year, pg_college_percentage, pg_college_department, pg_college_degree,
-                        diploma_college_name, diploma_college_start_year, diploma_college_end_year,
-                        diploma_college_percentage, diploma_college_department, diploma_college_degree)
-                        print('Education_details ->', education_details_result)
+                            education_details_result = create_account_user_query.education_details(
+                            user_id, sslc_school_name, sslc_start_year, sslc_end_year, sslc_percentage, hsc_school_name,
+                            hsc_start_year, hsc_end_year, hsc_percentage, college_name, college_start_year, college_end_year,
+                            college_percentage, department, degree, education_type, pg_college_name, pg_college_start_year,
+                            pg_college_end_year, pg_college_percentage, pg_college_department, pg_college_degree,
+                            diploma_college_name, diploma_college_start_year, diploma_college_end_year,
+                            diploma_college_percentage, diploma_college_department, diploma_college_degree)
+                            print('Education_details ->', education_details_result)
 
-                        job_preference_result = create_account_user_query.job_preference_details(
-                        user_id, key_skills, department, industry, prefered_locations)
-                        print('Job_preference ->', job_preference_result)
+                            job_preference_result = create_account_user_query.job_preference_details(
+                            user_id, key_skills, department, industry, prefered_locations)
+                            print('Job_preference ->', job_preference_result)
 
-                        employment_status = professional_details_data
-                        isExperienced = professional_details_data.get('isExperienced')
-                        print(isExperienced)
-                        if employment_status == 'Fresher' and employment_status != None:
-                            employment_status_result = create_account_user_query.employment_status(
-                                user_id, registered_by, employment_status, resume
-                            )
-                            print('Professional_details ->', employment_status_result)
-                            
-                        else:
-                            employment_status = 'Experienced'
-                            companies = professional_details_data.get('companies', [])
-                            for company in companies: 
-                                companyName = company.get('companyName')
-                                years_of_exprence = company.get('years_of_exprence')
-                                job_role = company.get('job_role')
-                                skills = company.get('skills')
-                                print(companyName,years_of_exprence,job_role,skills)
-                                professional_details_result = create_account_user_query.professional_details(
-                                    user_id, registered_by, companyName, years_of_exprence, job_role, skills
+                            employment_status = professional_details_data
+                            isExperienced = professional_details_data.get('isExperienced')
+                            print(isExperienced)
+                            if employment_status == 'Fresher' and employment_status != None:
+                                employment_status_result = create_account_user_query.employment_status(
+                                    user_id, registered_by, employment_status, resume
                                 )
-                                print('Professional_details ->', professional_details_result)
-                        # sending email
-                        subject = 'Account Creation'
-                        message_html = render_to_string('account.html', {'name': first_name})
-                        message_plain = strip_tags(message_html)
-                        from_email = 'brochill547@gmail.com'
-                        recipient_list = [email]
-                        send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
-                        return message.success('accountCreation')
+                                print('Professional_details ->', employment_status_result)
+                                
+                            else:
+                                employment_status = 'Experienced'
+                                companies = professional_details_data.get('companies', [])
+                                for company in companies: 
+                                    companyName = company.get('companyName')
+                                    years_of_exprence = company.get('years_of_exprence')
+                                    job_role = company.get('job_role')
+                                    skills = company.get('skills')
+                                    print(companyName,years_of_exprence,job_role,skills)
+                                    professional_details_result = create_account_user_query.professional_details(
+                                        user_id, registered_by, companyName, years_of_exprence, job_role, skills
+                                    )
+                                    print('Professional_details ->', professional_details_result)
+                            # sending email
+                            subject = 'Account Creation'
+                            message_html = render_to_string('account.html', {'name': first_name})
+                            message_plain = strip_tags(message_html)
+                            from_email = 'brochill547@gmail.com'
+                            recipient_list = [email]
+                            send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
+                            return message.success('accountCreation',data)
+                        else:
+                            return message.error('InputError')
                     else:
-                        return message.error('InputError')
+                        return message.error('UserIdError')
                     # Extract and insert job preference details                   
                     
                     # fs = FileSystemStorage()
