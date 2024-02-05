@@ -32,7 +32,7 @@ class Command(BaseCommand):
             email.attach('signup_report.xlsx', excel_buffer.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
             email.send()
 
-            print('Signup table report sent successfully.')
+            self.stderr.write(self.style.SUCCESS('Signup table report sent successfully.'))
 
         except Exception as e:
             self.stderr.write(self.style.ERROR(f'Error: {e}'))

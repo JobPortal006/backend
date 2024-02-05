@@ -1,7 +1,7 @@
 from django.db import connection
 import bcrypt
 from datetime import datetime
-from data.User_details import message
+from data.Account_creation import message
 
 con = connection.cursor()
 
@@ -19,9 +19,6 @@ def login(email, password):
         user = con.fetchone()  # Fetch the result after executing the SELECT query
         if user:
             hashed_password_from_db = user[4]  # Assuming 'Fourth' is the third column
-            # Check if the hashed password is in the correct format
-            if '$2b$' not in hashed_password_from_db:
-                raise ValueError("Invalid hashed password format")
             if bcrypt.checkpw(password.encode('utf-8'), hashed_password_from_db.encode('utf-8')):
                 value_update = (current_time, email)
                 con.execute(sql_update, value_update)

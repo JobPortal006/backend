@@ -4,9 +4,8 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.db import connection
-from data.User_details.Query import signup_query,login_query
-from data.User_details import message
-# from data.User_details.signup import send_signup_email
+from data.Account_creation.Query import signup_query,login_query
+from data.Account_creation import message
 
 con = connection.cursor()
 
@@ -30,17 +29,17 @@ def signup(request):
                 email_exists = signup_query.email_check(email)
                 mobile_exists = login_query.loginWithOTP(mobile_number)
                 if email_exists:  
-                    return message.error('emailError')
+                    return message.response('Error','emailError')
                 elif mobile_exists:
-                    return message.error('mobileError')
+                    return message.response('Error','mobileError')
                 else:
-                    val,insert= signup_query.signup_query(email,mobile_number,password,signup_by)
+                    signup_query.signup_query(email,mobile_number,password,signup_by)
                     send_signup_email(email)
-                    return message.success('Signup',insert)
+                    return message.response('Success','Signup')
             else:
-                return message.error('InputError')
+                return message.response('Error','InputError')
         else:
-            return message.error('Error')
+            return message.response('Error','Error')
     except Exception: 
         return message.serverErrorResponse()
 

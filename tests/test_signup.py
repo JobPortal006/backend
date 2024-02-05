@@ -19,7 +19,7 @@
     
 import pytest
 import requests
-from data.User_details import message
+from data.Account_creation import message
 
 def test_signup():
     # Define the API endpoint

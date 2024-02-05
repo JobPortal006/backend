@@ -4,8 +4,8 @@ import json
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from data.User_details import message
-from data.User_details.Query import signup_query,forgetpassword_query
+from data.Account_creation import message
+from data.Account_creation.Query import signup_query,forgetpassword_query
 
 orgemail = ""
 # Check email is registered or not in Signup table
@@ -19,7 +19,7 @@ def forgetpassword(request):
       global orgemail
       orgemail=email
       print(orgemail)
-      email_check,data = signup_query.email_check(email)
+      email_check = signup_query.email_check(email)
       if email_check:
         subject = 'Email Verification' 
         message_html = render_to_string('verify_email.html')
@@ -27,11 +27,11 @@ def forgetpassword(request):
         from_email = 'brochill547@gmail.com'
         recipient_list = [email]
         send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
-        return message.success('emailSent',data)
+        return message.response('Success','emailSent')
       else :
-        return message.error('emailSentError')  
+        return message.response('Error','emailSentError')  
     else:
-      return message.error('Error')
+      return message.response('Error','Error')
   except Exception:
       return message.serverErrorResponse()   
    
@@ -44,11 +44,11 @@ def updatepassword(request):
         password = data.get('password')
         email = orgemail 
         print(f"Email retrieved from session: {email}") 
-        password_update,data = forgetpassword_query.update_password(password,email)
+        password_update = forgetpassword_query.update_password(password,email)
         if password_update: 
-          return message.success('passwordUpdate',data)
+          return message.response('Success','passwordUpdate')
         else :
-          return message.error('passwordUpdateError')
+          return message.response('Error','passwordUpdateError')
     except Exception:
       return message.serverErrorResponse()
  

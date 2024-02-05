@@ -3,8 +3,8 @@ import json
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.db import connection
-from data.User_details.Query import login_query
-from data.User_details import message
+from data.Account_creation.Query import login_query
+from data.Account_creation import message
 
 con = connection.cursor()
 
@@ -20,29 +20,25 @@ def login(request):
         password = data.get('password')
         print(email)
         # Use your login_query function to validate credentials
-        user,insert = login_query.login(email, password)
+        user = login_query.login(email, password)
         if user:
-          # Ensure 'user' is an instance of the User model
-          if not isinstance(user, User):
-            # Attempt to retrieve the User instance based on the provided email
-            try:
-              user = User.objects.get(email=email)
-            except User.DoesNotExist:
-              # If user doesn't exist, create a new user
-              user = User.objects.create_user(username=email, email=email, password=password)
+          try:
+            user = User.objects.get(email=email)
+          except User.DoesNotExist:
+            # If user doesn't exist, create a new user
+            user = User.objects.create_user(username=email, email=email, password=password)
           # Generate or retrieve the token for the user
           token, created = Token.objects.get_or_create(user=user)
           success_message = message.Login()
           response_data = {
             'message': success_message,
             'token': token.key  # Include the token in the response
-            
           }
-          return message.handleSuccess(response_data,insert)
+          return message.handleSuccess(response_data)
         else:
-          return message.error('loginError')
+          return message.response('Error','loginError')
       else:
-        return message.error('Error')
+        return message.response('Error','Error')
     except Exception as e:
       print(f"Exception: {str(e)}")
       return message.serverErrorResponse()
@@ -57,10 +53,10 @@ def loginWithOTP(request):
         print(mobile_number)
         val = login_query.loginWithOTP(mobile_number)
         if val:
-          return message.success('loginWithOTP')
+          return message.response('Success','loginWithOTP')
         else:
-          return message.error('loginWithOTPError')
+          return message.response('Error','loginWithOTPError')
       else:
-        return message.error('Error')
+        return message.response('Error','Error')
     except Exception:
        return message.serverErrorResponse()

@@ -1,6 +1,5 @@
 from django.db import connection
 import bcrypt
-from data.User_details import message
 
 con = connection.cursor()
 
@@ -11,10 +10,8 @@ def demo():
 def email_check(email) :
   check_sql = "SELECT * FROM signup WHERE email = %s"
   query=con.execute(check_sql,[email])
-  rows_affected = con.rowcount
-  insert=message.rowcount(rows_affected) 
   if query:
-    return True,insert
+    return True
   else:
     return False
 
@@ -26,10 +23,7 @@ def signup_query(email,mobile_number,password,signup_by):
     sql = "INSERT INTO signup(email,mobile_number,password,signup_by) VALUES(%s,%s,%s,%s)"
     value = (email,mobile_number,hashed_password.decode('utf-8'),signup_by)
     con.execute(sql,value)
-    rows_affected = con.rowcount
-    insert=message.rowcount(rows_affected) 
-    return True,insert
+    return True
   except Exception as e:
     print(f"Error during Signup: {e}")
     return False
-

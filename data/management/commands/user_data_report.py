@@ -54,7 +54,7 @@ class Command(BaseCommand):
             email.attach('user_data_report.xlsx', excel_buffer.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
             email.send()
 
-            print('User data report sent successfully.')
+            self.stderr.write(self.style.SUCCESS('User data report sent successfully.'))
 
         except Exception as e:
             self.stderr.write(self.style.ERROR(f'Error: {e}'))
