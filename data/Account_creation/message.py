@@ -24,7 +24,8 @@ def response(val,key):
             'loginWithOTP': 'Mobile Number is registered',
             'emailSent': 'Email sent Successfully',
             'passwordUpdate':'Password updated successfully!',
-            'accountCreation':'Account Created Successfully'
+            'accountCreation':'Account Created Successfully',
+            'postJob':'Successfully post a job',
         },
         'Error':{
             'emailError': 'Email is already exists. Please use a different email address.',
@@ -35,7 +36,9 @@ def response(val,key):
             'passwordUpdateError':'Password is not updated',
             'Error':'Request method should be POST',
             'InputError':'Input Should not be empty',
-            'FileError':' Invalid file format. Allowed formats: jpg, jpeg, png, pdf'
+            'FileError':' Invalid file format. Allowed formats: jpg, jpeg, png, pdf',
+            'postJobError' :'failed post a job',
+            'postJobInput':'Empty datas Error',
         }
     }
     if val == 'Success':

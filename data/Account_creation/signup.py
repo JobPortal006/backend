@@ -16,6 +16,7 @@ con = connection.cursor()
 # Once registered - Send mail to registered email as (Signup Successfully message)
 @csrf_exempt
 def signup(request):
+    print("Hiii--------------")
     try:
         if request.method == 'POST':
             data = json.loads(request.body)
