@@ -37,8 +37,9 @@ def response(val,key):
             'Error':'Request method should be POST',
             'InputError':'Input Should not be empty',
             'FileError':' Invalid file format. Allowed formats: jpg, jpeg, png, pdf',
-            'postJobError' :'failed post a job',
-            'postJobInput':'Empty datas Error',
+            'UserIdError':'You have already registered',
+            'postJobError' :'Failed to Post a job',
+            'companyError':'You have not completed the registration process'
         }
     }
     if val == 'Success':
@@ -75,5 +76,15 @@ def educational_details(sslc_school_name, sslc_start_year, sslc_end_year, sslc_p
     
 def job_preference_details(key_skills, department, industry, prefered_locations):
     values = key_skills, department, industry, prefered_locations
+    result = check(*values)
+    return result
+
+def company_details(company_logo,company_name,industry_type, company_description, no_of_employees,company_website_link):
+    values = company_logo,company_name,industry_type, company_description, no_of_employees,company_website_link
+    result = check(*values)
+    return result
+
+def searchcheck(location,experience):
+    values = location,experience
     result = check(*values)
     return result
