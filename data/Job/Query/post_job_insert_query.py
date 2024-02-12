@@ -2,11 +2,11 @@ from django.db import connection
 
 con = connection.cursor()
 
-def jobPost_insertQuery(employee_id, company_id, job_title, job_description, qualification, experience, salary_range, no_of_vacancies, employee_type_id, job_category_id, location_id):
+def jobPost_insertQuery(employee_id, company_id, job_title, job_description, qualification, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, location_id):
     try:
         # Print SQL query and parameters for debugging
-        jobPost_sql = "INSERT INTO job_post (employee_id, company_id, job_title, job_description, qualification, experience, salary_range, no_of_vacancies, employee_type_id, job_category_id, location_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        jobPost_values = (employee_id, company_id, job_title, job_description, qualification, experience, salary_range, no_of_vacancies, employee_type_id, job_category_id, location_id)
+        jobPost_sql = "INSERT INTO job_post (employee_id, company_id, job_title, job_description, qualification, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, location_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        jobPost_values = (employee_id, company_id, job_title, job_description, qualification, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, location_id)
         con.execute(jobPost_sql, jobPost_values)
         return True
     except Exception as e:
@@ -18,22 +18,22 @@ def employee_type_insert(employee_type):
     con.execute("INSERT INTO employees_types (employee_type) VALUES (%s)", [employee_type])
     return True
     
-def job_category_insert(job_category):
-    con.execute("INSERT INTO job_category (job_category) VALUES (%s)", [job_category])
+def job_role_insert(job_role):
+    con.execute("INSERT INTO job_role (job_role) VALUES (%s)", [job_role])
     return True
 
 def location_insert(location):
     con.execute("INSERT INTO locations (location) VALUES (%s)", [location])
     return True
 
-def job_category_id(job_category):
-    check_sql = "SELECT id FROM job_category WHERE job_category = %s"
-    con.execute(check_sql, [job_category])
+def job_role_id(job_role):
+    check_sql = "SELECT id FROM job_role WHERE job_role = %s"
+    con.execute(check_sql, [job_role])
     user = con.fetchone()
     if user:
-        job_category_id = user[0]  
-        print(f"job_category ID: {job_category_id}")
-        return job_category_id
+        job_role_id = user[0]  
+        print(f"job_role ID: {job_role_id}")
+        return job_role_id
     
 # def experience(job_id,company_id,experience):
 #     try:

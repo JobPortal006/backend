@@ -14,7 +14,7 @@ def post_jobs(request):
         job_title = data.get('job_title')
         job_description = data.get('job_description')
         employee_type = data.get('employee_type')   
-        job_category  = data.get('job_category')  
+        job_role  = data.get('job_role')  
         location  = data.get('location')            
         skill_set = data.get('skill_set')            
         qualification = data.get('qualification')
@@ -23,7 +23,7 @@ def post_jobs(request):
         no_of_vacancies = data.get('no_of_vacancies') 
         company_name = data.get('company_name')
         print(data)
-        valuesCheck = message.check(job_title,job_description,employee_type,job_category,location,skill_set,qualification,experience,salary_range,no_of_vacancies)
+        valuesCheck = message.check(job_title,job_description,employee_type,job_role,location,skill_set,qualification,experience,salary_range,no_of_vacancies)
         print(valuesCheck)
         if valuesCheck:
             employee_id = post_job_insert_query.employee_id(company_name)
@@ -33,15 +33,15 @@ def post_jobs(request):
                 if employee_type_id == None:
                     post_job_insert_query.employee_type_insert(employee_type)
                     employee_type_id = post_job_insert_query.employee_type_id(employee_type)
-                job_category_id = post_job_insert_query.job_category_id(job_category)
-                if job_category_id == None:
-                    post_job_insert_query.job_category_insert(job_category)
-                    job_category_id = post_job_insert_query.job_category_id(job_category)
+                job_role_id = post_job_insert_query.job_role_id(job_role)
+                if job_role_id == None:
+                    post_job_insert_query.job_role_insert(job_role)
+                    job_role_id = post_job_insert_query.job_role_id(job_role)
                 location_id = post_job_insert_query.location_id(location)
                 if location_id == None:
                     post_job_insert_query.location_insert(location)
                     location_id = post_job_insert_query.location_id(location)
-                resul_postJob =post_job_insert_query.jobPost_insertQuery(employee_id, company_id, job_title, job_description,qualification,experience, salary_range, no_of_vacancies,employee_type_id,job_category_id,location_id)
+                resul_postJob =post_job_insert_query.jobPost_insertQuery(employee_id, company_id, job_title, job_description,qualification,experience, salary_range, no_of_vacancies,employee_type_id,job_role_id,location_id)
                 job_id = post_job_insert_query.get_id(job_title)
                 for skill in skill_set:
                     print(skill)
