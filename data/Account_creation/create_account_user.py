@@ -18,20 +18,20 @@ class user_register(View): # View class provides a creating views by defining me
         try:
             if request.method == 'POST':
                 # Extract user details
-                data = json.loads(request.body)
-                print(data)
-                if data != None:
-                   user_details = data.get('userDetails', {})
-                   address_data = data.get('address', {})
-                   education_data = data.get('education', {})
-                   job_preference_data = data.get('jobPreference', {})
-                   professional_details_data = data.get('professionalDetails', {})
-                else:
-                   user_details = json.loads(request.POST.get('userDetails', '{}'))
-                   address_data = json.loads(request.POST.get('address', '{}'))
-                   education_data = json.loads(request.POST.get('education', '{}'))
-                   job_preference_data = json.loads(request.POST.get('jobPreference', '{}'))
-                   professional_details_data = json.loads(request.POST.get('professionalDetails', '{}'))
+                # data = json.loads(request.body)
+                # print(data)
+                # if data != None:
+                #    user_details = data.get('userDetails', {})
+                #    address_data = data.get('address', {})
+                #    education_data = data.get('education', {})
+                #    job_preference_data = data.get('jobPreference', {})
+                #    professional_details_data = data.get('professionalDetails', {})
+                # else:
+                user_details = json.loads(request.POST.get('userDetails', '{}'))
+                address_data = json.loads(request.POST.get('address', '{}'))
+                education_data = json.loads(request.POST.get('education', '{}'))
+                job_preference_data = json.loads(request.POST.get('jobPreference', '{}'))
+                professional_details_data = json.loads(request.POST.get('professionalDetails', '{}'))
 
                 print(address_data)
                
@@ -49,9 +49,9 @@ class user_register(View): # View class provides a creating views by defining me
                 mobile_number = user_details.get('mobile_number')
 
                 profile_picture = request.FILES.get('profilePicture')
-                profile_picture = user_details.get('profile_picture')
+                # profile_picture = user_details.get('profile_picture')
                 resume = request.FILES.get("resume")
-                resume = data.get('resume')
+                # resume = data.get('resume')
                 # print(profile_picture,"profile_picture 1-----------")
                 # print(resume,'resume 2---------------')
                 current_address = address_data.get('current', {})

@@ -4,6 +4,9 @@ from django.http import JsonResponse
 def handleSuccess(success):
     return JsonResponse({"status":True,"statusCode":200,"message":success},safe=False)
 
+def handleSuccess1(success,data):
+    return JsonResponse({"status":True,"statusCode":200,"message":success,"data":data},safe=False)
+
 #dynamic error response
 def errorResponse(error):
     return  JsonResponse({"status":False,"statusCode":404,"message":error},safe=False)
@@ -26,6 +29,7 @@ def response(val,key):
             'passwordUpdate':'Password updated successfully!',
             'accountCreation':'Account Created Successfully',
             'postJob':'Successfully post a job',
+            'searchJob':'Job find successfully'
         },
         'Error':{
             'emailError': 'Email is already exists. Please use a different email address.',
@@ -39,13 +43,34 @@ def response(val,key):
             'FileError':' Invalid file format. Allowed formats: jpg, jpeg, png, pdf',
             'UserIdError':'You have already registered',
             'postJobError' :'Failed to Post a job',
-            'companyError':'You have not completed the registration process'
+            'companyError':'You have not completed the registration process',
+            'searchJobError':'No data found'
         }
     }
     if val == 'Success':
         return handleSuccess(key_value_mapping[val][key])
     else:
         return errorResponse(key_value_mapping[val][key])
+    
+def response1(val,key,data):
+    key_value_mapping = {
+        'Success':{
+            'searchJob':'Job find successfully',
+            'getSearchJob':'Get job result successfully',
+            'getJobDetails':'Job result get successgully'
+        },  
+        'Error':{
+            'companyError':'You have not completed the registration process',
+            'searchJobError':'No data found',
+            'ValuesCheckError':'Input Should not be empty',
+            'EmptyRequestBody':'Empty Request Body '
+        }
+    }
+    if val == 'Success':
+        return handleSuccess1(key_value_mapping[val][key],data)
+    else:
+        return errorResponse(key_value_mapping[val][key])
+
     
 def check(*args):
     for i in args:

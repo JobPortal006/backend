@@ -45,14 +45,14 @@ class employer_register(View): # View class provides a creating views by definin
                 no_of_employees = request.POST.get('no_of_employees')
                 company_website_link = request.POST.get('company_website_link')
                 user_id, registered_by , email_address= create_account_user_query.mobile_number(mobile_number)
-                print(company_logo,'1----------')
+                print(company_logo)
                 print(user_id, registered_by, email_address)
                 if user_id:
                     if email_address == email:
                         # Check permanent address details data is empty or not
                         userid_check = create_account_employeer_query.userid_check(user_id)
                         print(userid_check)
-                        if userid_check:
+                        if userid_check:    
                             address_details_permanent_data= message.address_details_permanent(
                                     street_permanent, city_permanent, state_permanent, country_permanent,
                                     pincode_permanent, address_type_permanent)
@@ -64,9 +64,9 @@ class employer_register(View): # View class provides a creating views by definin
                                     user_id, registered_by, street_permanent, city_permanent, state_permanent, country_permanent,
                                     pincode_permanent, address_type_permanent)
                                 print('Address_details_permanent ->', address_details_permanent_result)
-
+                                address_id = create_account_employeer_query.get_id(street_permanent)
                                 company_details_result = create_account_employeer_query.company_details(user_id,company_logo,company_name,
-                                    industry_type,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position)
+                                    industry_type,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,address_id)
                                 print('Company_details_result ->', company_details_result)
 
                                 # sending email
