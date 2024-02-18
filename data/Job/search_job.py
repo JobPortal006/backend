@@ -5,6 +5,10 @@ from data.Account_creation import message
 from django.http import JsonResponse
 from data.Job.Query import view_jobs_query, search_job_query
 
+# Search the job details data in database
+# Send a response as JSON format 
+# Date as converted into this format(Data/Month/Year)
+# Skills are sent as a response in an array
 @csrf_exempt
 def search_job(request):
     try:

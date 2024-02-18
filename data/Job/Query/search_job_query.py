@@ -17,12 +17,12 @@ def execute_get_experience(f1,list1):
                 et.employee_type,
                 l.location,
                 j.experience,
-                j.salary_range,
+        ss.skill_set
+                        j.salary_range,
                 j.no_of_vacancies,
                 c.company_logo,
                 jr.job_role,
                 j.created_at,
-                ss.skill_set
             FROM job_post j
             JOIN locations l ON j.location_id = l.id
             JOIN employees_types et ON j.employee_type_id = et.id

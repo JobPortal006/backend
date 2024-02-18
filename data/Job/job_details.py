@@ -3,6 +3,8 @@ import json
 from data.Account_creation import message
 from data.Job.Query import job_details_query
 job_response = ""
+
+# Get all job details data using job_id and send response through API
 @csrf_exempt
 def job_details(request):
     try:
@@ -12,17 +14,14 @@ def job_details(request):
         valuesCheck = message.check(job_id)
         all_results = []  
         if valuesCheck:
-            job_result=job_details_query.job_result(job_id)
+            processed_job_ids = set() # Using set() method store all job_id here, it will not repeat the duplicate job_id
+            job_result=job_details_query.job_result(job_id,processed_job_ids) # Get the job data here
             print(job_result)
-                # Check if search_result is not None before converting to a dictionary
-            if job_result is not None:
-                # Convert search_result to a Python dictionary
-                job_result_dict = json.loads(job_result)
-                # Append results for each skill to the list
-                all_results.append(job_result_dict)
+            if job_result is not None:# Check if search_result is not None before converting to a dictionary
+                job_result_dict = json.loads(job_result) # Convert search_result to a Python dictionary
+                all_results.append(job_result_dict) # Append results for each skill to the list
             global job_response
             job_response=all_results
-            # Combine results for all skills and return
         if job_result is not None:
             return message.response1('Success', 'searchJob', all_results)
         else:
@@ -31,6 +30,7 @@ def job_details(request):
         print(f"The Error is: {str(e)}")
         return message.serverErrorResponse()
 
+# Send job details reponse here
 @csrf_exempt
 def get_job_details(request):
     try:
@@ -43,4 +43,3 @@ def get_job_details(request):
     except Exception as e:
         print(f"The Error is: {str(e)}")
         return message.serverErrorResponse()
-   

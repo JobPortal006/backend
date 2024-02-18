@@ -7,6 +7,10 @@ from data.Job.Query import post_job_insert_query
 
 con = connection.cursor()
 
+# Insert the data into required tables
+# Check the data is empty value or not
+# Get employee_id using email in Signup Table
+# Once account is created - Send mail to registered email as (Account Created Successfully message)
 @csrf_exempt
 def post_jobs(request):
     try:
@@ -28,29 +32,22 @@ def post_jobs(request):
         print(valuesCheck)
         if valuesCheck:
             # employee_id = post_job_insert_query.employee_id(email)
-            employee_id = post_job_insert_query.employee_id(company_name)
-            company_id = post_job_insert_query.company_id(company_name)
+            employee_id = post_job_insert_query.employee_id(company_name) # Get employee_id using company_name
+            company_id = post_job_insert_query.company_id(company_name) # Get company_id using company_name
             if employee_id and company_id:
-                employee_type_id = post_job_insert_query.employee_type_id(employee_type)
-                if employee_type_id == None:
-                    post_job_insert_query.employee_type_insert(employee_type)
-                    employee_type_id = post_job_insert_query.employee_type_id(employee_type)
-                job_role_id = post_job_insert_query.job_role_id(job_role)
-                if job_role_id == None:
-                    post_job_insert_query.job_role_insert(job_role)
-                    job_role_id = post_job_insert_query.job_role_id(job_role)
-                location_id = post_job_insert_query.location_id(location)
-                if location_id == None:
-                    post_job_insert_query.location_insert(location)
-                    location_id = post_job_insert_query.location_id(location)
-                resul_postJob =post_job_insert_query.jobPost_insertQuery(employee_id, company_id, job_title, job_description,qualification,experience, salary_range, no_of_vacancies,employee_type_id,job_role_id,location_id)
-                job_id = post_job_insert_query.get_id(job_title)
+                employee_type_id = post_job_insert_query.employee_type_id(employee_type) # Get employee_type_id here
+                if employee_type_id == None: 
+                   job_role_id = post_job_insert_query.job_role_id(job_role) # Get job_role_id here
+                if job_role_id == None: # If job_role is not in the table , it will execute
+                    location_id = post_job_insert_query.location_id(location) # Get location_id here
+                if location_id == None: # If location_id is not in the table , it will execute
+                    resul_postJob =post_job_insert_query.jobPost_insertQuery(employee_id, company_id, job_title, job_description,qualification,experience, salary_range, no_of_vacancies,employee_type_id,job_role_id,location_id)
+                job_id = post_job_insert_query.get_id(job_title) # After insert the job_post data, get that job_id
                 print(job_id)
                 for skill in skill_set:
                     print(skill)
-                    skill_id = post_job_insert_query.skill_set(skill)
-                    
-                    post_job_insert_query.skill_set_insert(employee_id,skill_id,job_id,company_id)
+                    skill_id = post_job_insert_query.skill_set(skill) # Insert the skill_set in skill_sets table
+                    post_job_insert_query.skill_set_insert(employee_id,skill_id,job_id,company_id) # Map the skill_id in skill_set_mapping table
                 if resul_postJob == True:
                     return message.response1('Success','searchJob',employee_id)
                 else:
@@ -63,6 +60,7 @@ def post_jobs(request):
         print(f"Tha Error is : ",{str(e)})
         return message.serverErrorResponse()  
 
+# Get all location data in locations table
 @csrf_exempt
 def locations(request):
    con.execute("select location from locations")
@@ -72,7 +70,8 @@ def locations(request):
    json_data = json.loads(json_result)
    print(json_data)
    return JsonResponse(json_data,safe=False)
-       
+
+# Get all experience data in job_post table    
 @csrf_exempt
 def experience(request):
    con.execute("select experience from job_post")
@@ -83,6 +82,7 @@ def experience(request):
    print(json_data)
    return JsonResponse(json_data,safe=False) 
 
+# Get all job_role data in job_role table
 @csrf_exempt
 def job_role(request):
    con.execute("select job_role from job_role ")
@@ -93,6 +93,7 @@ def job_role(request):
    print(json_data)
    return JsonResponse(json_data,safe=False)    
 
+# Get all employee_type data in employees_types table
 @csrf_exempt
 def employment_type(request):
    con.execute("select employee_type from employees_types")
@@ -103,6 +104,7 @@ def employment_type(request):
    print(json_data)
    return JsonResponse(json_data,safe=False)  
 
+# Get all company_name data in company_details table
 @csrf_exempt
 def company_name(request):
    con.execute("select company_name from company_details")
@@ -113,6 +115,7 @@ def company_name(request):
    print(json_data)
    return JsonResponse(json_data,safe=False)
 
+# Get all skill_set and job_title data in skill_sets and job_post table
 @csrf_exempt
 def skill_set(request):
     # Execute the first query to get skill_set
@@ -128,3 +131,16 @@ def skill_set(request):
     json_data = json.loads(json_result)
     print(json_data)
     return JsonResponse(json_data, safe=False)
+
+# employee_type_id = post_job_insert_query.employee_type_id(employee_type) # Get employee_type_id here
+# if employee_type_id == None: 
+#     post_job_insert_query.employee_type_insert(employee_type) 
+#     employee_type_id = post_job_insert_query.employee_type_id(employee_type) 
+# job_role_id = post_job_insert_query.job_role_id(job_role) # Get job_role_id here
+# if job_role_id == None: # If job_role is not in the table , it will execute
+#     post_job_insert_query.job_role_insert(job_role) # Insert job_role data in job_role table
+#     job_role_id = post_job_insert_query.job_role_id(job_role) # After insert the job_role, get that job_role_id
+# location_id = post_job_insert_query.location_id(location) # Get location_id here
+# if location_id == None: # If location_id is not in the table , it will execute
+#     post_job_insert_query.location_insert(location) # Insert location data in locations table
+#     location_id = post_job_insert_query.location_id(location) # After insert the location, get that location_id
