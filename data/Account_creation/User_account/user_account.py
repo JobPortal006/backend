@@ -18,41 +18,37 @@ class user_register(View): # View class provides a creating views by defining me
         try:
             if request.method == 'POST':
                 # Extract user details
-                # data = json.loads(request.body)
+                data = json.loads(request.body)
                 # print(data)
                 # if data != None:
-                #    user_details = data.get('userDetails', {})
-                #    address_data = data.get('address', {})
-                #    education_data = data.get('education', {})
-                #    job_preference_data = data.get('jobPreference', {})
-                #    professional_details_data = data.get('professionalDetails', {})
+                user_details = data.get('userDetails', {})
+                address_data = data.get('address', {})
+                education_data = data.get('education', {})
+                job_preference_data = data.get('jobPreference', {})
+                professional_details_data = data.get('professionalDetails', {})
                 # else:
-                user_details = json.loads(request.POST.get('userDetails', '{}'))
-                address_data = json.loads(request.POST.get('address', '{}'))
-                education_data = json.loads(request.POST.get('education', '{}'))
-                job_preference_data = json.loads(request.POST.get('jobPreference', '{}'))
-                professional_details_data = json.loads(request.POST.get('professionalDetails', '{}'))
-
+                # user_details = json.loads(request.POST.get('userDetails', '{}'))
+                print(user_details)
+                # address_data = json.loads(request.POST.get('address', '{}'))
                 print(address_data)
-               
-                # Extract education details
-                
+                # education_data = json.loads(request.POST.get('education', '{}'))
                 print(education_data)
-                # Extract job preference details
+                # job_preference_data = json.loads(request.POST.get('jobPreference', '{}'))
                 print(job_preference_data)
-                # Extract professional details
+                # professional_details_data = json.loads(request.POST.get('professionalDetails'))
                 print(professional_details_data)
                 first_name = user_details.get('first_name')
                 last_name = user_details.get('last_name')
                 gender = user_details.get('gender')
                 date_of_birth = user_details.get('date_of_birth')
-                mobile_number = user_details.get('mobile_number')
-
-                profile_picture = request.FILES.get('profilePicture')
-                # profile_picture = user_details.get('profile_picture')
-                resume = request.FILES.get("resume")
-                # resume = data.get('resume')
+                email = user_details.get('email')
+                # profile_picture = request.FILES.get('profilePicture')
+                # profile_picture = profile_picture.read()
                 # print(profile_picture,"profile_picture 1-----------")
+                profile_picture = user_details.get('profile_picture')
+                # resume = request.FILES.get("resume")
+                # resume = resume.read()
+                resume = data.get('resume')
                 # print(resume,'resume 2---------------')
                 current_address = address_data.get('current', {})
                 street_current = current_address.get('street')
@@ -104,28 +100,35 @@ class user_register(View): # View class provides a creating views by defining me
                 key_skills = job_preference_data.get('key_skills')
                 prefered_locations = job_preference_data.get('prefered_locations')
                 # Get user_id using mobile number in signup table
-                if mobile_number:
-                    user_id, registered_by , email= create_account_user_query.mobile_number(mobile_number)
-                    print(user_id, registered_by, email)
+                user_id, registered_by , email= create_account_user_query.user_check(email)
+                print(user_id, registered_by, email)
+                # if user_id:
+                #     if email_address == email:
+                #         # Check permanent address details data is empty or not
+                #         userid_check = create_account_employeer_query.userid_check(user_id)
+                #         print(userid_check)
+                #         if userid_check:  
+                if email:
                     userid_check = create_account_user_query.userid_check(user_id)
                     print(userid_check)
-                    # Update the profile_picture variable to the correct URL 
-                    # Check user details data is empty or not
-                    personal_details_data = message.personal_details(first_name, last_name,date_of_birth, gender) 
-                    # Check permanent address details data is empty or not
-                    address_details_permanent_data= message.address_details_permanent(
-                            street_permanent, city_permanent, state_permanent, country_permanent,
-                            pincode_permanent, address_type_permanent)
-                    # Check educational details data is empty or not
-                    educational_details_data = message.educational_details(sslc_school_name, sslc_start_year, sslc_end_year, sslc_percentage, hsc_school_name,
-                        hsc_start_year, hsc_end_year, hsc_percentage, college_name, college_start_year, college_end_year,college_percentage, department, degree)
-                    # Check job preference details data is empty or not
-                    job_preference_data = message.job_preference_details(key_skills, department, industry, prefered_locations)
-                    print(personal_details_data,address_details_permanent_data,educational_details_data,job_preference_data)
-                    #check input value is none or not
-                    if personal_details_data and address_details_permanent_data and educational_details_data and job_preference_data:
+                    if userid_check == False:
+                        # Update the profile_picture variable to the correct URL 
+                        # Check user details data is empty or not
+                        personal_details_data = message.personal_details(first_name, last_name,date_of_birth, gender) 
+                        # Check permanent address details data is empty or not
+                        address_details_permanent_data= message.address_details_permanent(
+                                street_permanent, city_permanent, state_permanent, country_permanent,
+                                pincode_permanent, address_type_permanent)
+                        # Check educational details data is empty or not
+                        educational_details_data = message.educational_details(sslc_school_name, sslc_start_year, sslc_end_year, sslc_percentage, hsc_school_name,
+                            hsc_start_year, hsc_end_year, hsc_percentage, college_name, college_start_year, college_end_year,college_percentage, department, degree)
+                        # Check job preference details data is empty or not
+                        job_preference_data = message.job_preference_details(key_skills, department, industry, prefered_locations)
+                        print(personal_details_data,address_details_permanent_data,educational_details_data,job_preference_data)
+                        #check input value is none or not
+                        # if personal_details_data and address_details_permanent_data and educational_details_data and job_preference_data:
                         personal_details_result = create_account_user_query.personal_details(
-                            user_id, registered_by, first_name, last_name, date_of_birth, gender, profile_picture)
+                            user_id, first_name, last_name, date_of_birth, gender, profile_picture)
                         print('Personal_details ->', personal_details_result)
 
                         address_details_current_result = create_account_user_query.address_details(
@@ -152,9 +155,12 @@ class user_register(View): # View class provides a creating views by defining me
                         print('Job_preference ->', job_preference_result)
 
                         employment_status = professional_details_data
-                        isExperienced = professional_details_data.get('isExperienced')
-                        print(isExperienced)
-                        if employment_status == 'Fresher' and employment_status != None:
+                        print(employment_status,'employment_status-------')
+                        if professional_details_data is None:
+                            professional_details_data = json.loads(request.POST.get('professionalDetails', '{}'))
+                            isExperienced = professional_details_data.get('isExperienced')
+                            print(isExperienced)
+                        if employment_status == 'Fresher' and employment_status is not None:
                             employment_status_result = create_account_user_query.employment_status(
                                 user_id, employment_status, resume
                             )
@@ -162,15 +168,18 @@ class user_register(View): # View class provides a creating views by defining me
                             
                         else:
                             employment_status = 'Experienced'
+                            employment_status_result = create_account_user_query.employment_status(
+                                user_id, employment_status, resume
+                            )
                             companies = professional_details_data.get('companies', [])
                             for company in companies: 
-                                companyName = company.get('companyName')
-                                years_of_exprence = company.get('years_of_exprence')
+                                company_name = company.get('company_name')
+                                years_of_experience = company.get('years_of_experience')
                                 job_role = company.get('job_role')
                                 skills = company.get('skills')
-                                print(companyName,years_of_exprence,job_role,skills)
+                                # print(company_name,years_of_experience,job_role,skills)
                                 professional_details_result = create_account_user_query.professional_details(
-                                    user_id, registered_by, companyName, years_of_exprence, job_role, skills
+                                    user_id, company_name, years_of_experience, job_role, skills
                                 )
                                 print('Professional_details ->', professional_details_result)
                         # sending email
@@ -181,10 +190,12 @@ class user_register(View): # View class provides a creating views by defining me
                         recipient_list = [email]
                         send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
                         return message.response('Success','accountCreation')
+                        # else:
+                        #   return message.response('Error','UserIdError')
                     else:
-                        return message.response('Error','InputError')
+                        return message.response('Error','UserIdError')
                 else:
-                    return message.response('Error','loginWithOTPError')
+                    return message.response('Error','emailSentError')
             else:
                 return message.response('Error','Error')
         except Exception as e:

@@ -15,10 +15,28 @@ class employer_register(View): # View class provides a creating views by definin
         try:
             if request.method == 'POST':
                 # data = json.loads(request.body)
-                # if data != None:
-                #    contact_information = data.get('contact_information', {})
-                #    address_data = data.get('company_address', {})
-                #    company_details = data.get('company_details', {})
+                # if data is not None or data != '':
+                #     contact_information = data.get('contact_information', {})
+                #     address_data = data.get('company_address', {})
+                #     company_details = data.get('company_details', {})
+                #     contact_person_name = contact_information.get('contact_person_name')
+                #     contact_person_position = contact_information.get('contact_person_position')
+                #     email = contact_information.get('email')
+                #     mobile_number = contact_information.get('mobile_number')
+
+                #     address_type_permanent = address_data.get('address_type')
+                #     city_permanent = address_data.get('city')
+                #     country_permanent = address_data.get('country')
+                #     pincode_permanent = address_data.get('pincode')
+                #     state_permanent = address_data.get('state')
+                #     street_permanent = address_data.get('street')
+
+                #     company_logo = company_details.get('company_logo')
+                #     company_name = company_details.get('company_name')
+                #     industry_type = company_details.get('industry_type')
+                #     company_description = company_details.get('company_description')
+                #     no_of_employees = company_details.get('no_of_employees')
+                #     company_website_link = company_details.get('company_website_link')
                 # else:
                 # contact_information = json.loads(request.POST.get('contact_information', '{}'))
                 # address_data = json.loads(request.POST.get('company_address', '{}'))
@@ -39,13 +57,15 @@ class employer_register(View): # View class provides a creating views by definin
 
                 # company_logo = company_details.get('company_logo') 
                 company_logo = request.FILES.get("company_logo")
+                company_logo = company_logo.read()
                 company_name = request.POST.get('company_name')
                 industry_type = request.POST.get('industry_type')
                 company_description = request.POST.get('company_description')
                 no_of_employees = request.POST.get('no_of_employees')
                 company_website_link = request.POST.get('company_website_link')
+                print(mobile_number)
                 user_id, registered_by , email_address= create_account_user_query.mobile_number(mobile_number)
-                print(company_logo)
+                # print(company_logo,'image---------------')
                 print(user_id, registered_by, email_address)
                 if user_id:
                     if email_address == email:
@@ -64,7 +84,7 @@ class employer_register(View): # View class provides a creating views by definin
                                     user_id, registered_by, street_permanent, city_permanent, state_permanent, country_permanent,
                                     pincode_permanent, address_type_permanent)
                                 print('Address_details_permanent ->', address_details_permanent_result)
-                                address_id = create_account_employeer_query.get_id(street_permanent)
+                                address_id = create_account_employeer_query.get_id(user_id,registered_by,street_permanent)
                                 company_details_result = create_account_employeer_query.company_details(user_id,company_logo,company_name,
                                     industry_type,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,address_id)
                                 print('Company_details_result ->', company_details_result)
@@ -76,6 +96,7 @@ class employer_register(View): # View class provides a creating views by definin
                                 from_email = 'brochill547@gmail.com'
                                 recipient_list = [email]
                                 send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
+                            if address_details_permanent_result and company_details_result:
                                 return message.response('Success','accountCreation')
                             else:
                                 return message.response('Error','InputError')

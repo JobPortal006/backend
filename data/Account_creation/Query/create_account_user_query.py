@@ -3,9 +3,9 @@ from django.db import connection
 con = connection.cursor()
 
 #Get id in signup table using mobile number
-def mobile_number(mobile_number):
-    check_sql = "SELECT id, signup_by, email FROM signup WHERE mobile_number = %s"
-    con.execute(check_sql, [mobile_number])
+def user_check(email):
+    check_sql = "SELECT id, signup_by, email FROM signup WHERE email = %s"
+    con.execute(check_sql, [email])
     user = con.fetchone()
     if user:
         user_id, registered_by, email = user 
@@ -13,11 +13,22 @@ def mobile_number(mobile_number):
         return user_id, registered_by, email
     else:
         return None, None, None
+    
+def mobile_number(mobile_number):
+    check_sql = "SELECT id, signup_by, email FROM signup WHERE mobile_number = %s"
+    con.execute(check_sql, [mobile_number])
+    user = con.fetchone()
+    if user:
+        user_id, registered_by, email = user 
+        print(f"User ID: {user_id}, Signup By: {registered_by}, email: {email}")
+        return user_id, registered_by, email
+    else:
+        return None, None, None
 
 # Insert the data into personal_details table
-def personal_details(user_id, registered_by, first_name, last_name, date_of_birth, gender, profile_picture):
-    sql = "INSERT INTO personal_details (user_id, registered_by, first_name, last_name, date_of_birth, gender, profile_picture) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-    values = (user_id, registered_by, first_name, last_name, date_of_birth, gender, profile_picture)
+def personal_details(user_id, first_name, last_name, date_of_birth, gender, profile_picture):
+    sql = "INSERT INTO personal_details (user_id, first_name, last_name, date_of_birth, gender, profile_picture) VALUES (%s, %s, %s, %s, %s, %s)"
+    values = (user_id, first_name, last_name, date_of_birth, gender, profile_picture)
     try:
         con.execute(sql, values)
         connection.commit()
@@ -90,9 +101,9 @@ def job_preference_details(user_id,key_skills, department, industry, prefered_lo
         return False
 
 # Insert the data into professional_details table
-def professional_details(user_id, registered_by, companyName, years_of_exprence, job_role, skills):
-    sql = "INSERT INTO professional_details (user_id, registered_by, companyName, years_of_exprence, job_role, skills) VALUES (%s, %s, %s, %s, %s, %s)"
-    values = (user_id, registered_by, companyName, years_of_exprence, job_role, skills)
+def professional_details(user_id, company_name, years_of_experience, job_role, skills):
+    sql = "INSERT INTO professional_details (user_id, company_name, years_of_experience, job_role, skills) VALUES (%s, %s, %s, %s, %s)"
+    values = (user_id, company_name, years_of_experience, job_role, skills)
     try:
         con.execute(sql, values)
         connection.commit()

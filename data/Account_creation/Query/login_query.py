@@ -22,9 +22,9 @@ def login(email, password):
             if bcrypt.checkpw(password.encode('utf-8'), hashed_password_from_db.encode('utf-8')):
                 value_update = (current_time, email)
                 con.execute(sql_update, value_update)
-                rows_affected = con.rowcount
-                insert=message.rowcount(rows_affected) 
-                return True,insert
+                # rows_affected = con.rowcount
+                # insert=message.rowcount(rows_affected) 
+                return True
             else: 
                 return False
         else:

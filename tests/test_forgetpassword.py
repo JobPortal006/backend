@@ -3,7 +3,7 @@ import requests
 
 def test_forgetpassword():
     # Define the API endpoint
-    api_url = "http://192.168.1.38:8000/forgetpassword/"
+    api_url = "http://192.168.1.39:8000/forgetpassword/"
 
     # Define the data to be sent
     data = {

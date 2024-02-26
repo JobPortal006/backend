@@ -1,8 +1,16 @@
 from django.db import connection
 import bcrypt
-
+from sqlalchemy import create_engine, Column, Integer, String, Enum, TIMESTAMP
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import insert
+from sqlalchemy.orm import Query,sessionmaker
+from data.Account_creation.Tables.table import Signup
+# Base = declarative_base()
 con = connection.cursor()
-
+# engine = create_engine('mysql://root:mysqllocal@localhost:3306/backend')
+# Base.metadata.create_all(engine)  # Create tables if not exists
+# Session = sessionmaker(bind=engine)
+# session = Session()
 def demo():
   assert 1==1
 
@@ -14,6 +22,9 @@ def email_check(email) :
     return True
   else:
     return False
+  # query = Query(Signup)
+  # signup_query = query.filter_by(email=email).first()
+  # return signup_query is not None
 
 # Insert the signup data into signup table
 # Store the password as hashed format
@@ -23,7 +34,19 @@ def signup_query(email,mobile_number,password,signup_by):
     sql = "INSERT INTO signup(email,mobile_number,password,signup_by) VALUES(%s,%s,%s,%s)"
     value = (email,mobile_number,hashed_password.decode('utf-8'),signup_by)
     con.execute(sql,value)
-    return True
+    # insert_query = insert(Signup).values(
+    #     email=email,
+    #     mobile_number=mobile_number,
+    #     password=hashed_password,
+    #     signup_by=signup_by
+    # )
+
+    # # Execute the insert query
+    # session.execute(insert_query)
+
+    # # Commit the transaction
+    # session.commit()
+    # return True
   except Exception as e:
     print(f"Error during Signup: {e}")
     return False

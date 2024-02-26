@@ -35,7 +35,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'brochill547@gmail.com'
 EMAIL_HOST_PASSWORD = 'irvf jinb zccd aqra'
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.38','http://192.168.1.73:3000/Password/','13.60.28.213','192.168.1.9','192.168.1.57']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.39','http://192.168.1.73:3000/Password/','192.168.1.57']
 
 
 # Application definition
@@ -91,19 +91,19 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'jobportal',
-        'USER': 'root',
-        'PASSWORD': 'root@123',
-        'HOST': '13.60.28.213',
+        'NAME': 'backend1',
+        'USER': 'theuser',
+        'PASSWORD': 'thepassword',
+        'HOST': '51.20.54.231',
         'PORT': '3306',
     }
 }
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'mysql_test',
+#         'NAME': 'backend',
 #         'USER': 'root',
-#         'PASSWORD': 'user123',
+#         'PASSWORD': 'mysqllocal',
 #         'HOST': 'localhost',
 #         'PORT': '3306',
 #     }

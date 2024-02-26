@@ -3,7 +3,7 @@ import requests
 
 def test_updatepassword():
     # Define the API endpoint
-    api_url = "http://192.168.1.38:8000/updatepassword/"
+    api_url = "http://192.168.1.39:8000/updatepassword/"
 
     # Define the data to be sent
     data = {

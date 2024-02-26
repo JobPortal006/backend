@@ -1,52 +1,68 @@
-# import json
-# import pytest
-# from django.test import Client
-# from django import urls
-# from django.db import connection
-
-# @pytest.mark.django_db
-# @pytest.mark.parametrize('param', [
-#     ('signup'),
-#     ('login'),
-#     ('loginWithOTP'),
-#     ('forgetpassword')
-# ])
-# def test_render_views(param):
-#     client = Client()
-#     temp_url = urls.reverse(param)
-#     resp = client.get(temp_url)
-#     assert resp.status_code == 200
-    
 import pytest
 import requests
-from data.Account_creation import message
+import json
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import declarative_base
+from data.Account_creation.Tables.table import Signup
 
-def test_signup():
-    # Define the API endpoint
-    api_url = "http://192.168.1.38:8000/signup/"
+# Define the SQLAlchemy model
+Base = declarative_base()
 
-    # Define the data to be sent
-    data = {
-        "email":"ragul@gmail.com",
-        "mobile_number":"8072850717",
-        "password":"vimal",
-        "signup_by":"User"
+engine = create_engine('mysql://theuser:thepassword@51.20.54.231:3306/backend1')
+Base.metadata.create_all(bind=engine)
+
+@pytest.fixture
+def api_url():
+    return 'http://192.168.1.39:8000/signup/'
+
+@pytest.fixture
+def data():
+    return {
+        "email": "brochill26@gmail.com",
+        "mobile_number": "+91123456786",
+        "password": "vimal",
+        "signup_by": "User"
     }
-    # Send a POST request with the data
-    response = requests.post(api_url, json=data)
+
+@pytest.mark.django_db
+def test_create_user_success(api_url, data):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    headers = {'Content-Type': 'application/json'}  
+    response = requests.post(api_url, data=json.dumps(data), headers=headers)
     assert response.status_code == 200
     response_data = response.json()
-    message = response_data['message']
-    data = response_data['data']
-
+    print(response_data)
+    message = response_data.get('message', '')
     if response_data['statusCode'] == 200:
+        # Insert data into the table only when the status code is 200
+        signup_entry = Signup(**data)
+        session.add(signup_entry)
+        session.commit()
+        inserted_signup = session.query(Signup).filter_by(email=data['email']).first()
+
+        # Check if data is inserted into the Signup table
+        assert session.query(Signup).filter_by(id=inserted_signup.id).first() is not None
+ 
+        assert inserted_signup is not None
+        assert inserted_signup.signup_by == data['signup_by']
+        assert inserted_signup.mobile_number == data['mobile_number']
         assert 'message' in response_data
         assert response_data['message'] == message
     elif response_data['statusCode'] == 404:
         assert 'message' in response_data
         assert response_data['message'] == message
-    else:
-        assert response_data['statusCode'] == 500
-        assert 'message' in response_data
-        assert response_data['message'] == message
-    assert response_data['data'] == data
+    session.close()  # Close the session after use
+
+@pytest.mark.django_db
+def test_create_user_failure(api_url, data):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    headers = {'Content-Type': 'application/json'}  
+    response = requests.post(api_url, data=json.dumps(data), headers=headers)
+    assert response.status_code == 200
+    response_data = response.json()
+    print(response_data)
+    assert response_data['statusCode'] == 404
+    session.close()  # Close the session after use

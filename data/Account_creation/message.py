@@ -2,7 +2,7 @@ from django.http import JsonResponse
 
 #dynamic success response
 def handleSuccess(success):
-    return JsonResponse({"status":True,"statusCode":200,"message":success},safe=False)
+    return JsonResponse({"status": True, "statusCode": 200, "message": success})
 
 def handleSuccess1(success,data):
     return JsonResponse({"status":True,"statusCode":200,"message":success,"data":data},safe=False)
@@ -14,6 +14,9 @@ def errorResponse(error):
 #server error response
 def serverErrorResponse():
     return  JsonResponse({"status":False,"statusCode":500,"message":"Internal Server Error"},safe=False)
+
+def tryExceptError(message):
+    return  JsonResponse({f"status":False,"statusCode":500,"message":message},safe=False)
 
 def Login():
     parameter_value = "Login Successfully"
@@ -29,7 +32,8 @@ def response(val,key):
             'passwordUpdate':'Password updated successfully!',
             'accountCreation':'Account Created Successfully',
             'postJob':'Successfully post a job',
-            'searchJob':'Job find successfully'
+            'searchJob':'Job find successfully',
+            'updatePostJob':'Successfully Update',
         },
         'Error':{
             'emailError': 'Email is already exists. Please use a different email address.',
@@ -44,7 +48,8 @@ def response(val,key):
             'UserIdError':'You have already registered',
             'postJobError' :'Failed to Post a job',
             'companyError':'You have not completed the registration process',
-            'searchJobError':'No data found'
+            'searchJobError':'No data found',
+            'UpdateJobPost_Method':'Use to PUT method',
         }
     }
     if val == 'Success':
@@ -55,6 +60,7 @@ def response(val,key):
 def response1(val,key,data):
     key_value_mapping = {
         'Success':{
+            'postJob':'Successfully post a job',
             'searchJob':'Job find successfully',
             'getSearchJob':'Get job result successfully',
             'getJobDetails':'Job result get successgully'
