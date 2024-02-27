@@ -56,6 +56,7 @@ def get_user_details(request):
         education_details = session.query(EducationDetails).filter_by(user_id=user_id).first()
         if education_details:
             user_details['education_details'] = {
+                'hsc_start_year': education_details.hsc_start_year,
                 'hsc_end_year': education_details.hsc_end_year,
                 'hsc_percentage': education_details.hsc_percentage,
                 'hsc_school_name': education_details.hsc_school_name,
