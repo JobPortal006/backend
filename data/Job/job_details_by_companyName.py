@@ -7,6 +7,7 @@ from data.Job import search_jobs
 from sqlalchemy import and_
 from data.Account_creation.Tables.table import CompanyDetails
 job_response = ""
+
 # Search the job details data in database
 # Send a response as JSON format 
 # Date as converted into this format(Data/Month/Year)
@@ -25,11 +26,16 @@ def job_details_by_companyName(request):
         jobs=search_jobs.job_response_details(result,set_data_id)
         global job_response
         job_response = jobs
-        return JsonResponse(jobs, safe=False)
+        # return JsonResponse(jobs, safe=False)
+        if jobs:
+           return message.response1('Success','searchJob',jobs)
+        else:
+            return message.response1('Error','searchJobError',data={})
     except Exception as e:
         print(str(e))
-        return JsonResponse("Failed", safe=False)
+        return message.tryExceptError(str(e))
 
+# Get API for job details by company name
 @csrf_exempt
 def job_details_by_companyName_view(request):
     try:
@@ -40,4 +46,4 @@ def job_details_by_companyName_view(request):
             return message.response1('Error', 'searchJobError', data={})
     except Exception as e:
         print(f"The Error is: {str(e)}")
-        return message.serverErrorResponse()
+        return message.tryExceptError(str(e))

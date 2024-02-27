@@ -14,7 +14,7 @@ Base.metadata.create_all(engine)
 
 def execute_query(conditions):
     try:
-        print(conditions,'c---------')
+        print(conditions,'condition--------->')
         Session = sessionmaker(bind=engine)
         session = Session()
         # Joining tables
@@ -40,9 +40,7 @@ def execute_query(conditions):
             .join(CompanyDetails, JobPost.company_id == CompanyDetails.id)
         # Applying filter conditions
         if conditions is not None:
-            # query = query.filter(and_(*conditions))  # Ensure to use 'and_' for multiple conditions
             query = query.filter(conditions)
-            print(query,'q-----------')
         # Execute the query
         result = query.all()
         return result
@@ -58,10 +56,8 @@ def skill_check(skill):
     if user:
         skill = user[0]  
         print(f"Skill: {skill}")
-        # message = "Skill is on the table"
         return skill
     else:
-        # message = "Skill is not in the table"
         return None  
 
     

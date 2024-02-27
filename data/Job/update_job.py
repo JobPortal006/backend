@@ -56,12 +56,8 @@ def update_jobs(request):
                     json_data = json.loads(jobs.content)
                     return JsonResponse(json_data,safe=False)
                 else:
-                    # return JsonResponse("Results Failed",safe=False)
                     return message.response('Success','updatePostJob')
-                    
-            
         except Exception as e:
             return message.tryExceptError(str(e))
     else:
-        # return JsonResponse("Method incorrect",safe=False)
         return message.response('Error','UpdateJobPost_Method')

@@ -61,8 +61,8 @@ def post_jobs(request):
         else:
             return message.response('Error', 'InputError')
     except Exception as e:
-        print(f"The Error is : ", str(e))
-        return message.serverErrorResponse()
+        print(f"The Error is: {str(e)}")
+        return message.tryExceptError(str(e))
   
 
 # Get all location data in locations table
@@ -137,16 +137,3 @@ def skill_set(request):
     json_data = json.loads(json_result)
     print(json_data)
     return JsonResponse(json_data, safe=False)
-
-# employee_type_id = post_job_insert_query.employee_type_id(employee_type) # Get employee_type_id here
-# if employee_type_id == None: 
-#     post_job_insert_query.employee_type_insert(employee_type) 
-#     employee_type_id = post_job_insert_query.employee_type_id(employee_type) 
-# job_role_id = post_job_insert_query.job_role_id(job_role) # Get job_role_id here
-# if job_role_id == None: # If job_role is not in the table , it will execute
-#     post_job_insert_query.job_role_insert(job_role) # Insert job_role data in job_role table
-#     job_role_id = post_job_insert_query.job_role_id(job_role) # After insert the job_role, get that job_role_id
-# location_id = post_job_insert_query.location_id(location) # Get location_id here
-# if location_id == None: # If location_id is not in the table , it will execute
-#     post_job_insert_query.location_insert(location) # Insert location data in locations table
-#     location_id = post_job_insert_query.location_id(location) # After insert the location, get that location_id

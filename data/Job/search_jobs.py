@@ -22,7 +22,6 @@ def search_job(request):
         location = data.get('location')
         skills = data.get('skill')
         experience = data.get('experience')
-        print(request.body)
         set_data_id = set()
         skill_results = []
         job_titles = []
@@ -38,96 +37,72 @@ def search_job(request):
         job_title = ', '.join(job_titles)
         print("Skill Results:", skill_result)
         print("Job Titles:", job_title)
+        # Combine conditions using and_ and or_
+        # check skill_result in Database  
         if skill_result != '' and job_title == '' and experience == '' and location == '':
             conditions = (SkillSets.skill_set == skill_result)
             result = search_jobs_query.execute_query(conditions)
+        # check job_title in Database
         elif skill_result == '' and job_title != '' and experience == '' and location == '':
             conditions = (JobPost.job_title == job_title)
             result = search_jobs_query.execute_query(conditions)
+        # check experience in Database
         elif skill_result == '' and job_title == '' and experience != '' and location == '':
             conditions = ( JobPost.experience == experience)
             result = search_jobs_query.execute_query(conditions)
+        # check location in Database
         elif skill_result == '' and job_title == '' and experience == '' and location != '':
             conditions = (Location.location == location)
             result = search_jobs_query.execute_query(conditions)
+        # check job_title, location and experience in Database
         elif job_title != '' and location != '' and experience != '' and skill_result == '':
-            # Combine conditions using and_
-            conditions = and_(
-                JobPost.job_title == job_title,
-                Location.location == location,
-                JobPost.experience == experience)
+            conditions = and_(JobPost.job_title == job_title, Location.location == location,JobPost.experience == experience)
             result = search_jobs_query.execute_query(conditions) 
-            conditions = or_(
-                JobPost.job_title == job_title,
-                Location.location == location,
-                JobPost.experience == experience)
+            conditions = or_(JobPost.job_title == job_title,Location.location == location,JobPost.experience == experience)
             result = search_jobs_query.execute_query(conditions)
-
+        # check skill_result, location and experience in Database
         elif skill_result != '' and location != '' and experience != '' and job_title == '':
-            # Combine conditions using and_
-            conditions = and_(
-                SkillSets.skill_set == skill_result,
-                Location.location == location,
-                JobPost.experience == experience)
+            conditions = and_(SkillSets.skill_set == skill_result,Location.location == location,JobPost.experience == experience)
             result = search_jobs_query.execute_query(conditions) 
-            conditions = or_(
-                SkillSets.skill_set == skill_result,
-                Location.location == location,
-                JobPost.experience == experience)
+            conditions = or_(SkillSets.skill_set == skill_result,Location.location == location,JobPost.experience == experience)
             result = search_jobs_query.execute_query(conditions)
-
+        # check skill_result and location in Database
         elif skill_result != '' and location != '' and experience == '' and job_title == '':
-            conditions = and_(
-                SkillSets.skill_set == skill_result,
-                Location.location == location)
+            conditions = and_(SkillSets.skill_set == skill_result,Location.location == location)
             result = search_jobs_query.execute_query(conditions)
-            conditions = or_(
-                SkillSets.skill_set == skill_result,
-                Location.location == location)
+            conditions = or_(SkillSets.skill_set == skill_result,Location.location == location)
             result = search_jobs_query.execute_query(conditions)
-
+        # check job_title and location in Database
         elif job_title != '' and location != '' and skill_result == '' and experience == '':
-            conditions = and_(
-                JobPost.job_title == job_title,
-                Location.location == location)
+            conditions = and_(JobPost.job_title == job_title,Location.location == location)
             result = search_jobs_query.execute_query(conditions)
-            conditions = or_(
-                JobPost.job_title == job_title,
-                Location.location == location)
+            conditions = or_(JobPost.job_title == job_title,Location.location == location)
             result = search_jobs_query.execute_query(conditions)
-
+        # check location and experience in Database
         elif experience != '' and location != '' and skill_result == '' and job_title == '':
-            conditions = and_(
-                Location.location == location,
-                JobPost.experience == experience)
+            conditions = and_(Location.location == location,JobPost.experience == experience)
             result = search_jobs_query.execute_query(conditions)
-            conditions = or_(
-                Location.location == location,
-                JobPost.experience == experience)
+            conditions = or_( Location.location == location,JobPost.experience == experience)
             result = search_jobs_query.execute_query(conditions)
+        # check skill_result, job_title, location and experience in Database
         else:
-            conditions = and_(
-                SkillSets.skill_set == skill_result,
-                JobPost.job_title == job_title,
-                Location.location == location,
-                JobPost.experience == experience)
+            conditions = and_(SkillSets.skill_set == skill_result,JobPost.job_title == job_title,
+                Location.location == location,JobPost.experience == experience)
             result = search_jobs_query.execute_query(conditions)
-            # Second query if the first one returns no results
-            conditions = or_(
-                SkillSets.skill_set == skill_result,
-                JobPost.job_title == job_title,
-                Location.location == location,
-                JobPost.experience == experience)
+            conditions = or_(SkillSets.skill_set == skill_result,JobPost.job_title == job_title,
+                Location.location == location,JobPost.experience == experience)
             result = search_jobs_query.execute_query(conditions)
         jobs=job_response_details(result,set_data_id)
         global job_response
         job_response = jobs
-        # return JsonResponse(jobs, safe=False)
-        return message.response('Success','searchJob')
+        if jobs:
+           return JsonResponse(jobs, safe=False)
+        else:
+            return message.response('Error', 'searchJobError')
+        # return message.response('Success','searchJob')
     except json.JSONDecodeError as e:
-        print(f"JSON Decode Error: {str(e)}")
-        # return JsonResponse({'error': 'Invalid JSON format'}, status=400)
-        return message.response('Error','searchJobError')
+        print(f"The Error is: {str(e)}")
+        return message.tryExceptError(str(e))
 
 @csrf_exempt
 def get_view_jobs(request):
@@ -139,7 +114,7 @@ def get_view_jobs(request):
             return message.response1('Error', 'searchJobError', data={})
     except Exception as e:
         print(f"The Error is: {str(e)}")
-        return message.serverErrorResponse()
+        return message.tryExceptError(str(e))
     
 def job_response_details(results,set_data_id):
     jobs = []
@@ -154,9 +129,6 @@ def job_response_details(results,set_data_id):
             cursor.nextset()
             cursor.callproc('GetSkillSet', [job_id])
             skills = cursor.fetchall()
-            # print(skills,'skill-----------')
-            # cursor.execute("SELECT company_details.company_logo FROM company_details join job_post on company_details.id = job_post.company_id WHERE job_post.id = %s", [job_id])
-            # logo_result = cursor.fetchone()
             company_logo = row[8]
             company_logo = base64.b64encode(company_logo).decode('utf-8')
             created_at = row[10]
@@ -176,6 +148,5 @@ def job_response_details(results,set_data_id):
                 'created_at': created_at_humanized
             }
             jobs.append(job)
-            # jobs = sorted(jobs, key=lambda x: x['created_at'], reverse=True)
     jobs = sorted(jobs, key=lambda x: x['created_at'])
     return jobs

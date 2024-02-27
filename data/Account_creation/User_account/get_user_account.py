@@ -77,6 +77,10 @@ def get_user_details(request):
                 'education_type': college_details.education_type,
             }
 
+            # Initialize PG_college_details and Diploma_college_details as dictionaries
+            user_details['PG_college_details'] = {}
+            user_details['Diploma_college_details'] = {}
+
             # Include PG and Diploma details only for 'UG' education type
             pg_college_details = session.query(CollegeDetails).filter_by(user_id=user_id, education_type='PG').first()
             if pg_college_details:
@@ -126,11 +130,11 @@ def get_user_details(request):
                 'skills': prof_detail.skills,
             })
         # print(user_details,'8-------------')
-        # resume_details = session.query(ResumeDetails).filter_by(user_id=user_id).first()
-        # if resume_details:
-        #     resume = personal_details.profile_picture
-        #     resume_base64 = base64.b64encode(resume).decode('utf-8') if resume else None
-        #     user_details['resume'] = resume_base64
+        resume_details = session.query(ResumeDetails).filter_by(user_id=user_id).first()
+        if resume_details:
+            resume = personal_details.profile_picture
+            resume_base64 = base64.b64encode(resume).decode('utf-8') if resume else None
+            user_details['resume'] = resume_base64
         # print(user_details,'9-------------')
         global job_response
         job_response = user_details

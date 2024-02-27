@@ -8,7 +8,7 @@ from data.Account_creation.Tables.table import (
     JobPost, Location, EmployeeTypes, JobRole, SkillSets, SkillSetMapping, Signup,CompanyDetails
 )
 
-# Define the SQLAlchemy model
+
 Base = declarative_base()
 
 engine = create_engine('mysql://theuser:thepassword@51.20.54.231:3306/backend1')

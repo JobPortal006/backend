@@ -34,6 +34,7 @@ def response(val,key):
             'postJob':'Successfully post a job',
             'searchJob':'Job find successfully',
             'updatePostJob':'Successfully Update',
+            'deletePostJob':'Job deleted successfully'
         },
         'Error':{
             'emailError': 'Email is already exists. Please use a different email address.',
@@ -50,6 +51,8 @@ def response(val,key):
             'companyError':'You have not completed the registration process',
             'searchJobError':'No data found',
             'UpdateJobPost_Method':'Use to PUT method',
+            'getMethod':'Use to GET method',
+            'deleteJobPost_Method':'Use to DELETE method',
         }
     }
     if val == 'Success':

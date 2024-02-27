@@ -28,7 +28,7 @@ def job_details(request):
             return message.response1('Error', 'searchJobError', data={})  
     except Exception as e:
         print(f"The Error is: {str(e)}")
-        return message.serverErrorResponse()
+        return message.tryExceptError(str(e))
 
 # Send job details reponse here
 @csrf_exempt
@@ -42,4 +42,4 @@ def get_job_details(request):
             return message.response1('Error', 'searchJobError', data={})  
     except Exception as e:
         print(f"The Error is: {str(e)}")
-        return message.serverErrorResponse()
+        return message.tryExceptError(str(e))

@@ -13,10 +13,9 @@ def delete_jobPost(request):
             id = data.get('id')
             if id != None:
                 delete_job_query.delete_postJob(id)
-                
-            return JsonResponse("Successfully ",safe=False)
-            
-        except:
-            return JsonResponse("Internal Error",safe=False)
+                return message.response('Success','deletePostJob')
+        except Exception as e:
+            return message.tryExceptError(str(e))
     else:
-        return JsonResponse("Request miss match",safe=False)
+        # return JsonResponse("Request miss match",safe=False)
+        return message.response('Error','deleteJobPost_Method')
