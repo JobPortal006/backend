@@ -12,8 +12,9 @@ def apply_job(request):
         user_id = data.get('user_id')
         print(user_id)
         # if user_id != None:
-        email, mobile_number = apply_job_query.get_user_details(user_id)
-        print(email,mobile_number)
+        email, mobile_number, resume = apply_job_query.get_user_details(user_id)
+        
+        print(email,mobile_number, resume)
         return message.response('Success','deletePostJob')
     except Exception as e:
         return message.tryExceptError(str(e))
