@@ -1,11 +1,4 @@
 from django.db import connection
-from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base,sessionmaker
-Base = declarative_base()
-engine = create_engine('mysql://root:mysqllocal@localhost:3306/backend')
-Base.metadata.create_all(engine)
-Session = sessionmaker(bind=engine)
-session = Session()
 con = connection.cursor()
 
 # Insert the Job Post data into job_post table

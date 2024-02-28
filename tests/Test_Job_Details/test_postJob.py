@@ -7,11 +7,9 @@ from sqlalchemy.orm import declarative_base
 from data.Account_creation.Tables.table import (
     JobPost, Location, EmployeeTypes, JobRole, SkillSets, SkillSetMapping, Signup,CompanyDetails
 )
-
-
 Base = declarative_base()
 
-engine = create_engine('mysql://theuser:thepassword@51.20.54.231:3306/backend1')
+engine = create_engine('mysql://theuser:thepassword@16.171.19.241:3306/backend1')
 Base.metadata.create_all(bind=engine)
 
 @pytest.fixture
@@ -48,6 +46,7 @@ def test_create_job_post(api_url, data):
     Session = sessionmaker(bind=engine)
     session = Session()
     headers = {'Content-Type': 'application/json'}
+    # API testing
     response = requests.post(api_url, data=json.dumps(data), headers=headers)
     assert response.status_code == 200
     response_data = response.json()

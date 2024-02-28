@@ -15,7 +15,7 @@ def get_user_details(request):
         data = json.loads(request.body)
         user_id = data.get('user_id')
         print(user_id)
-        engine = create_engine('mysql://theuser:thepassword@51.20.54.231:3306/backend1')
+        engine = create_engine('mysql://theuser:thepassword@16.171.19.241:3306/backend1')
         Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine) 
         session = Session()
@@ -56,6 +56,7 @@ def get_user_details(request):
         education_details = session.query(EducationDetails).filter_by(user_id=user_id).first()
         if education_details:
             user_details['education_details'] = {
+                'hsc_start_year': education_details.hsc_start_year,
                 'hsc_end_year': education_details.hsc_end_year,
                 'hsc_percentage': education_details.hsc_percentage,
                 'hsc_school_name': education_details.hsc_school_name,

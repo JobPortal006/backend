@@ -8,7 +8,7 @@ Base = declarative_base()
 
 # Use the appropriate database connection string
 # engine = create_engine('mysql://root:mysqllocal@localhost:3306/backend')
-engine = create_engine('mysql://theuser:thepassword@51.20.54.231:3306/backend1')
+engine = create_engine('mysql://theuser:thepassword@16.171.19.241:3306/backend1')
 
 Base.metadata.create_all(engine)
 

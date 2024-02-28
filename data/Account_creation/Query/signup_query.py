@@ -1,10 +1,5 @@
 from django.db import connection
 import bcrypt
-from sqlalchemy import create_engine, Column, Integer, String, Enum, TIMESTAMP
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import insert
-from sqlalchemy.orm import Query,sessionmaker
-from data.Account_creation.Tables.table import Signup
 # Base = declarative_base()
 con = connection.cursor()
 # engine = create_engine('mysql://root:mysqllocal@localhost:3306/backend')

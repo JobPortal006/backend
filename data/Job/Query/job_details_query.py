@@ -29,8 +29,8 @@ def response(results, job_id, cursor, processed_job_ids):
     for row in results:  # Corrected variable name from 'results' to 'row'
         job_id = row[0]
         # Check if job_id is already processed, skip if it is
-        if job_id in processed_job_ids:
-            continue
+        # if job_id in processed_job_ids:
+        #     continue
         processed_job_ids.add(job_id)
         print(f"Job ID: {job_id}")
         (job_post_id, job_title, job_description, qualification, experience, salary_range, no_of_vacancies, created_at,

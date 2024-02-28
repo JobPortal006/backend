@@ -1,11 +1,11 @@
 from django.urls import path
 from data.Account_creation import signup,login,forget_password
 from data.Account_creation.User_account import get_user_account,update_user_account,user_account
-from data.Account_creation.Employeer_account import employeer_account, get_employeer_account
+from data.Account_creation.Employeer_account import employeer_account, get_employeer_account,update_employeer_account
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from data.Job import post_job, search_jobs,job_details,employer_post_jobs,job_details_by_companyName,job_details_by_employeeType,update_job,delete_job,job_filtering
+from data.Job import post_job, search_jobs,job_details,employer_post_jobs,job_details_by_companyName,job_details_by_employeeType,update_job,delete_job,job_filtering,apply_job
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -20,7 +20,8 @@ urlpatterns = [
     path('update_user_details/', update_user_account.update_user_details),
     path('get_user_details_view/', get_user_account.get_user_details_view),
     path('get_employeer_details/', get_employeer_account.get_employeer_details),
-    
+    path('update_employeer_details/', update_employeer_account.update_employee_details),
+
     # JOB POST ---- APIs 
     path('job_post/',post_job.post_jobs),
     path('location/',post_job.locations),
@@ -39,6 +40,7 @@ urlpatterns = [
     path('job_details_by_companyName_view/',job_details_by_companyName.job_details_by_companyName_view),
     path('job_details_by_employeeType/',job_details_by_employeeType.job_details_by_employeeType),
     path('job_details_by_employeeType_view/',job_details_by_employeeType.job_details_by_employeeType_view),
+    path('apply_job/',apply_job.apply_job),
 
 
     path('update_job/',update_job.update_jobs),
