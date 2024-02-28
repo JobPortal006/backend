@@ -15,7 +15,7 @@ def get_employeer_details(request):
         data = json.loads(request.body)
         employee_id = data.get('employee_id')
         print(employee_id)
-        engine = create_engine('mysql://theuser:thepassword@51.20.54.231:3306/backend1')
+        engine = create_engine('mysql://theuser:thepassword@16.171.19.241:3306/backend1')
 
         Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine) 
@@ -23,7 +23,6 @@ def get_employeer_details(request):
 
         employeer_details = {}
         signup_details = session.query(Signup).filter_by(id=employee_id).first()
-        print(signup_details)
         if signup_details:
           employeer_details['Signup'] = {
             'email': signup_details.email,
@@ -53,6 +52,8 @@ def get_employeer_details(request):
                 'company_description': company_details.company_description,
                 'no_of_employees': company_details.no_of_employees,
                 'company_website_link': company_details.company_website_link,
+                'contact_person_name': company_details.contact_person_name,
+                'contact_person_position': company_details.contact_person_position,
                 'company_logo': company_logo_base64
             }
         session.close()

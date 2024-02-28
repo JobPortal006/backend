@@ -33,7 +33,7 @@ class employer_register(View): # View class provides a creating views by definin
 
                 #     company_logo = company_details.get('company_logo')
                 #     company_name = company_details.get('company_name')
-                #     industry_type = company_details.get('industry_type')
+                #     company_industry = company_details.get('company_industry')
                 #     company_description = company_details.get('company_description')
                 #     no_of_employees = company_details.get('no_of_employees')
                 #     company_website_link = company_details.get('company_website_link')
@@ -58,14 +58,14 @@ class employer_register(View): # View class provides a creating views by definin
                 # company_logo = company_details.get('company_logo') 
                 company_logo = request.FILES.get("company_logo")
                 company_logo = company_logo.read()
+                # print(company_logo,'image---------------')
                 company_name = request.POST.get('company_name')
-                industry_type = request.POST.get('industry_type')
+                company_industry = request.POST.get('company_industry')
                 company_description = request.POST.get('company_description')
                 no_of_employees = request.POST.get('no_of_employees')
                 company_website_link = request.POST.get('company_website_link')
                 print(mobile_number)
                 user_id, registered_by , email_address= create_account_user_query.mobile_number(mobile_number)
-                # print(company_logo,'image---------------')
                 print(user_id, registered_by, email_address)
                 if user_id:
                     if email_address == email:
@@ -77,7 +77,7 @@ class employer_register(View): # View class provides a creating views by definin
                                     street_permanent, city_permanent, state_permanent, country_permanent,
                                     pincode_permanent, address_type_permanent)
                             # Check company details data is empty or not
-                            company_details_data = message.company_details(company_logo,company_name,industry_type, company_description, no_of_employees,company_website_link)
+                            company_details_data = message.company_details(company_logo,company_name,company_industry, company_description, no_of_employees,company_website_link)
                             print(address_details_permanent_data,company_details_data)
                             if address_details_permanent_data and company_details_data:
                                 address_details_permanent_result = create_account_user_query.address_details(
@@ -86,7 +86,7 @@ class employer_register(View): # View class provides a creating views by definin
                                 print('Address_details_permanent ->', address_details_permanent_result)
                                 address_id = create_account_employeer_query.get_id(user_id,registered_by,street_permanent)
                                 company_details_result = create_account_employeer_query.company_details(user_id,company_logo,company_name,
-                                    industry_type,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,address_id)
+                                    company_industry,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,address_id)
                                 print('Company_details_result ->', company_details_result)
 
                                 # sending email
