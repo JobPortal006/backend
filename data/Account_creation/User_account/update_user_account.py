@@ -14,23 +14,29 @@ Base = declarative_base()
 @csrf_exempt
 def update_user_details(request):
     try:
-        user_details = json.loads(request.POST.get('userDetails', '{}'))
-        print(user_details)
-        address_data = json.loads(request.POST.get('address', '{}'))
-        print(address_data)
-        education_data = json.loads(request.POST.get('education', '{}'))
-        print(education_data)
-        job_preference_data = json.loads(request.POST.get('jobPreference', '{}'))
-        print(job_preference_data)
-        professional_details_data = json.loads(request.POST.get('professionalDetails'))
-        print(professional_details_data)
+        data = json.loads(request.body)
+        print(data)
+        user_details = data.get('data', {}).get('userDetails', {})
+        address_data = data.get('data', {}).get('address', {})
+        education_data = data.get('data', {}).get('education_details', {})
+        job_preference_data = data.get('data', {}).get('jobPreference', {})
+        # user_details = json.loads(request.POST.get('userDetails', '{}'))
+        # print(user_details)
+        # address_data = json.loads(request.POST.get('address', '{}'))
+        # print(address_data)
+        # education_data = json.loads(request.POST.get('education', '{}'))
+        # print(education_data)
+        # job_preference_data = json.loads(request.POST.get('jobPreference', '{}'))
+        # print(job_preference_data)
+        # professional_details_data = json.loads(request.POST.get('professionalDetails'))
+        # print(professional_details_data)
 
         # Extracting user details
         first_name = user_details.get('first_name')
         last_name = user_details.get('last_name')
         gender = user_details.get('gender')
         date_of_birth = user_details.get('date_of_birth')
-        email = user_details.get('email')
+        mobile_number = user_details.get('mobile_number')
         profile_picture = request.FILES.get('profilePicture')
         resume = request.FILES.get("resume")
 
@@ -88,11 +94,11 @@ def update_user_details(request):
         prefered_locations = job_preference_data.get('preferred_locations')
 
         # Extracting professional details
-        professional_details_list = professional_details_data.get("companies", [])
+        # professional_details_list = professional_details_data.get("companies", [])
 
         # Fetching user ID
-        user_id, registered_by, email = create_account_user_query.user_check(email)
-        print(user_id, registered_by, email)
+        user_id, registered_by, mobile_number = create_account_user_query.mobile_number(mobile_number)
+        print(user_id, registered_by, mobile_number)
 
         # Creating SQLAlchemy engine and session
         engine = create_engine('mysql://theuser:thepassword@16.171.19.241:3306/backend1')
@@ -187,14 +193,14 @@ def update_user_details(request):
             job_preferences.preferred_locations = prefered_locations
 
         # Update ProfessionalDetails table
-        professional_details = session.query(ProfessionalDetails).filter_by(user_id=user_id).all()
-        for i, prof_detail in enumerate(professional_details):
-            if i < len(professional_details_list):
-                company = professional_details_list[i]
-                prof_detail.company_name = company.get('company_name')
-                prof_detail.years_of_experience = company.get('years_of_experience')
-                prof_detail.job_role = company.get('job_role')
-                prof_detail.skills = company.get('skills')
+        # professional_details = session.query(ProfessionalDetails).filter_by(user_id=user_id).all()
+        # for i, prof_detail in enumerate(professional_details):
+        #     if i < len(professional_details_list):
+        #         company = professional_details_list[i]
+        #         prof_detail.company_name = company.get('company_name')
+        #         prof_detail.years_of_experience = company.get('years_of_experience')
+        #         prof_detail.job_role = company.get('job_role')
+        #         prof_detail.skills = company.get('skills')
 
         session.commit()
         session.close()

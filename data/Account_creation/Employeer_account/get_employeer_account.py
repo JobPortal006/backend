@@ -30,9 +30,9 @@ def get_employeer_details(request):
           }
         # print(employeer_details,'2-------------')
         address_details = session.query(Address).filter_by(user_id=employee_id).all()
-        employeer_details['address'] = {}
+        # employeer_details['address'] = {}
         for address in address_details:
-            employeer_details['address'][address.address_type.lower()] = {
+            employeer_details['company_address'] = {
                 'address_type': address.address_type,
                 'city': address.city,
                 'country': address.country,

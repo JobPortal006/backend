@@ -48,10 +48,14 @@ def response(results, job_id, cursor, processed_job_ids):
         cursor.callproc('GetSkillSet', [job_id])
         # cursor.execute(check_sql, [job_id])   
         skills = cursor.fetchall()
-        cursor.execute("SELECT company_details.company_logo FROM company_details join job_post on company_details.id = job_post.company_id WHERE job_post.id = %s", [job_id])
-        logo_result = cursor.fetchone()
-        company_logo = logo_result[0]
-        company_logo = base64.b64encode(company_logo).decode('utf-8')
+        cursor.execute("SELECT company_details.id,company_details.company_logo FROM company_details join job_post on company_details.id = job_post.company_id WHERE job_post.id = %s", [job_id])
+        company_id,logo_result = cursor.fetchone()
+        # print(company_id,logo_result,'c----------')
+        # cursor.execute("SELECT company_details.company_logo FROM company_details join job_post on company_details.id = job_post.company_id WHERE job_post.id = %s", [job_id])
+        # logo_result = cursor.fetchone()
+        # company_logo = logo_result[0]
+        # print(company_logo,'l--------')
+        company_logo = base64.b64encode(logo_result).decode('utf-8')
         job_data = {
             "job_post_id": job_post_id,
             "job_title": job_title,
@@ -62,6 +66,7 @@ def response(results, job_id, cursor, processed_job_ids):
             "no_of_vacancies": no_of_vacancies,
             "created_at": created_at.strftime('%d %b %Y'),
             "date": created_at_humanized,
+            "company_id": company_id,
             "company_logo": company_logo,
             "company_name": company_name,
             "industry_type": industry_type,

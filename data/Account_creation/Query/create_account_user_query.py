@@ -15,6 +15,7 @@ def user_check(email):
         return None, None, None
     
 def mobile_number(mobile_number):
+    print(mobile_number,'m------')
     check_sql = "SELECT id, signup_by, email FROM signup WHERE mobile_number = %s"
     con.execute(check_sql, [mobile_number])
     user = con.fetchone()

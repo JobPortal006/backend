@@ -40,7 +40,7 @@ urlpatterns = [
     path('job_details_by_companyName_view/',job_details_by_companyName.job_details_by_companyName_view),
     path('job_details_by_employeeType/',job_details_by_employeeType.job_details_by_employeeType),
     path('job_details_by_employeeType_view/',job_details_by_employeeType.job_details_by_employeeType_view),
-    path('apply_job/',apply_job.apply_job),
+    path('apply_job/',apply_job.fetch_apply_job),
 
 
     path('update_job/',update_job.update_jobs),
