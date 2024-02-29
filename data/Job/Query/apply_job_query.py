@@ -11,7 +11,7 @@ Base = declarative_base()
 @csrf_exempt
 def get_user_details(user_id):
     try:
-        engine = create_engine('mysql://theuser:thepassword@16.171.19.241:3306/backend1')
+        engine = create_engine('mysql://theuser:thepassword@13.51.207.189:3306/backend1')
         Base.metadata.create_all(engine)
 
         Session = sessionmaker(bind=engine)

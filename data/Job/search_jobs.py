@@ -1,15 +1,27 @@
 from django.views.decorators.csrf import csrf_exempt
+from django.db import OperationalError, DatabaseError, connection
+from time import sleep
 import json
-import base64
 from datetime import datetime
 from humanize import naturaldelta
-from django.db import connection
-from data.Account_creation import message
+import base64
 from django.http import JsonResponse
+from data.Account_creation import message
 from data.Job.Query import search_jobs_query
 from sqlalchemy import and_, or_
-from data.Account_creation.Tables.table import SkillSets,Location,JobPost
+from data.Account_creation.Tables.table import SkillSets, Location, JobPost
+
 job_response = ""
+
+def retry_database_operation(operation, max_retries=3, sleep_duration=2):
+    for attempt in range(1, max_retries + 1):
+        try:
+            operation()
+            break
+        except (OperationalError, DatabaseError) as e:
+            print(f"Database operation error: {e}")
+            print(f"Retrying... (Attempt {attempt}/{max_retries})")
+            sleep(sleep_duration)
 
 # Search the job details data in database
 # Send a response as JSON format 
@@ -100,9 +112,10 @@ def search_job(request):
         else:
             return message.response('Error', 'searchJobError')
         # return message.response('Success','searchJob')
-    except json.JSONDecodeError as e:
-        print(f"The Error is: {str(e)}")
-        return message.tryExceptError(str(e))
+    except (OperationalError, DatabaseError) as e:
+        print(f"Database connection error: {e}")
+        # Retry database operation
+        retry_database_operation(connection.close)
 
 @csrf_exempt
 def get_view_jobs(request):
@@ -112,9 +125,10 @@ def get_view_jobs(request):
             return message.response1('Success', 'getJobDetails', url_response)
         else:
             return message.response1('Error', 'searchJobError', data={})
-    except Exception as e:
-        print(f"The Error is: {str(e)}")
-        return message.tryExceptError(str(e))
+    except (OperationalError, DatabaseError) as e:
+        print(f"Database connection error: {e}")
+        # Retry database operation
+        retry_database_operation(connection.close)
     
 def job_response_details(results,set_data_id):
     jobs = []
@@ -148,5 +162,6 @@ def job_response_details(results,set_data_id):
                 'created_at': created_at_humanized
             }
             jobs.append(job)
+        pass
     jobs = sorted(jobs, key=lambda x: x['created_at'])
     return jobs

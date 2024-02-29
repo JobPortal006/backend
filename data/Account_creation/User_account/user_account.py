@@ -16,7 +16,7 @@ from data.Account_creation import message
 class user_register(View): # View class provides a creating views by defining methods for different HTTP methods (e.g., get, post).
     def post(self, request, *args, **kwargs):
         try:
-            if request.method == 'POST':
+            if request.method == 'POST':       
                 # Extract user details
                 # data = json.loads(request.body)
                 # print(data)

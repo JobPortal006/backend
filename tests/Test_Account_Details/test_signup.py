@@ -9,7 +9,7 @@ from data.Account_creation.Tables.table import Signup
 # Define the SQLAlchemy model
 Base = declarative_base()
 
-engine = create_engine('mysql://theuser:thepassword@51.20.54.231:3306/backend1')
+engine = create_engine('mysql://theuser:thepassword@13.51.207.189:3306/backend1')
 Base.metadata.create_all(bind=engine)
 
 @pytest.fixture

@@ -78,5 +78,5 @@ class SkillSetMapping(Base):
     job = relationship('JobPost')
 
 
-engine = create_engine('mysql://theuser:thepassword@51.20.54.231:3306/backend1')
+engine = create_engine('mysql://theuser:thepassword@13.51.207.189:3306/backend1')
 Base.metadata.create_all(engine)        

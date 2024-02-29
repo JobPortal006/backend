@@ -35,7 +35,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'brochill547@gmail.com'
 EMAIL_HOST_PASSWORD = 'irvf jinb zccd aqra'
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.39','http://192.168.1.73:3000/Password/','192.168.1.57','16.171.19.241']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.39','http://192.168.1.73:3000/Password/','192.168.1.57','13.51.207.189']
 
 
 # Application definition
@@ -94,9 +94,19 @@ DATABASES = {
         'NAME': 'backend1',
         'USER': 'theuser',
         'PASSWORD': 'thepassword',
-        'HOST': '16.171.19.241',
-        'PORT': '3306',
+        'HOST': '13.51.207.189',
+        'PORT': '3306', 
+        'CONN_MAX_AGE': 600,  # Connection timeout in seconds (adjust as needed)
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
+}
+
+DATABASE_POOL_ARGS = {
+    "pool_size": 20,
+    "max_overflow": 10,
+    "recycle": 300,
 }
 # DATABASES = {
 #     'default': {
@@ -104,7 +114,7 @@ DATABASES = {
 #         'NAME': 'backend1',
 #         'USER': 'theuser',
 #         'PASSWORD': 'thepassword',
-#         'HOST': '16.171.19.241',
+#         'HOST': '13.51.207.189',
 #         'PORT': '3306',
 #         'OPTIONS': {
 #             'charset': 'utf8mb4',

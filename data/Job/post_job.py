@@ -1,6 +1,9 @@
 from django.views.decorators.csrf import csrf_exempt
 import json
-from django.db import connection
+from django.db import OperationalError, connection
+import json
+from functools import wraps
+from time import sleep
 from data.Account_creation import message
 from django.http import JsonResponse
 from data.Job.Query import post_job_insert_query 
@@ -110,28 +113,50 @@ def employment_type(request):
    print(json_data)
    return JsonResponse(json_data,safe=False)  
 
+# Define a decorator for retrying database operations
+def retry_database_operation(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        max_retries = 3
+        sleep_duration = 2
+
+        for attempt in range(1, max_retries + 1):
+            try:
+                return func(*args, **kwargs)
+            except OperationalError as e:
+                print(f"Attempt {attempt}: Database connection error - {e}")
+                if attempt < max_retries:
+                    print(f"Retrying in {sleep_duration} seconds...")
+                    sleep(sleep_duration)
+                else:
+                    raise
+
+    return wrapper
+
 # Get all company_name data in company_details table
 @csrf_exempt
+@retry_database_operation
 def company_name(request):
-   con.execute("select DISTINCT company_name from company_details")
-   rows = con.fetchall()
-   locations_list = [{'company_name': row[0]} for row in rows]    
-   json_result = json.dumps(locations_list)
-   json_data = json.loads(json_result)
-   print(json_data)
-   return JsonResponse(json_data,safe=False)
+    con.execute("select DISTINCT company_name from company_details")
+    rows = con.fetchall()
+    locations_list = [{'company_name': row[0]} for row in rows]
+    json_result = json.dumps(locations_list)
+    json_data = json.loads(json_result)
+    print(json_data)
+    return JsonResponse(json_data, safe=False)
 
-# Get all skill_set and job_title data in skill_sets and job_post table
+# Get all skill_set and job_title data
 @csrf_exempt
+@retry_database_operation
 def skill_set(request):
-    # Execute the first query to get skill_set
     con.execute("SELECT skill_set FROM skill_sets")
     skill_rows = con.fetchall()
     skill_list = [{'skill_set': row[0]} for row in skill_rows]
-    # Execute the second query to get job_title
+
     con.execute("SELECT DISTINCT job_title FROM job_post")
     job_rows = con.fetchall()
     job_title_list = [{'job_title': row[0]} for row in job_rows]
+
     combined_list = skill_list + job_title_list
     json_result = json.dumps(combined_list)
     json_data = json.loads(json_result)
