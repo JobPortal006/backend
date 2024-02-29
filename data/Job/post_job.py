@@ -67,23 +67,49 @@ def post_jobs(request):
         print(f"The Error is: {str(e)}")
         return message.tryExceptError(str(e))
   
+# Decorator for retrying database operations
+def retry_database_operation(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        max_retries = 3
+        sleep_duration = 2
 
-# Get all location data in locations table
+        for attempt in range(1, max_retries + 1):
+            with connection.cursor() as cursor:
+                try:
+                    result = func(cursor, *args, **kwargs)
+                    return result
+                except OperationalError as e:
+                    print(f"Attempt {attempt}: Database connection error - {e}")
+                    if attempt < max_retries:
+                        print(f"Retrying in {sleep_duration} seconds...")
+                        sleep(sleep_duration)
+                    else:
+                        # Raise the exception if max retries are reached
+                        raise
+                finally:
+                    connection.close()  # Close the connection explicitly
+
+    return wrapper
+
+# Function to retrieve location data
 @csrf_exempt
-def locations(request):
-   con.execute("select location from location")
-   rows = con.fetchall()
-   locations_list = [{'location': row[0]} for row in rows]    
-   json_result = json.dumps(locations_list)
-   json_data = json.loads(json_result)
-   print(json_data)
-   return JsonResponse(json_data,safe=False)
+@retry_database_operation
+def locations(cursor, request):
+    cursor.execute("SELECT location FROM location")
+    rows = cursor.fetchall()
+    locations_list = [{'location': row[0]} for row in rows]
+    json_result = json.dumps(locations_list)
+    json_data = json.loads(json_result)
+    print(json_data)
+    return JsonResponse(json_data, safe=False)
 
 # Get all experience data in job_post table    
 @csrf_exempt
-def experience(request):
-   con.execute("SELECT DISTINCT experience FROM job_post")
-   rows = con.fetchall()
+@retry_database_operation
+def experience(cursor,request):
+   cursor.execute("SELECT DISTINCT experience FROM job_post")
+   rows = cursor.fetchall()
    print(rows)
    locations_list = [{'experience': row[0]} for row in rows]    
    json_result = json.dumps(locations_list)
@@ -93,9 +119,10 @@ def experience(request):
 
 # Get all job_role data in job_role table
 @csrf_exempt
-def job_role(request):
-   con.execute("select job_role from job_role ")
-   rows = con.fetchall()
+@retry_database_operation
+def job_role(cursor,request):
+   cursor.execute("select job_role from job_role ")
+   rows = cursor.fetchall()
    locations_list = [{'role': row[0]} for row in rows]    
    json_result = json.dumps(locations_list)
    json_data = json.loads(json_result)
@@ -104,41 +131,22 @@ def job_role(request):
 
 # Get all employee_type data in employees_types table
 @csrf_exempt
-def employment_type(request):
-   con.execute("select employee_type from employees_types")
-   rows = con.fetchall()
+@retry_database_operation
+def employment_type(cursor,request):
+   cursor.execute("select employee_type from employees_types")
+   rows = cursor.fetchall()
    locations_list = [{'employee_type': row[0]} for row in rows]    
    json_result = json.dumps(locations_list)
    json_data = json.loads(json_result)
    print(json_data)
    return JsonResponse(json_data,safe=False)  
 
-# Define a decorator for retrying database operations
-def retry_database_operation(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        max_retries = 3
-        sleep_duration = 2
-
-        for attempt in range(1, max_retries + 1):
-            try:
-                return func(*args, **kwargs)
-            except OperationalError as e:
-                print(f"Attempt {attempt}: Database connection error - {e}")
-                if attempt < max_retries:
-                    print(f"Retrying in {sleep_duration} seconds...")
-                    sleep(sleep_duration)
-                else:
-                    raise
-
-    return wrapper
-
-# Get all company_name data in company_details table
+# Example usage
 @csrf_exempt
 @retry_database_operation
-def company_name(request):
-    con.execute("select DISTINCT company_name from company_details")
-    rows = con.fetchall()
+def company_name(cursor, request):
+    cursor.execute("SELECT DISTINCT company_name FROM company_details")
+    rows = cursor.fetchall()
     locations_list = [{'company_name': row[0]} for row in rows]
     json_result = json.dumps(locations_list)
     json_data = json.loads(json_result)
@@ -148,13 +156,13 @@ def company_name(request):
 # Get all skill_set and job_title data
 @csrf_exempt
 @retry_database_operation
-def skill_set(request):
-    con.execute("SELECT skill_set FROM skill_sets")
-    skill_rows = con.fetchall()
+def skill_set(cursor, request):
+    cursor.execute("SELECT skill_set FROM skill_sets")
+    skill_rows = cursor.fetchall()
     skill_list = [{'skill_set': row[0]} for row in skill_rows]
 
-    con.execute("SELECT DISTINCT job_title FROM job_post")
-    job_rows = con.fetchall()
+    cursor.execute("SELECT DISTINCT job_title FROM job_post")
+    job_rows = cursor.fetchall()
     job_title_list = [{'job_title': row[0]} for row in job_rows]
 
     combined_list = skill_list + job_title_list

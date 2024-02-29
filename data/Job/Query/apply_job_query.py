@@ -23,7 +23,7 @@ def get_user_details(user_id):
         response_data = {
                 'email': user.email,
                 'mobile_number': user.mobile_number,
-                'resume': resume_base64
+                'resume': resume_base64 
         }
         return response_data
 
