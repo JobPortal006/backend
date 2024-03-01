@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+import os
 
 #dynamic success response
 def handleSuccess(success):
@@ -13,9 +14,13 @@ def errorResponse(error):
 
 #server error response
 def serverErrorResponse():
+    manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'manage.py')
+    os.utime(manage_py_path, None)
     return  JsonResponse({"status":False,"statusCode":500,"message":"Internal Server Error"},safe=False)
 
 def tryExceptError(message):
+    manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'manage.py')
+    os.utime(manage_py_path, None)
     return  JsonResponse({f"status":False,"statusCode":500,"message":message},safe=False)
 
 def Login():
@@ -43,6 +48,7 @@ def response(val,key):
             'loginWithOTPError': 'Mobile Number is not registered',
             'emailSentError': 'Email is not registered',
             'passwordUpdateError':'Password is not updated',
+            'employeeAccountError':'Account is not created',
             'Error':'Request method should be POST',
             'InputError':'Input Should not be empty',
             'FileError':' Invalid file format. Allowed formats: jpg, jpeg, png, pdf',

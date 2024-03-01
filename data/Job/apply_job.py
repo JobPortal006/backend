@@ -25,5 +25,8 @@ def apply_job(request):
         user_id=data.get('user_id')
         job_id = data.get('job_id')
         company_id = data.get('company_id')
+        resume = data.get('resume')
+        resume_id = apply_job_query.resume_id(resume)
+        result = apply_job_query.insert_apply_job(user_id,job_id,company_id,resume_id)
     except Exception as e:
         return message.tryExceptError(str(e))

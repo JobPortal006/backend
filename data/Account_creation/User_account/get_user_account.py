@@ -7,6 +7,7 @@ from sqlalchemy.orm import declarative_base
 import json
 import base64
 from data.Account_creation import message
+from data.Account_creation.Employeer_account import get_employeer_account
 Base = declarative_base()
 job_response = ""
 @csrf_exempt
@@ -31,13 +32,15 @@ def get_user_details(request):
         if personal_details:
             profile_picture = personal_details.profile_picture
             profile_picture_base64 = base64.b64encode(profile_picture).decode('utf-8') if profile_picture else None
+            # profile_picture_path = get_employeer_account.get_company_logo_from_s3(str(f'profile_picture/{user_id}_company_logo.jpg'))
 
             user_details['userDetails'] = {
                 'date_of_birth': personal_details.date_of_birth.strftime('%Y-%m-%d'),
                 'first_name': personal_details.first_name,
                 'gender': personal_details.gender,
                 'last_name': personal_details.last_name,
-                # 'profile_picture': profile_picture_base64,
+                'profile_picture_path': personal_details.profile_picture_path,
+                'profile_picture': profile_picture_base64,
             }
         # print(user_details,'2-------------')
         address_details = session.query(Address).filter_by(user_id=user_id).all()
@@ -135,7 +138,10 @@ def get_user_details(request):
         if resume_details:
             resume = personal_details.profile_picture
             resume_base64 = base64.b64encode(resume).decode('utf-8') if resume else None
-            user_details['resume'] = resume_base64
+            user_details['resume'] = {
+                'resume':resume_base64,
+                'resume_path':resume_details.resume_path
+            }
         # print(user_details,'9-------------')
         global job_response
         job_response = user_details

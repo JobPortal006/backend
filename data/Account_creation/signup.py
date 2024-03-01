@@ -1,3 +1,4 @@
+import os
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.core.mail import send_mail
@@ -40,8 +41,10 @@ def signup(request):
                 return message.response('Error','InputError')
         else:
             return message.response('Error','Error')
-    except Exception: 
-        return message.serverErrorResponse()
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        # Touch the manage.py file to trigger a project restart
+        return message.tryExceptError(str(e))
 
 @csrf_exempt   
 def send_signup_email(email):
@@ -51,3 +54,6 @@ def send_signup_email(email):
     from_email = 'brochill547@gmail.com'
     recipient_list = [email]
     send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
+
+
+

@@ -36,6 +36,7 @@ class PersonalDetails(Base):
     date_of_birth = Column(Date, nullable=False)
     gender = Column(Enum('Male', 'Female', 'Others', name='gender_enum'), nullable=False)
     profile_picture = Column(BLOB, nullable=False)
+    profile_picture_path = Column(String(50), nullable=False)
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
 
@@ -116,6 +117,7 @@ class ResumeDetails(Base):
     user_id = Column(Integer, ForeignKey('signup.id'))
     employment_status = Column(Enum('Fresher', 'Experienced', name='employment_status_enum'), nullable=False)
     resume = Column(BLOB, nullable=False)
+    resume_path = Column(String(100))
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
 
@@ -130,6 +132,7 @@ class CompanyDetails(Base):
     company_description = Column(String(100))
     company_logo = Column(BLOB, nullable=False)
     address_id = Column(Integer, ForeignKey('address.id'))
+    company_logo_path = Column(String(100))
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
     contact_person_name = Column(String(100), nullable=False)

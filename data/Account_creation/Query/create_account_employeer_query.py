@@ -3,9 +3,9 @@ from django.db import connection
 con = connection.cursor()
 
 # Insert the data into personal_details table
-def company_details(user_id,company_logo,company_name,industry_type,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,address_id):
-    sql = "INSERT INTO company_details(employee_id,company_logo,company_name,company_industry,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,address_id) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s ,%s)"
-    values = (user_id,company_logo,company_name,industry_type,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,address_id)
+def company_details(user_id,company_logo_content,company_name,industry_type,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,address_id,s3_key):
+    sql = "INSERT INTO company_details(employee_id,company_logo,company_name,company_industry,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,address_id,company_logo_path) VALUES (%s, %s,%s, %s, %s, %s, %s, %s, %s, %s ,%s)"
+    values = (user_id,company_logo_content,company_name,industry_type,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,address_id,s3_key)
     try:
         con.execute(sql, values)
         connection.commit()

@@ -14,19 +14,36 @@ Base = declarative_base()
 def update_employee_details(request):
     try:
         contact_person_name = request.POST.get('contact_person_name')
+        print("contact_person_name:", contact_person_name)
+
         contact_person_position = request.POST.get('contact_person_position')
+        print("contact_person_position:", contact_person_position)
         email = request.POST.get('email')
+        print("email:", email)
+
         mobile_number = request.POST.get('mobile_number')
+        print("mobile_number:", mobile_number)
+
         street_permanent = request.POST.get('street')
         city_permanent = request.POST.get('city')
-        state_permanent = request.POST.get('state')
+        state_permanent = request.POST.get('state')  
         country_permanent = request.POST.get('country')
         pincode_permanent = request.POST.get('pincode')
         address_type_permanent = request.POST.get('address_type')
-        # company_logo = company_details.get('company_logo') 
+        print("address_type:", address_type_permanent)
+        print("city:", city_permanent)
+        print("country:", country_permanent)
+        print("pincode:", pincode_permanent)
+        print("state:", state_permanent)
+        print("street:", street_permanent)
+
+        # Correct way to handle file upload for company logo
         company_logo = request.FILES.get("company_logo")
-        company_logo = company_logo.read()
-        # print(company_logo,'image---------------')
+        if company_logo:
+            company_logo_data = company_logo.read()
+            # Do something with company_logo_data
+            print("Company logo received.")
+
         company_name = request.POST.get('company_name')
         company_industry = request.POST.get('company_industry')
         company_description = request.POST.get('company_description')

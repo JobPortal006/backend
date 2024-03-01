@@ -1,13 +1,15 @@
-from django.views.decorators.csrf import csrf_exempt
-from django.db import connection
-import json
+import boto3
+from botocore.exceptions import NoCredentialsError
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from django.utils.decorators import method_decorator
 from django.views import View
-from data.Account_creation.Query import create_account_employeer_query,create_account_user_query
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from data.Account_creation.Query import create_account_employeer_query, create_account_user_query
 from data.Account_creation import message
+from django.http import JsonResponse
+import io
 
 @method_decorator(csrf_exempt, name='dispatch') # Dispatch method is handle HTTP method (GET, POST, etc.) 
 class employer_register(View): # View class provides a creating views by defining methods for different HTTP methods (e.g., get, post).
@@ -56,8 +58,12 @@ class employer_register(View): # View class provides a creating views by definin
                 address_type_permanent = request.POST.get('address_type')
 
                 # company_logo = company_details.get('company_logo') 
+                # company_logo = request.FILES.get("company_logo")
+                # company_logo = company_logo.read()
                 company_logo = request.FILES.get("company_logo")
-                company_logo = company_logo.read()
+                company_logo_name = company_logo.name
+                company_logo_content = company_logo.read()  # Read the content of the file
+
                 # print(company_logo,'image---------------')
                 company_name = request.POST.get('company_name')
                 company_industry = request.POST.get('company_industry')
@@ -69,6 +75,11 @@ class employer_register(View): # View class provides a creating views by definin
                 print(user_id, registered_by, email_address)
                 if user_id:
                     if email_address == email:
+                        s3 = boto3.client('s3', aws_access_key_id='AKIAZI2LB2XIRFQPYDJ4', aws_secret_access_key='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', region_name='eu-north-1')
+                        s3_key = f'company_logo/{user_id}_{company_logo_name}'  # Adjust the key based on your needs
+                        s3.upload_fileobj(io.BytesIO(company_logo_content), 'backendcompanylogo', s3_key)
+                        print(s3_key)
+
                         # Check permanent address details data is empty or not
                         userid_check = create_account_employeer_query.userid_check(user_id)
                         print(userid_check)
@@ -85,8 +96,8 @@ class employer_register(View): # View class provides a creating views by definin
                                     pincode_permanent, address_type_permanent)
                                 print('Address_details_permanent ->', address_details_permanent_result)
                                 address_id = create_account_employeer_query.get_id(user_id,registered_by,street_permanent)
-                                company_details_result = create_account_employeer_query.company_details(user_id,company_logo,company_name,
-                                    company_industry,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,address_id)
+                                company_details_result = create_account_employeer_query.company_details(user_id,company_logo_content,company_name,
+                                    company_industry,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,address_id,s3_key)
                                 print('Company_details_result ->', company_details_result)
 
                                 # sending email
@@ -99,7 +110,7 @@ class employer_register(View): # View class provides a creating views by definin
                             if address_details_permanent_result and company_details_result:
                                 return message.response('Success','accountCreation')
                             else:
-                                return message.response('Error','InputError')
+                                return message.response('Error','employeeAccountError')
                         else:
                             return message.response('Error','UserIdError')
                     else:

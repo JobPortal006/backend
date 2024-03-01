@@ -27,9 +27,9 @@ def mobile_number(mobile_number):
         return None, None, None
 
 # Insert the data into personal_details table
-def personal_details(user_id, first_name, last_name, date_of_birth, gender, profile_picture):
-    sql = "INSERT INTO personal_details (user_id, first_name, last_name, date_of_birth, gender, profile_picture) VALUES (%s, %s, %s, %s, %s, %s)"
-    values = (user_id, first_name, last_name, date_of_birth, gender, profile_picture)
+def personal_details(user_id, first_name, last_name, date_of_birth, gender, profile_picture,profile_picture_key):
+    sql = "INSERT INTO personal_details (user_id, first_name, last_name, date_of_birth, gender, profile_picture, profile_picture_path) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    values = (user_id, first_name, last_name, date_of_birth, gender, profile_picture,profile_picture_key)
     try:
         con.execute(sql, values)
         connection.commit()
@@ -115,9 +115,9 @@ def professional_details(user_id, company_name, years_of_experience, job_role, s
         return False
     
 # Insert the data into resume_details table
-def employment_status(user_id,employment_status,resume):
-    sql = "INSERT INTO resume_details (user_id,employment_status,resume) VALUES (%s, %s, %s)"
-    values = (user_id,employment_status,resume)
+def resume_details(user_id,employment_status,resume,resume_key):
+    sql = "INSERT INTO resume_details (user_id,employment_status,resume,resume_path) VALUES (%s, %s, %s, %s)"
+    values = (user_id,employment_status,resume,resume_key)
     try:
         con.execute(sql, values)
         connection.commit()

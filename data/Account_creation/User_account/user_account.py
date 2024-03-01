@@ -7,6 +7,8 @@ from data.Account_creation.Query import create_account_user_query
 from django.utils.decorators import method_decorator
 from django.views import View
 from data.Account_creation import message
+import io
+import boto3
 
 # Insert the data into required tables
 # Get user_id, email data by using mobile_number
@@ -43,11 +45,13 @@ class user_register(View): # View class provides a creating views by defining me
                 date_of_birth = user_details.get('date_of_birth')
                 email = user_details.get('email')
                 profile_picture = request.FILES.get('profilePicture')
-                # profile_picture = profile_picture.read()
+                profile_picture_name=profile_picture.name
+                profile_picture = profile_picture.read()
                 # print(profile_picture,"profile_picture 1-----------")
                 # profile_picture = user_details.get('profile_picture')
                 resume = request.FILES.get("resume")
-                # resume = resume.read()
+                resume_name=resume.name
+                resume = resume.read()
                 # resume = data.get('resume')
                 # print(resume,'resume 2---------------')
                 current_address = address_data.get('current', {})
@@ -127,8 +131,12 @@ class user_register(View): # View class provides a creating views by defining me
                         print(personal_details_data,address_details_permanent_data,educational_details_data,job_preference_data)
                         #check input value is none or not
                         # if personal_details_data and address_details_permanent_data and educational_details_data and job_preference_data:
+                        s3 = boto3.client('s3', aws_access_key_id='AKIAZI2LB2XIRFQPYDJ4', aws_secret_access_key='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', region_name='eu-north-1')
+                        profile_picture_key = f'profile_picture/{user_id}_{profile_picture_name}'  # Adjust the key based on your needs
+                        s3.upload_fileobj(io.BytesIO(profile_picture), 'backendcompanylogo', profile_picture_key)
+                        print(profile_picture_key)
                         personal_details_result = create_account_user_query.personal_details(
-                            user_id, first_name, last_name, date_of_birth, gender, profile_picture)
+                            user_id, first_name, last_name, date_of_birth, gender, profile_picture,profile_picture_key)
                         print('Personal_details ->', personal_details_result)
 
                         address_details_current_result = create_account_user_query.address_details(
@@ -160,16 +168,19 @@ class user_register(View): # View class provides a creating views by defining me
                             professional_details_data = json.loads(request.POST.get('professionalDetails', '{}'))
                             isExperienced = professional_details_data.get('isExperienced')
                             print(isExperienced)
+                        resume_key = f'resume/{user_id}_{resume_name}'  # Adjust the key based on your needs
+                        s3.upload_fileobj(io.BytesIO(resume), 'backendcompanylogo', resume_key)
+                        print(resume_key)
                         if employment_status == 'Fresher' and employment_status is not None:
-                            employment_status_result = create_account_user_query.employment_status(
-                                user_id, employment_status, resume
+                            employment_status_result = create_account_user_query.resume_details(
+                                user_id, employment_status, resume,resume_key
                             )
                             print('Professional_details ->', employment_status_result)
                             
                         else:
                             employment_status = 'Experienced'
-                            employment_status_result = create_account_user_query.employment_status(
-                                user_id, employment_status, resume
+                            employment_status_result = create_account_user_query.resume_details(
+                                user_id, employment_status, resume,resume_key
                             )
                             companies = professional_details_data.get('companies', [])
                             for company in companies: 

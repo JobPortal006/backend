@@ -7,14 +7,42 @@ from time import sleep
 from data.Account_creation import message
 from django.http import JsonResponse
 from data.Job.Query import post_job_insert_query 
+from django.core.management import call_command
 
 con = connection.cursor()
+
+def retry_database_operation(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        max_retries = 3
+        sleep_duration = 2
+
+        for attempt in range(1, max_retries + 1):
+            with connection.cursor() as cursor:
+                try:
+                    result = func(cursor, *args, **kwargs)
+                    return result
+                except OperationalError as e:
+                    print(f"Attempt {attempt}: Database connection error - {e}")
+                    if attempt < max_retries:
+                        print(f"Retrying in {sleep_duration} seconds...")
+                        sleep(sleep_duration)
+                    else:
+                        # Trigger a project restart on max retries
+                        print("Restarting the project...")
+                        call_command('runserver', '--noreload')
+                        # You may need to customize this based on your project structure
+                        return JsonResponse({'error': 'Database connection error. Project restarting...'}, status=500)
+                finally:
+                    connection.close()  # Close the connection explicitly
+    return wrapper
 
 # Insert the data into required tables
 # Check the data is empty value or not
 # Get employee_id using email in Signup Table
 # Once account is created - Send mail to registered email as (Account Created Successfully message)
 @csrf_exempt
+@retry_database_operation
 def post_jobs(request):
     try:
         data = json.loads(request.body)
@@ -66,43 +94,24 @@ def post_jobs(request):
     except Exception as e:
         print(f"The Error is: {str(e)}")
         return message.tryExceptError(str(e))
-  
-# Decorator for retrying database operations
-def retry_database_operation(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        max_retries = 3
-        sleep_duration = 2
-
-        for attempt in range(1, max_retries + 1):
-            with connection.cursor() as cursor:
-                try:
-                    result = func(cursor, *args, **kwargs)
-                    return result
-                except OperationalError as e:
-                    print(f"Attempt {attempt}: Database connection error - {e}")
-                    if attempt < max_retries:
-                        print(f"Retrying in {sleep_duration} seconds...")
-                        sleep(sleep_duration)
-                    else:
-                        # Raise the exception if max retries are reached
-                        raise
-                finally:
-                    connection.close()  # Close the connection explicitly
-
-    return wrapper
 
 # Function to retrieve location data
 @csrf_exempt
 @retry_database_operation
 def locations(cursor, request):
-    cursor.execute("SELECT location FROM location")
-    rows = cursor.fetchall()
-    locations_list = [{'location': row[0]} for row in rows]
-    json_result = json.dumps(locations_list)
-    json_data = json.loads(json_result)
-    print(json_data)
-    return JsonResponse(json_data, safe=False)
+    try:
+        cursor.execute("SELECT location FROM location")
+        rows = cursor.fetchall()
+        locations_list = [{'location': row[0]} for row in rows]
+        json_result = json.dumps(locations_list)
+        json_data = json.loads(json_result)
+        print(json_data)
+        return JsonResponse(json_data, safe=False)
+    except Exception as e:
+        # Handle the specific exception or log the error
+        print(f"An error occurred: {e}")
+        # Raise the exception to trigger the project restart
+        raise
 
 # Get all experience data in job_post table    
 @csrf_exempt
@@ -154,19 +163,58 @@ def company_name(cursor, request):
     return JsonResponse(json_data, safe=False)
 
 # Get all skill_set and job_title data
+# @csrf_exempt
+# @retry_database_operation
+# def skill_set(cursor, request):
+#     cursor.execute("SELECT skill_set FROM skill_sets")
+#     skill_rows = cursor.fetchall()
+#     skill_list = [{'skill_set': row[0]} for row in skill_rows]
+
+#     cursor.execute("SELECT DISTINCT job_title FROM job_post")
+#     job_rows = cursor.fetchall()
+#     job_title_list = [{'job_title': row[0]} for row in job_rows]
+
+#     combined_list = skill_list + job_title_list
+#     json_result = json.dumps(combined_list)
+#     json_data = json.loads(json_result)
+#     print(json_data)
+#     return JsonResponse(json_data, safe=False)
+
+
 @csrf_exempt
 @retry_database_operation
 def skill_set(cursor, request):
-    cursor.execute("SELECT skill_set FROM skill_sets")
-    skill_rows = cursor.fetchall()
-    skill_list = [{'skill_set': row[0]} for row in skill_rows]
+    try:
+        cursor.execute("SELECT skill_set FROM skill_sets")
+        skill_rows = cursor.fetchall()
 
-    cursor.execute("SELECT DISTINCT job_title FROM job_post")
-    job_rows = cursor.fetchall()
-    job_title_list = [{'job_title': row[0]} for row in job_rows]
+        skill_list = []
 
-    combined_list = skill_list + job_title_list
-    json_result = json.dumps(combined_list)
-    json_data = json.loads(json_result)
-    print(json_data)
-    return JsonResponse(json_data, safe=False)
+        for row in skill_rows:
+            skill_set = row[0]
+            present_in_mapping = check_skill_in_mapping(cursor, skill_set)
+            if present_in_mapping:
+                skill_list.append({'skill_set': skill_set})
+
+        cursor.execute("SELECT DISTINCT job_title FROM job_post")
+        job_rows = cursor.fetchall()
+        job_title_list = [{'job_title': row[0]} for row in job_rows]
+
+        combined_list = skill_list + job_title_list
+        json_result = json.dumps(combined_list)
+        json_data = json.loads(json_result)
+        print(json_data)
+        return JsonResponse(json_data, safe=False)
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return JsonResponse({"error": "Failed"}, status=500)
+
+def check_skill_in_mapping(cursor, skill_set):
+    try:
+        check_sql = "SELECT COUNT(*) FROM skill_set_mapping WHERE skill_id = (SELECT id FROM skill_sets WHERE skill_set = %s)"
+        cursor.execute(check_sql, [skill_set])
+        count = cursor.fetchone()[0]
+        return count > 0
+    except Exception as e:
+        print(f"Error in check_skill_in_mapping: {str(e)}")
+        return False

@@ -31,6 +31,7 @@ def retry_database_operation(operation, max_retries=3, sleep_duration=2):
 def search_job(request):
     try:
         data = json.loads(request.body)
+        print(data)
         location = data.get('location')
         skills = data.get('skill')
         experience = data.get('experience')
@@ -111,7 +112,6 @@ def search_job(request):
            return JsonResponse(jobs, safe=False)
         else:
             return message.response('Error', 'searchJobError')
-        # return message.response('Success','searchJob')
     except (OperationalError, DatabaseError) as e:
         print(f"Database connection error: {e}")
         # Retry database operation
