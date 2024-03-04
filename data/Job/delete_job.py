@@ -12,7 +12,7 @@ def delete_jobPost(request):
             data = json.loads(request.body)
             id = data.get('id')
             if id != None:
-                delete_job_query.delete_postJob(id)
+                delete_job_query.update_jobs(id)
                 return message.response('Success','deletePostJob')
         except Exception as e:
             return message.tryExceptError(str(e))

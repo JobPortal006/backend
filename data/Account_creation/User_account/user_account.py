@@ -190,8 +190,7 @@ class user_register(View): # View class provides a creating views by defining me
                                 skills = company.get('skills')
                                 # print(company_name,years_of_experience,job_role,skills)
                                 professional_details_result = create_account_user_query.professional_details(
-                                    user_id, company_name, years_of_experience, job_role, skills
-                                )
+                                    user_id, company_name, years_of_experience, job_role, skills)
                                 print('Professional_details ->', professional_details_result)
                         # sending email
                         subject = 'Account Creation'

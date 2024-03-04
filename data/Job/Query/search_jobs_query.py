@@ -2,13 +2,14 @@ from sqlalchemy.orm import sessionmaker
 from django.db import connection
 from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import declarative_base
+import os
 from data.Account_creation.Tables.table import SkillSets, Location, JobPost, CompanyDetails, EmployeeTypes, JobRole, SkillSetMapping
 con = connection.cursor()
 Base = declarative_base()
 
 # Use the appropriate database connection string
 # engine = create_engine('mysql://root:mysqllocal@localhost:3306/backend')
-engine = create_engine('mysql://theuser:thepassword@13.51.207.189:3306/backend1')
+engine = create_engine('mysql://theuser:thepassword@16.171.154.253:3306/backend1')
 
 Base.metadata.create_all(engine)
 
@@ -46,6 +47,8 @@ def execute_query(conditions):
         return result
 
     except Exception as e:
+        manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'manage.py')
+        os.utime(manage_py_path, None)
         print(f"Error during job search: {e}")
         return None
     
