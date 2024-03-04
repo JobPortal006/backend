@@ -3,13 +3,19 @@ import os
 
 #dynamic success response
 def handleSuccess(success):
+    manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'manage.py')
+    os.utime(manage_py_path, None)
     return JsonResponse({"status": True, "statusCode": 200, "message": success})
 
 def handleSuccess1(success,data):
+    manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'manage.py')
+    os.utime(manage_py_path, None)
     return JsonResponse({"status":True,"statusCode":200,"message":success,"data":data},safe=False)
 
 #dynamic error response
 def errorResponse(error):
+    manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'manage.py')
+    os.utime(manage_py_path, None)
     return  JsonResponse({"status":False,"statusCode":404,"message":error},safe=False)
 
 #server error response
