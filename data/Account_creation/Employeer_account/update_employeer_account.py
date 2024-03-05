@@ -28,7 +28,7 @@ def update_employee_details(request):
 
         street_permanent = request.POST.get('street')
         city_permanent = request.POST.get('city')
-        state_permanent = request.POST.get('state')  
+        state_permanent = request.POST.get('state')     
         country_permanent = request.POST.get('country')
         pincode_permanent = request.POST.get('pincode')
         address_type_permanent = request.POST.get('address_type')
@@ -69,19 +69,19 @@ def update_employee_details(request):
         employee_id, registered_by , email_address= create_account_user_query.mobile_number(mobile_number)
         print(employee_id, registered_by, email_address)
 
-        engine = create_engine('mysql://theuser:thepassword@16.171.154.253:3306/backend1')
+        engine = create_engine('mysql://theuser:thepassword@16.171.137.133:3306/backend1')
         Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine)
         session = Session()
         update_signup_details(session, employee_id, email, mobile_number)
         update_or_create_address(session, employee_id, address_type_permanent, city_permanent, country_permanent,
                                  pincode_permanent, state_permanent, street_permanent)
-        existing_logo_key = get_company_path(session,employee_id)
-        company_logo_key = upload_logo_to_s3(company_logo, company_logo_name, employee_id,existing_logo_key)
+        # existing_logo_key = get_company_path(session,employee_id)
+        # company_logo_key = upload_logo_to_s3(company_logo, company_logo_name, employee_id,existing_logo_key)
 
         update_or_create_company_details(session, employee_id, company_name, company_industry, company_description,
                                          no_of_employees, company_website_link, contact_person_name,
-                                         contact_person_position, company_logo_key)
+                                         contact_person_position)
 
         # 
         # signup_details = session.query(Signup).filter_by(id=employee_id).first()

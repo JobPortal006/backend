@@ -12,7 +12,7 @@ con = connection.cursor()
 @csrf_exempt
 def get_user_details(user_id):
     try:
-        engine = create_engine('mysql://theuser:thepassword@16.171.154.253:3306/backend1')
+        engine = create_engine('mysql://theuser:thepassword@16.171.137.133:3306/backend1')
         Base.metadata.create_all(engine)
 
         Session = sessionmaker(bind=engine)
@@ -34,7 +34,7 @@ def get_user_details(user_id):
 
 def insert_apply_job(user_id,job_id,company_id,resume_id):
     try:
-        engine = create_engine('mysql://theuser:thepassword@16.171.154.253:3306/backend1')
+        engine = create_engine('mysql://theuser:thepassword@16.171.137.133:3306/backend1')
         Base.metadata.create_all(engine)
 
         Session = sessionmaker(bind=engine)

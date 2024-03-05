@@ -16,7 +16,7 @@ def get_user_details(request):
         data = json.loads(request.body)
         user_id = data.get('user_id')
         print(user_id)
-        engine = create_engine('mysql://theuser:thepassword@16.171.154.253:3306/backend1')
+        engine = create_engine('mysql://theuser:thepassword@16.171.137.133:3306/backend1')
         Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine) 
         session = Session()

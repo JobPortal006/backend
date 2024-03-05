@@ -9,12 +9,12 @@ from data.Account_creation.Tables.table import Signup, Address, CompanyDetails
 # Define the SQLAlchemy model
 Base = declarative_base()
 
-engine = create_engine('mysql://theuser:thepassword@16.171.154.253:3306/backend1')
+engine = create_engine('mysql://theuser:thepassword@16.171.137.133:3306/backend1')
 Base.metadata.create_all(bind=engine)
 
 @pytest.fixture
 def api_url():
-    return 'http://192.168.1.39:8000/employerRegister/'
+    return 'http://192.168.1.44:8000/employerRegister/'
 
 @pytest.fixture
 def data():
