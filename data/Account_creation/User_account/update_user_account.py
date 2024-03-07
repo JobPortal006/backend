@@ -35,7 +35,6 @@ def update_user_details(request):
         diploma_college_data = json.loads(request.POST.get('Diploma_college_details','{}'))
         job_preference_data = json.loads(request.POST.get('jobPreference', '{}'))
         professional_details_data = json.loads(request.POST.get('professionalDetails'))
-        resume_data = json.loads(request.POST.get('resume', '{"resume_path": null}'))
         # Extracting user details
         print(user_details)
         print(address_data)
@@ -45,7 +44,6 @@ def update_user_details(request):
         print(diploma_college_data)
         print(job_preference_data)
         print(professional_details_data)
-        print(resume_data,'r------')
         first_name = user_details.get('first_name')
         last_name = user_details.get('last_name')
         gender = user_details.get('gender')
@@ -60,28 +58,31 @@ def update_user_details(request):
         #     profile_picture_path = profile_picture_path.read()
         #     print(profile_picture_name)
         # print(profile_picture_path,'profile_picture_path')
-        profile_picture_path = request.FILES.get('profilePicture')
-        if profile_picture_path is not None:
+        profile_picture_file = request.FILES.get('profilePicture')
+        if profile_picture_file is not None:
             profile_picture_name = profile_picture_path.name
-            profile_picture_path = profile_picture_path.read()
+            profile_picture_file = profile_picture_path.read()
             print(profile_picture_name,'n-----------')
         else:
-            profile_picture_path = request.POST.get('profile_picture_path')
-
-        print(profile_picture_path,'p===========')
+            profile_picture_path = user_details.get('profile_picture_path')
+            print(profile_picture_path,'p===========')
+        # resume_data = json.loads(request.FILES.get('resume', '{"resume_path": null}'))
         
-        resume_file = resume_data.get('resume_path')
+        # print(resume_data,'r------')
+        
+        # resume_file = resume_data.get('resume_path')
+        resume_file = request.FILES.get('resume')
         print(resume_file,'resume_file----------')
 
         if resume_file is not None:
             resume_name = resume_file.name
-            resume_path = resume_file.read()
+            resume_file = resume_file.read()
             print(resume_name, 'resume_name------------')
         else:
-            resume_path = request.POST.get('resume', '{"resume_path"}')
+            resume_path = request.POST.get('resume')  
             print(resume_path, 'resume_path-------')
 
-        print(resume_path, 'final resume_path---------')
+        # print(resume_path, 'final resume_path---------')
         # resume_name=resume.name
         # print(resume_name,'resume_name')
         # resume = resume.read()
@@ -168,10 +169,10 @@ def update_user_details(request):
         # profile_picture_key = f'profile_picture/{user_id}_{profile_picture_name}'
         # s3.upload_fileobj(io.BytesIO(profile_picture), 'backendcompanylogo', profile_picture_key)
         existing_profile_picture_key = update_user_account_query.get_profile_picture_path(session,user_id)
-        print(existing_profile_picture_key,'e------')
-        if profile_picture_path is not None:
+        print(existing_profile_picture_key,'e1------')
+        if profile_picture_file is not None:
             print('if conditiong working fine------->1')
-            profile_picture_key = update_user_account_query.upload_profile_picture_file(profile_picture_path, profile_picture_name, user_id, existing_profile_picture_key)
+            profile_picture_key = update_user_account_query.upload_profile_picture_file(profile_picture_file, profile_picture_name, user_id, existing_profile_picture_key)
             # print(company_logo_key+" "+ "if condition ---->2")
 
         else:
@@ -226,7 +227,7 @@ def update_user_details(request):
         # resume_key = update_user_account_query.upload_resume(resume_file, resume_name, user_id,existing_resume_key)
 
         existing_resume_key = update_user_account_query.get_resume_path(session,user_id)
-        print(existing_resume_key,'e------')
+        print(existing_resume_key,'e2------')
         if resume_file is not None:
             print('if conditiong working fine------->1')
             resume_key = update_user_account_query.upload_resume_file(resume_file, resume_name, user_id, existing_resume_key)

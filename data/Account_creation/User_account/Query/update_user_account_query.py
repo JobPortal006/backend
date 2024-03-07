@@ -119,19 +119,20 @@ def upload_profile_picture_path(company_logo,existing_logo_key):
     return new_logo_key
 
 def get_resume_path(session,user_id):
-    personal_details = session.query(PersonalDetails).filter_by(user_id=user_id).first()
-    profile_picture_key=personal_details.profile_picture_path 
-    if profile_picture_key:
-        return profile_picture_key
+    resume_details = session.query(ResumeDetails).filter_by(user_id=user_id).first()
+    resume_key=resume_details.resume_path 
+    if resume_key:
+        return resume_key
     else:
         return None
 
 def upload_resume_file(resume, resume_name, user_id,existing_resume_key):
     s3 = boto3.client('s3', aws_access_key_id='AKIAZI2LB2XIRFQPYDJ4', aws_secret_access_key='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', region_name='eu-north-1')
     new_logo_key = f'resume/{user_id}_{resume_name}'
-
+    print(new_logo_key,'new_logo_key-----------')
     # Check if the new logo key is different from the existing one
     if existing_resume_key != new_logo_key:
+        print('1-------------')
         s3.upload_fileobj(io.BytesIO(resume), 'backendcompanylogo', new_logo_key)
         # if existing_resume_key is None:
         #     s3.delete_object(Bucket='backendcompanylogo', Key=existing_resume_key)
