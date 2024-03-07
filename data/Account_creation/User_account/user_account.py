@@ -6,7 +6,7 @@ from django.utils.html import strip_tags
 from data.Account_creation.Query import create_account_user_query
 from django.utils.decorators import method_decorator
 from django.views import View
-from data.Account_creation import message
+from backend.data import message
 import io
 import boto3
 

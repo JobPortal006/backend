@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db import connection
-from data.Account_creation import message
+from backend.data import message
 from django.http import JsonResponse
 from data.Job.Query import delete_job_query
 
@@ -15,12 +15,12 @@ def delete_jobPost(request):
             if job_id != None:
                 value = delete_job_query.delete_postJob(job_id)
                 if value == True:
-                    return JsonResponse("Successfully deleted ",safe=False)
+                    return message.response("Error","deletePostJob")
                 else:
-                    return JsonResponse("Id is not contain job list",safe=False)
+                    return message.response("Error","searchJobError")
             else:
-                return JsonResponse("Empty job_id ... ?",safe=False)
-        except:
-            return JsonResponse("Internal Error",safe=False)
+                return message.response("Error","InputError")
+        except Exception as e:
+            return message.tryExceptError(str(e))
     else:
-        return JsonResponse("Request miss match",safe=False)
+        return message.response("Error","deleteJobPost_Method")

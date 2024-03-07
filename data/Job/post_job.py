@@ -4,8 +4,7 @@ from django.db import OperationalError, connection
 import json
 from functools import wraps
 from time import sleep
-from data.Account_creation import message
-from django.http import JsonResponse
+from backend.data import message
 from data.Job.Query import post_job_insert_query 
 from django.core.management import call_command
 
@@ -16,7 +15,6 @@ def retry_database_operation(func):
   def wrapper(*args, **kwargs):
     max_retries = 3
     sleep_duration = 2
-
     for attempt in range(1, max_retries + 1):
       with connection.cursor() as cursor:
         try:
@@ -29,10 +27,9 @@ def retry_database_operation(func):
             sleep(sleep_duration)
           else:
             # Trigger a project restart on max retries
-            print("Restarting the project...")
             call_command('runserver', '--noreload')
             # You may need to customize this based on your project structure
-            return JsonResponse({'error': 'Database connection error. Project restarting...'}, status=500)
+            return message.serverErrorResponse()
         finally:
             connection.close()  # Close the connection explicitly
   return wrapper

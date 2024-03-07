@@ -10,7 +10,7 @@ import boto3
 # from data.Account_creation.User_account.Query.update_user_account_query import update_address,update_college_details,update_education_details,update_job_preferences,update_personal_details,update_professional_details,update_resume_details,upload_profile_picture,delete_existing_professional_details,get_profile_picture_path,get_resume_path,upload_resume
 from data.Account_creation.User_account.Query import update_user_account_query
 from data.Account_creation.Query import create_account_user_query
-from data.Account_creation.message import create_session
+from backend.data.message import create_session
 from data.Account_creation.User_account import get_user_account
 # from sqlalchemy.orm import declarative_base
 

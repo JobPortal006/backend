@@ -41,7 +41,8 @@ def response(val,key):
             'postJob':'Successfully post a job',
             'searchJob':'Job find successfully',
             'updatePostJob':'Successfully Update',
-            'deletePostJob':'Job deleted successfully'
+            'deletePostJob':'Job deleted successfully',
+            'updateJob':'Job Updated Successfully'
         },
         'Error':{
             'emailError': 'Email is already exists. Please use a different email address.',

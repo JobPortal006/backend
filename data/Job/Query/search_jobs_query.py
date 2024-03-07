@@ -22,6 +22,8 @@ def execute_query(conditions):
         query = session.query(
             JobPost.id,
             JobPost.job_title,
+            JobPost.job_description,
+            JobPost.qualification,
             CompanyDetails.company_name,
             EmployeeTypes.employee_type,
             Location.location,
@@ -30,8 +32,8 @@ def execute_query(conditions):
             JobPost.no_of_vacancies,
             CompanyDetails.company_logo,
             JobRole.job_role,
-            JobPost.created_at,
-            SkillSets.skill_set
+            SkillSets.skill_set,
+            JobPost.created_at
         )\
             .join(Location, JobPost.location_id == Location.id)\
             .join(EmployeeTypes, JobPost.employee_type_id == EmployeeTypes.id)\
@@ -62,7 +64,6 @@ def skill_check(skill):
         return skill
     else:
         return None  
-
     
 def job_title(skill):
     check_sql = "SELECT job_title FROM job_post WHERE job_title = %s"

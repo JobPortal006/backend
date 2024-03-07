@@ -6,7 +6,7 @@ from data.Account_creation.Tables.table import Signup,PersonalDetails,Profession
 from sqlalchemy.orm import declarative_base
 import json
 import base64
-from data.Account_creation import message
+from backend.data import message
 
 Base = declarative_base()
 job_response = ""

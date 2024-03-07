@@ -1,6 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
 import json
-from data.Account_creation import message
+from backend.data import message
 from data.Job.Query import employer_post_jobs_query
 job_response = ""
 

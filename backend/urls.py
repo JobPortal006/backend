@@ -5,7 +5,7 @@ from data.Account_creation.Employeer_account import employeer_account, get_emplo
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from data.Job import post_job, search_jobs,job_details,employer_post_jobs,jobs_data,job_details_by_companyName,job_details_by_employeeType,update_job,delete_job,job_filtering,apply_job
+from data.Job import post_job, search_jobs,job_details,employer_post_jobs,jobs_data,job_details_by_companyName,job_details_by_employeeType,update_job,delete_job,job_filter,apply_job
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -46,7 +46,7 @@ urlpatterns = [
 
     path('update_job/',update_job.update_jobs),
     path('delete_job/',delete_job.delete_jobPost),
-    path('filter_singleValue/',job_filtering.result_filter),
+    path('filter_singleValue/',job_filter.job_filter),
 ]
   
 if settings.DEBUG:

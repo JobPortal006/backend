@@ -1,7 +1,7 @@
 from django.db import connection
 import bcrypt
 from datetime import datetime
-from data.Account_creation import message
+from backend.data import message
 
 con = connection.cursor()
 
