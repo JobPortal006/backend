@@ -109,7 +109,7 @@ def search_job(request):
         global job_response
         job_response = jobs
         if jobs:
-           return JsonResponse(jobs, safe=False)
+           return message.response1('Success', 'getJobDetails', jobs)
         else:
             return message.response('Error', 'searchJobError')
     except (OperationalError, DatabaseError) as e:
@@ -165,3 +165,6 @@ def job_response_details(results,set_data_id):
         pass
     jobs = sorted(jobs, key=lambda x: x['created_at'])
     return jobs
+
+def result():
+    return job_response

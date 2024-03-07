@@ -34,7 +34,7 @@ def response(results, job_id, cursor, processed_job_ids):
         processed_job_ids.add(job_id)
         print(f"Job ID: {job_id}")
         (job_post_id, job_title, job_description, qualification, experience, salary_range, no_of_vacancies, created_at,
-            company_logo, company_name, industry_type, company_description, no_of_employees, company_website_link,
+            company_logo, company_name, industry_type, company_description, no_of_employees, company_website_link, company_logo_path,
             location, employee_type, job_role,street, city, state, country, pincode) = row
         created_at_humanized = naturaldelta(datetime.utcnow() - created_at)
         # Fetching skills for the current row
@@ -68,6 +68,7 @@ def response(results, job_id, cursor, processed_job_ids):
             "date": created_at_humanized,
             "company_id": company_id,
             "company_logo": company_logo,
+            "company_logo_path": company_logo_path,
             "company_name": company_name,
             "industry_type": industry_type,
             "company_description": company_description,

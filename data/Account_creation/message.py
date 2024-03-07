@@ -1,5 +1,7 @@
 from django.http import JsonResponse
 import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker,declarative_base
 
 #dynamic success response
 def handleSuccess(success):
@@ -66,13 +68,20 @@ def response(val,key):
     else:
         return errorResponse(key_value_mapping[val][key])
     
+Base = declarative_base()   
+def create_session():
+    engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend1')
+    Base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine)
+    return Session()
+    
 def response1(val,key,data):
     key_value_mapping = {
         'Success':{
             'postJob':'Successfully post a job',
             'searchJob':'Job find successfully',
             'getSearchJob':'Get job result successfully',
-            'getJobDetails':'Job result get successgully'
+            'getJobDetails':'Job find successgully'
         },  
         'Error':{
             'companyError':'You have not completed the registration process',

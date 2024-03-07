@@ -43,7 +43,7 @@ def execute_join_jobPost(f1,list1):
                     j.no_of_vacancies,
                     c.company_logo,
                     jr.job_role,
-                    j.created_at,
+                    j.created_at, 
                     ss.skill_set
                 FROM job_post j
                 JOIN location l ON j.location_id = l.id

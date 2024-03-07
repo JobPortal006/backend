@@ -10,12 +10,17 @@ def delete_jobPost(request):
     if request.method == 'DELETE':
         try:
             data = json.loads(request.body)
-            id = data.get('id')
-            if id != None:
-                delete_job_query.update_jobs(id)
-                return message.response('Success','deletePostJob')
-        except Exception as e:
-            return message.tryExceptError(str(e))
+            print(data)
+            job_id = data.get('job_id')
+            if job_id != None:
+                value = delete_job_query.delete_postJob(job_id)
+                if value == True:
+                    return JsonResponse("Successfully deleted ",safe=False)
+                else:
+                    return JsonResponse("Id is not contain job list",safe=False)
+            else:
+                return JsonResponse("Empty job_id ... ?",safe=False)
+        except:
+            return JsonResponse("Internal Error",safe=False)
     else:
-        # return JsonResponse("Request miss match",safe=False)
-        return message.response('Error','deleteJobPost_Method')
+        return JsonResponse("Request miss match",safe=False)

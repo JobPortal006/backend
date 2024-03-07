@@ -34,13 +34,12 @@ def jobPost_updateQuery( job_title, job_description, qualification, experience, 
         update_values = ( job_title, job_description, qualification, experience, salary_range, no_of_vacancies, postJob_id)
         con.execute(update_sql, update_values)
         con.close()
-        print(" j i i  i i i")
         return True
     except Exception as e:
         con.close()
         return message.tryExceptError(str(e))  
     
-def update_skillSet(skill_set,employee_id,postJob_id):
+def update_skillSet(skill_set,postJob_id):
     try:
         con = connection.cursor()
         
@@ -100,14 +99,11 @@ def update_skillSet(skill_set,employee_id,postJob_id):
     except Exception as e:
         con.close()
         return message.tryExceptError(str(e))
-    
-
 def location_eType_jRole(location,employee_type,job_role,job_id):
     try:
         con = connection.cursor()
         #  Location ---  Table
         con.execute("select id from location where location = %s",[location])
-        print("hello")
         res_id = con.fetchone()
         if res_id:
             loc_id = res_id[0]
@@ -123,9 +119,7 @@ def location_eType_jRole(location,employee_type,job_role,job_id):
         
         con.execute("select id from employees_types where employee_type = %s",[employee_type])
         emp_id = con.fetchone()
-        print("--------------> ",emp_id[0])
-        print("emp_id :",emp_id[0])
-        
+       
         # Job_Role ---------->    Table
         con.execute("select id from job_role where job_role =%s",[job_role])
         value_id = con.fetchone()
@@ -137,12 +131,6 @@ def location_eType_jRole(location,employee_type,job_role,job_id):
             
         print("job_id : ",job_id)  
         
-        # Job_Post Table Updated Values   
-        # sql = "update job_post set employee_type_id=%s, job_role_id=%s, location_id=%s where id=%s"
-        # values = (emp_id[0],job_id,loc_id,job_id)
-        # print(emp_id[0],job_id,loc_id,job_id)
-        # con.execute(sql,values)
-        
         con.execute("update job_post set employee_type_id=%s, job_role_id=%s, location_id=%s where id=%s",[emp_id[0],jobR_id,loc_id,job_id])
         print("Finish Upadted")
         con.close()
@@ -150,14 +138,10 @@ def location_eType_jRole(location,employee_type,job_role,job_id):
     except Exception as e:
         con.close()
         return message.tryExceptError(str(e))
-    
+   
 def execute_join_jobPost(f1,list1): 
     try:
-        print(f1," ----------->>>>>>>>>>>>>>>>>>>>")
-        print("^^^^^^^^",list1)
-        # f1 = "j.id = %s "
-        # list1 = 1  
-
+       
         with connection.cursor() as cursor:
         # Wrap list1 in a tuple when passing it as a parameter
             cursor.execute("""
@@ -185,34 +169,21 @@ def execute_join_jobPost(f1,list1):
                 JOIN company_details c ON j.company_id = c.id
                 WHERE  
             """ + f1, tuple(list1))  # Note the comma after list1 to create a tuple with a single element
-            print("3 ----------- 3")
-            # Fetch the results
+
             rows = cursor.fetchone()
-            
-            # print("ROWSSS ---------> ",rows)
-            
             if not rows:
                 print("EMPTY")
-            
-            
-            # Process the results as needed
             return rows
     except Exception as e:
-       
         return message.tryExceptError(str(e))
-    
 def result_fun(results):    
     with connection.cursor() as cursor:
-        print("RESULTS: ",results)
         try:
             jobs=[]
                 
             if results:
                 # for row in results:
-                    print("Hii i  i")
                     job_id = results[0]
-                    
-                    print(f"Job ID: --------------> {job_id}")
                     
                     check_sql = """
                         SELECT ss.skill_set
@@ -222,13 +193,7 @@ def result_fun(results):
                     """
                     cursor.execute(check_sql, [job_id])   
                     skills = cursor.fetchall()
-                    print(" Skill ")
-                    # skills = [skill[0] for skill in cursor.fetchall()]
-                    
-                    # row = [str(item) if isinstance(item, bytes) else item for item in row]
-                    print("HII")
                     skills = [str(skill) if isinstance(skill, bytes) else skill for skill in skills]
-                    print("Oiii")
                     
                     cursor.execute("SELECT company_details.company_logo FROM company_details join job_post on company_details.id = job_post.company_id WHERE job_post.id = %s", [job_id])
                     logo_result = cursor.fetchone()
@@ -254,7 +219,6 @@ def result_fun(results):
                         'created_at': created_at_humanized  
                     }
                     jobs.append(job) 
-            # print("RS:",jobs)
             return JsonResponse(jobs,safe=False)
         except Exception as e:
             con.close() 

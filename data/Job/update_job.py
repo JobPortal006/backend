@@ -18,7 +18,7 @@ def update_jobs(request):
             employee_type = data.get('employee_type')   
             job_role  = data.get('job_role')  
             location  = data.get('location')            
-            skill_set = data.get('skill_set')            
+            skill_set = data.get('skills')            
             qualification = data.get('qualification')
             experience    = data.get('experience')
             salary_range  = data.get('salary_range')
@@ -29,30 +29,17 @@ def update_jobs(request):
             global select_updatePostjob
             print(data)
             
-            print("---------------",job_id)
             valuesCheck = message.check(job_id,job_title,job_description,employee_type,job_role,location,qualification,experience,salary_range,no_of_vacancies,company_name)
-                # Checkind Company Datails Table input company name get employee id
-            print("Hiii")    
-            print("Valu: ",valuesCheck)
+                
             if valuesCheck:
-                print(" 8888888888 ***")
                 employee_id =  update_job_query.getId_companyDetails(job_id)
-                print("EMP: ",employee_id)
-                print("<<<<<>>>>>>>>>>")
             else:
                 return JsonResponse("Invalid Datas ",safe=False)
-            # Checking Post job Table  input employee_id get post_job ID   
-            # if employee_id:  
-            #     # postJob_id = update_job_query.id_jobPost(employee_id)
-            #     print("Hii")
-            # else:                       
-            #     return JsonResponse("Invalid job Posting",safe=False)
-            print("jOb ",job_id)
+           
+           
             if job_id:
-                print(" ------> ")
                 check = update_job_query.jobPost_updateQuery( job_title, job_description, qualification, experience, salary_range, no_of_vacancies, job_id)
-                print(" -------------->  hi")
-                update_job_query.update_skillSet(skill_set,employee_id,job_id)
+                update_job_query.update_skillSet(skill_set,job_id)
                 update_job_query.location_eType_jRole(location,employee_type,job_role,job_id)
                 
                 # ID to fetch JOB-POST details
@@ -69,14 +56,12 @@ def update_jobs(request):
                     
                     return JsonResponse(json_data,safe=False)
                 else:
-                    # return JsonResponse("Results Failed",safe=False)
                     return message.response('Success','updatePostJob')
                         
             return JsonResponse("Updated Successfully",safe=False)
         except Exception as e:
             return message.tryExceptError(str(e))
     else:
-        # return JsonResponse("Method incorrect",safe=False)
         return message.response('Error','UpdateJobPost_Method')
     
 
@@ -90,4 +75,4 @@ def select_updateJob(request):
           except:
                return JsonResponse("FRailed",safe=False)
      else:
-          return JsonResponse("Incorrect Method Type - Use GET")
+          return JsonResponse("Incorrect Method Type - Use GET",safe=False)

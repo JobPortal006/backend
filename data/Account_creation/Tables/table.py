@@ -2,8 +2,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Enum, Date, DECIM
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-
-from sqlalchemy.orm import declarative_base  # Add this import
+from sqlalchemy.orm import declarative_base 
 
 Base = declarative_base()
 
@@ -212,6 +211,20 @@ class SkillSetMapping(Base):
     skill = relationship('SkillSets')
     job = relationship('JobPost')
 
+# class UserExpectation(Base):
+#     __tablename__ = 'user_expectation'
 
-engine = create_engine('mysql://theuser:thepassword@16.171.137.133:3306/backend1')
+#     id = Column(Integer, primary_key=True, autoincrement=True)
+#     job_id = Column(Integer, ForeignKey('job_post.id'))
+#     user_id = Column(Integer, ForeignKey('signup.id'))
+#     total_experience = Column(String(255))
+#     current_ctc = Column(String(255))
+#     expected_ctc = Column(String(255))
+#     notice_period = Column(String(255))
+
+#     # Define relationships (assuming you have corresponding models for job_post and signup)
+#     job_post = relationship('JobPost', back_populates='user_expectations')
+#     signup = relationship('Signup', back_populates='user_expectations')
+
+engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend1')
 Base.metadata.create_all(engine)        

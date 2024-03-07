@@ -28,7 +28,7 @@ def job_details_by_companyName(request):
         job_response = jobs
         # return JsonResponse(jobs, safe=False)
         if jobs:
-           return message.response1('Success','searchJob',jobs)
+           return message.response1('Success', 'getJobDetails', jobs)
         else:
             return message.response1('Error','searchJobError',data={})
     except Exception as e:

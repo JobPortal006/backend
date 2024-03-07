@@ -5,7 +5,7 @@ from data.Account_creation.Employeer_account import employeer_account, get_emplo
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from data.Job import post_job, search_jobs,job_details,employer_post_jobs,job_details_by_companyName,job_details_by_employeeType,update_job,delete_job,job_filtering,apply_job
+from data.Job import post_job, search_jobs,job_details,employer_post_jobs,jobs_data,job_details_by_companyName,job_details_by_employeeType,update_job,delete_job,job_filtering,apply_job
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -21,15 +21,16 @@ urlpatterns = [
     path('get_user_details_view/', get_user_account.get_user_details_view),
     path('get_employeer_details/', get_employeer_account.get_employeer_details),
     path('update_employeer_details/', update_employeer_account.update_employee_details),
+    path('delete_image/',update_employeer_account.delete_image),
 
     # JOB POST ---- APIs 
     path('job_post/',post_job.post_jobs),
-    path('location/',post_job.locations),
-    path('experience/',post_job.experience),
-    path('company_name/',post_job.company_name),
-    path('job_role/',post_job.job_role),
-    path('employment_type/',post_job.employment_type),   
-    path('skill_set/',post_job.skill_set),
+    path('location/',jobs_data.locations),
+    path('experience/',jobs_data.experience),
+    path('company_name/',jobs_data.company_name),
+    path('job_role/',jobs_data.job_role),
+    path('employment_type/',jobs_data.employment_type),   
+    path('skill_set/',jobs_data.skill_set),
     path('search_jobs/',search_jobs.search_job),
     path('job_details/',job_details.job_details),
     path('get_view_jobs/',search_jobs.get_view_jobs),
@@ -41,11 +42,11 @@ urlpatterns = [
     path('job_details_by_employeeType/',job_details_by_employeeType.job_details_by_employeeType),
     path('job_details_by_employeeType_view/',job_details_by_employeeType.job_details_by_employeeType_view),
     path('apply_job/',apply_job.fetch_apply_job),
-
+  
 
     path('update_job/',update_job.update_jobs),
     path('delete_job/',delete_job.delete_jobPost),
-    path('filter_singleValue/',job_filtering.filter),
+    path('filter_singleValue/',job_filtering.result_filter),
 ]
   
 if settings.DEBUG:

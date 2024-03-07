@@ -4,11 +4,12 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from data.Account_creation.Tables.table import Signup, CompanyDetails, Address
 from sqlalchemy.orm import declarative_base
+from data.Account_creation import message
 import json
 import base64
 import boto3 
 
-Base = declarative_base()
+# Base = declarative_base()
 
 @csrf_exempt
 def get_employeer_details(request):
@@ -16,12 +17,12 @@ def get_employeer_details(request):
         data = json.loads(request.body)
         employee_id = data.get('employee_id')
         print(employee_id)
-        engine = create_engine('mysql://theuser:thepassword@16.171.137.133:3306/backend1')
+        # engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend1')
 
-        Base.metadata.create_all(engine)
-        Session = sessionmaker(bind=engine)
-        session = Session()
-
+        # Base.metadata.create_all(engine)
+        # Session = sessionmaker(bind=engine)
+        # session = Session()
+        session = message.create_session()
         employeer_details = {}
         
         # Retrieve Signup details
@@ -71,6 +72,8 @@ def get_employeer_details(request):
         return JsonResponse({"error": "Failed"})
 
 def get_company_logo_from_s3(s3_key):
+    if not s3_key:
+        return None
     # Retrieve company logo from S3 and return as Base64
     s3 = boto3.client('s3', aws_access_key_id='AKIAZI2LB2XIRFQPYDJ4', aws_secret_access_key='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', region_name='eu-north-1')
     try:
