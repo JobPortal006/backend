@@ -1,6 +1,6 @@
 from django.db import connection
 from django.http import JsonResponse
-from backend.data import message
+from data import message
 
 def delete_postJob(job_id):
    try:

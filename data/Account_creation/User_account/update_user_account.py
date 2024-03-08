@@ -2,17 +2,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from data.Account_creation.Tables.table import Signup, PersonalDetails, ProfessionalDetails, Address, CollegeDetails, EducationDetails, JobPreferences, ResumeDetails
 import json
-import base64
-import io
-import boto3
-# from data.Account_creation.User_account.Query.update_user_account_query import update_address,update_college_details,update_education_details,update_job_preferences,update_personal_details,update_professional_details,update_resume_details,upload_profile_picture,delete_existing_professional_details,get_profile_picture_path,get_resume_path,upload_resume
 from data.Account_creation.User_account.Query import update_user_account_query
 from data.Account_creation.Query import create_account_user_query
-from backend.data.message import create_session
+from data.message import create_session
 from data.Account_creation.User_account import get_user_account
-# from sqlalchemy.orm import declarative_base
 
 # Base = declarative_base()
 

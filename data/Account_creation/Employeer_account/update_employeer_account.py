@@ -1,15 +1,12 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 # from data.Account_creation.Employeer_account.Query.update_employeer_account_query import update_signup_details,get_company_logo_path,update_or_create_address,update_or_create_company_details,update_company_logo_file,upload_company_logo_path
 # from data.Account_creation.Tables.table import Signup, CompanyDetails, Address
 from data.Account_creation.Employeer_account.Query import update_employeer_account_query
 from data.Account_creation.Query import create_account_user_query
-from sqlalchemy.orm import declarative_base
 # import io
 # import boto3
-from backend.data.message import create_session
+from data.message import create_session
 
 # Base = declarative_base()
 

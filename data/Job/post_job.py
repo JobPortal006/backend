@@ -4,7 +4,7 @@ from django.db import OperationalError, connection
 import json
 from functools import wraps
 from time import sleep
-from backend.data import message
+from data import message
 from data.Job.Query import post_job_insert_query 
 from django.core.management import call_command
 

@@ -1,6 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
 import json
-from backend.data import message
+from data import message
 from data.Job.Query import search_jobs_query
 from data.Job import search_jobs
 from sqlalchemy import and_

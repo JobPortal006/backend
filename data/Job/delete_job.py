@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db import connection
-from backend.data import message
+from data import message
 from django.http import JsonResponse
 from data.Job.Query import delete_job_query
 

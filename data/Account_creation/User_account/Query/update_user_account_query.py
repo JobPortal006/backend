@@ -8,7 +8,7 @@ import base64
 import io
 import boto3
 from data.Account_creation.Query import create_account_user_query
-from backend.data import message
+from data import message
 from data.Account_creation.User_account import get_user_account
 from sqlalchemy.orm import declarative_base
 

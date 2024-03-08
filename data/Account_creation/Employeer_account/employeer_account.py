@@ -6,7 +6,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from data.Account_creation.Query import create_account_employeer_query, create_account_user_query
-from backend.data import message
+from data import message
 import io
 
 @method_decorator(csrf_exempt, name='dispatch') # Dispatch method is handle HTTP method (GET, POST, etc.) 

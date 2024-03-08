@@ -4,7 +4,7 @@ from django.db import OperationalError, connection
 import json
 from functools import wraps
 from time import sleep
-from backend.data import message
+from data import message
 from django.http import JsonResponse
 from data.Job.Query import post_job_insert_query 
 from django.core.management import call_command
@@ -58,7 +58,7 @@ def locations(cursor, request):
 @csrf_exempt
 @retry_database_operation
 def experience(cursor,request):
-   cursor.execute("SELECT DISTINCT jp.experience JOIN job_post jp ON l.id = jp.location_id")
+   cursor.execute("SELECT DISTINCT experience from job_post")
    rows = cursor.fetchall()
    print(rows)
    locations_list = [{'experience': row[0]} for row in rows]    

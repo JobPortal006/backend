@@ -6,7 +6,7 @@ from datetime import datetime
 from humanize import naturaldelta
 import base64
 from django.http import JsonResponse
-from backend.data import message
+from data import message
 from data.Job.Query import search_jobs_query
 from sqlalchemy import and_, or_
 from data.Account_creation.Tables.table import SkillSets, Location, JobPost
@@ -131,6 +131,7 @@ def get_view_jobs(request):
         retry_database_operation(connection.close)
     
 def job_response_details(results,set_data_id):
+    print("success")
     jobs = []
     with connection.cursor() as cursor:
         for row in results:  # Corrected variable name from 'results' to 'row'

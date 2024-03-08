@@ -1,7 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
 import json
-from backend.data import message
-from django.http import JsonResponse
+from data import message
 from data.Job import search_jobs
 job_response = ""
 @csrf_exempt

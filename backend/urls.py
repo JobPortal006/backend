@@ -5,7 +5,7 @@ from data.Account_creation.Employeer_account import employeer_account, get_emplo
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from data.Job import post_job, search_jobs,job_details,employer_post_jobs,jobs_data,job_details_by_companyName,job_details_by_employeeType,update_job,delete_job,job_filter,apply_job
+from data.Job import all_job_details, post_job, search_jobs,employer_post_jobs,jobs_data,job_details_by_companyName,job_details_by_employeeType,update_job,delete_job,job_filter,apply_job,get_job_details
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,9 +32,9 @@ urlpatterns = [
     path('employment_type/',jobs_data.employment_type),   
     path('skill_set/',jobs_data.skill_set),
     path('search_jobs/',search_jobs.search_job),
-    path('job_details/',job_details.job_details),
+    path('job_details/',all_job_details.job_details),
     path('get_view_jobs/',search_jobs.get_view_jobs),
-    path('get_job_details/',job_details.get_job_details),
+    path('get_job_details/',all_job_details.get_job_details),
     path('employeer_post_jobs/',employer_post_jobs.employeer_post_jobs),
     path('employeer_post_jobs_view/',employer_post_jobs.employer_post_jobs_view),
     path('job_details_by_companyName/',job_details_by_companyName.job_details_by_companyName),
@@ -43,10 +43,10 @@ urlpatterns = [
     path('job_details_by_employeeType_view/',job_details_by_employeeType.job_details_by_employeeType_view),
     path('apply_job/',apply_job.fetch_apply_job),
   
-
+    path('get_job_details_by_id/',get_job_details.get_job_details_by_id),
     path('update_job/',update_job.update_jobs),
     path('delete_job/',delete_job.delete_jobPost),
-    path('filter_singleValue/',job_filter.job_filter),
+    path('filter_job/',job_filter.job_filter),
 ]
   
 if settings.DEBUG:
