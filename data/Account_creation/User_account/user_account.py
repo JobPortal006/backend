@@ -19,7 +19,7 @@ class user_register(View): # View class provides a creating views by defining me
     def post(self, request, *args, **kwargs):
         try:
             if request.method == 'POST':       
-                # Extract user details
+                # Extract user details   
                 # data = json.loads(request.body)
                 # print(data)
                 # if data != None:

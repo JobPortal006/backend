@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, Enum, Date, DECIMAL, Text, TIMESTAMP, DateTime, ForeignKey, BLOB
+from sqlalchemy import create_engine, Column, Integer, String, Enum, Date, DECIMAL, Text, TIMESTAMP, DateTime, ForeignKey, LargeBinary 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
@@ -34,7 +34,7 @@ class PersonalDetails(Base):
     last_name = Column(String(50), nullable=False)
     date_of_birth = Column(Date, nullable=False)
     gender = Column(Enum('Male', 'Female', 'Others', name='gender_enum'), nullable=False)
-    profile_picture = Column(BLOB, nullable=False)
+    profile_picture = Column(LargeBinary , nullable=False)
     profile_picture_path = Column(String(50), nullable=False)
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
@@ -115,7 +115,7 @@ class ResumeDetails(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('signup.id'))
     employment_status = Column(Enum('Fresher', 'Experienced', name='employment_status_enum'), nullable=False)
-    resume = Column(BLOB, nullable=False)
+    resume = Column(LargeBinary , nullable=False)
     resume_path = Column(String(100))
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
@@ -129,7 +129,7 @@ class CompanyDetails(Base):
     no_of_employees = Column(Integer)
     company_industry = Column(String(100))
     company_description = Column(String(100))
-    company_logo = Column(BLOB, nullable=False)
+    company_logo = Column(LargeBinary , nullable=False)
     address_id = Column(Integer, ForeignKey('address.id'))
     company_logo_path = Column(String(100))
     created_at = Column(TIMESTAMP, server_default=func.now())
@@ -211,8 +211,8 @@ class SkillSetMapping(Base):
     skill = relationship('SkillSets')
     job = relationship('JobPost')
 
-# class UserExpectation(Base):
-#     __tablename__ = 'user_expectation'
+# class ApplyJob(Base):
+#     __tablename__ = 'apply_job'
 
 #     id = Column(Integer, primary_key=True, autoincrement=True)
 #     job_id = Column(Integer, ForeignKey('job_post.id'))
@@ -223,8 +223,8 @@ class SkillSetMapping(Base):
 #     notice_period = Column(String(255))
 
 #     # Define relationships (assuming you have corresponding models for job_post and signup)
-#     job_post = relationship('JobPost', back_populates='user_expectations')
-#     signup = relationship('Signup', back_populates='user_expectations')
+#     job_post = relationship('JobPost', back_populates='apply_job')
+#     signup = relationship('Signup', back_populates='apply_job')
 
-engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend1')
+engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend')
 Base.metadata.create_all(engine)        

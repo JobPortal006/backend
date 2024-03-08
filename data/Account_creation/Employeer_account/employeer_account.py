@@ -68,15 +68,14 @@ class employer_register(View): # View class provides a creating views by definin
                 company_description = request.POST.get('company_description')
                 no_of_employees = request.POST.get('no_of_employees')
                 company_website_link = request.POST.get('company_website_link')
-                print(mobile_number)
                 user_id, registered_by , email_address= create_account_user_query.mobile_number(mobile_number)
                 print(user_id, registered_by, email_address)
                 if user_id:
                     if email_address == email:
                         s3 = boto3.client('s3', aws_access_key_id='AKIAZI2LB2XIRFQPYDJ4', aws_secret_access_key='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', region_name='eu-north-1')
-                        s3_key = f'company_logo/{user_id}_{company_logo_name}'  # Adjust the key based on your needs
-                        s3.upload_fileobj(io.BytesIO(company_logo_content), 'backendcompanylogo', s3_key)
-                        print(s3_key)
+                        company_logo_path = f'company_logo/{user_id}_{company_logo_name}'
+                        s3.upload_fileobj(io.BytesIO(company_logo_content), 'backendcompanylogo', company_logo_path)
+                        print(company_logo_path)
 
                         # Check permanent address details data is empty or not
                         userid_check = create_account_employeer_query.userid_check(user_id)
@@ -89,14 +88,15 @@ class employer_register(View): # View class provides a creating views by definin
                             company_details_data = message.company_details(company_logo,company_name,company_industry, company_description, no_of_employees,company_website_link)
                             print(address_details_permanent_data,company_details_data)
                             if address_details_permanent_data and company_details_data:
-                                address_details_permanent_result = create_account_user_query.address_details(
-                                    user_id, registered_by, street_permanent, city_permanent, state_permanent, country_permanent,
-                                    pincode_permanent, address_type_permanent)
-                                print('Address_details_permanent ->', address_details_permanent_result)
                                 address_id = create_account_employeer_query.get_id(user_id,registered_by,street_permanent)
                                 company_details_result = create_account_employeer_query.company_details(user_id,company_logo_content,company_name,
-                                    company_industry,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,address_id,s3_key)
+                                    company_industry,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,address_id,company_logo_path)
                                 print('Company_details_result ->', company_details_result)
+                                if company_details_result:
+                                    address_details_permanent_result = create_account_user_query.address_details(
+                                        user_id, registered_by, street_permanent, city_permanent, state_permanent, country_permanent,
+                                        pincode_permanent, address_type_permanent)
+                                    print('Address_details_permanent ->', address_details_permanent_result)
 
                                 # sending email
                                 subject = 'Account Creation'
@@ -105,7 +105,7 @@ class employer_register(View): # View class provides a creating views by definin
                                 from_email = 'brochill547@gmail.com'
                                 recipient_list = [email]
                                 send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
-                            if address_details_permanent_result and company_details_result:
+                            if company_details_result:
                                 return message.response('Success','accountCreation')
                             else:
                                 return message.response('Error','employeeAccountError')

@@ -71,7 +71,7 @@ def update_employee_details(request):
         employee_id, registered_by , email_address= create_account_user_query.mobile_number(mobile_number)
         print(employee_id, registered_by, email_address)
 
-        # engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend1')
+        # engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend')
         # Base.metadata.create_all(engine)
         # Session = sessionmaker(bind=engine)
         # session = Session()

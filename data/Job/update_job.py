@@ -4,7 +4,7 @@ from django.db import connection
 from data import message
 from django.http import JsonResponse
 from data.Job.Query import update_job_query,search_jobs_query
-from data.Job.search_jobs import job_response_details
+# from data.Job.search_jobs import job_response_details
 from sqlalchemy import and_
 from data.Account_creation.Tables.table import JobPost
 from data.Job import json_response

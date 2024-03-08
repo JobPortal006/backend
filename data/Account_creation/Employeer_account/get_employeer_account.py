@@ -17,7 +17,7 @@ def get_employeer_details(request):
         data = json.loads(request.body)
         employee_id = data.get('employee_id')
         print(employee_id)
-        # engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend1')
+        # engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend')
 
         # Base.metadata.create_all(engine)
         # Session = sessionmaker(bind=engine)

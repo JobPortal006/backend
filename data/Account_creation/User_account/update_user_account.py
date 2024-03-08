@@ -153,7 +153,7 @@ def update_user_details(request):
         user_id, registered_by, mobile_number = create_account_user_query.mobile_number(mobile_number)
         print(user_id, registered_by, mobile_number)
         # Creating SQLAlchemy engine and session
-        # engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend1')
+        # engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend')
         # Base.metadata.create_all(engine)
         # Session = sessionmaker(bind=engine)
         # session = Session()
