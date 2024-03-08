@@ -6,11 +6,18 @@ def delete_postJob(job_id):
    try:
       con = connection.cursor()
       con.execute("select id,employee_type_id,job_role_id,location_id from job_post where id = %s", [job_id])
-      job_id, employee_type_id, job_role_id, location_id = con.fetchone()
+      job_result = con.fetchone()
+
+      if not job_result:
+         return JsonResponse("Job not found with given ID", safe=False)
+
+      job_id, employee_type_id, job_role_id, location_id = job_result
       print(job_id, employee_type_id, job_role_id, location_id)
+
       con.execute("select id,skill_id from skill_set_mapping where job_id=%s", [job_id])  
       final_result = con.fetchall()
       print(final_result)  
+
       if not final_result:
          return JsonResponse("Id does not contain job list", safe=False)
       
@@ -19,9 +26,10 @@ def delete_postJob(job_id):
          print("Deleting", i)
       
       result = con.execute("DELETE FROM job_post WHERE id = %s", [job_id])
-
+      print(result)
       # Check if any rows were deleted
-      if result.rowcount > 0:
+      # if result.rowcount > 0:
+      if result==1:
          con.execute("SELECT COUNT(*) FROM job_post WHERE employee_type_id = %s", (employee_type_id,))
          count = con.fetchone()[0]
          if count == 0:
@@ -43,8 +51,7 @@ def delete_postJob(job_id):
             con.execute("DELETE FROM skill_sets WHERE id = %s", (skill_id,))
          
          con.close()
-         return JsonResponse("Job successfully deleted", safe=False)
-         
+      return result
    except Exception as e:
       print(f"The Error is: {str(e)}")
       return message.tryExceptError(str(e))

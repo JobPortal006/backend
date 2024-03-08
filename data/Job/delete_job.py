@@ -14,8 +14,8 @@ def delete_jobPost(request):
             job_id = data.get('job_id')
             if job_id != None:
                 value = delete_job_query.delete_postJob(job_id)
-                if value == True:
-                    return message.response("Error","deletePostJob")
+                if value == 1:
+                    return message.response("Success","deletePostJob")
                 else:
                     return message.response("Error","searchJobError")
             else:
