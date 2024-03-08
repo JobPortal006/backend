@@ -31,6 +31,7 @@ def execute_query(conditions):
             JobPost.salary_range,
             JobPost.no_of_vacancies,
             CompanyDetails.company_logo,
+            CompanyDetails.company_logo_path,
             JobRole.job_role,
             SkillSets.skill_set,
             JobPost.created_at

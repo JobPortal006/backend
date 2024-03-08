@@ -4,6 +4,7 @@ from django.db import connection
 from data import message
 from django.http import JsonResponse
 from data.Job.Query import apply_job_query
+con = connection.cursor()
 
 @csrf_exempt
 def fetch_apply_job(request):
@@ -30,16 +31,6 @@ def apply_job(request):
         result = apply_job_query.insert_apply_job(user_id,job_id,company_id,resume_id)
     except Exception as e:
         return message.tryExceptError(str(e))
-    
-from django.views.decorators.csrf import csrf_exempt
-import json
-from django.db import connection
-from data import message
-from django.http import JsonResponse
-from data.Job.Query import apply_job_query
-
-
-con = connection.cursor()
 
 @csrf_exempt
 def apply_jobs(request):

@@ -7,6 +7,7 @@ from data.Job.Query import update_job_query,search_jobs_query
 from data.Job.search_jobs import job_response_details
 from sqlalchemy import and_
 from data.Account_creation.Tables.table import JobPost
+from data.Job import json_response
 
 con = connection.cursor()
 
@@ -62,19 +63,8 @@ def update_jobs(request):
                 set_data_id = set()
                 conditions = and_(JobPost.id == job_id)
                 result = search_jobs_query.execute_query(conditions)
-                json_data = job_response_details(result,set_data_id)
-                select_val = json_data
+                json_data = json_response.job_response_details(result,set_data_id)
                 if json_data:
-                #     # jobs=job_response_details(results,set_data_id)
-                #     jobs = update_job_query.result_fun(results)
-                #     print(jobs,'result------------')
-                #     select_updatePostjob = jobs
-                #     # json_data_string = json.dumps(jobs)
-                #     # print(json_data_string)
-                #     # json_data = json.loads(jobs.content)
-                #     # # json_data = json.loads(j_d)
-                #     # print(json_data,"-------->")
-                    
                     return JsonResponse(json_data,safe=False)
                     # return message.response1('Success', 'getJobDetails', jobs)
                 else:
@@ -85,15 +75,3 @@ def update_jobs(request):
     else:
         return message.response('Error','UpdateJobPost_Method')
     
-
-@csrf_exempt     
-def select_updateJob(request):
-     if request.method == 'GET':
-          try:
-               json_data = json.loads(select_updatePostjob.content)
-               print(json_data)
-               return JsonResponse(json_data,safe=False)
-          except:
-               return JsonResponse("FRailed",safe=False)
-     else:
-          return JsonResponse("Incorrect Method Type - Use GET",safe=False)
