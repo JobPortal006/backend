@@ -17,7 +17,7 @@ def job_filter(request):
             jobs = search_jobs.job_response
             if jobs is None:
                 jobs = job_filter_result()
-            print(jobs)
+            # print(jobs)
             condition = ""
             def where_condition(data,location_value, dyanamic_value, condition):
                 key_value = None

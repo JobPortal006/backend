@@ -2,7 +2,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from data import message
 from data.Job.Query import search_jobs_query
-from data.Job import search_jobs
+from data.Job import json_response
 from sqlalchemy import and_
 from data.Account_creation.Tables.table import CompanyDetails
 job_response = ""
@@ -23,7 +23,7 @@ def job_details_by_companyName(request):
             conditions = and_(CompanyDetails.company_name == company_name)
             result = search_jobs_query.execute_query(conditions)
             print(result,'condition result')
-        jobs=search_jobs.job_response_details(result,set_data_id)
+        jobs=json_response.job_response_details(result,set_data_id)
         print(jobs,'result')
         global job_response
         job_response = jobs

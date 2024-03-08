@@ -2,7 +2,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from data import message
 from data.Job.Query import search_jobs_query
-from data.Job import search_jobs
+from data.Job import json_response
 from sqlalchemy import and_
 from data.Account_creation.Tables.table import EmployeeTypes
 job_response = ""
@@ -22,7 +22,8 @@ def job_details_by_employeeType(request):
         if employee_type is not None:
             conditions = and_(EmployeeTypes.employee_type == employee_type)
             result = search_jobs_query.execute_query(conditions)
-        jobs=search_jobs.job_response_details(result,set_data_id)
+        # jobs=search_jobs.job_response_details(result,set_data_id)
+        jobs=json_response.job_response_details(result,set_data_id)
         global job_response
         job_response = jobs
         if jobs:

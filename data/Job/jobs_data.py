@@ -95,9 +95,9 @@ def employment_type(cursor,request):
 @csrf_exempt
 @retry_database_operation
 def company_name(cursor, request):
-    cursor.execute("SELECT DISTINCT cd.id,cd.company_name FROM company_details cd JOIN job_post jp ON cd.id = jp.company_id")
+    cursor.execute("SELECT DISTINCT id,company_name FROM company_details")
+    # cursor.execute("SELECT DISTINCT cd.id,cd.company_name FROM company_details cd JOIN job_post jp ON cd.id = jp.company_id")
     rows = cursor.fetchall()
-    print(rows[0])
     locations_list = [{'company_name': row[1]} for row in rows]
     json_result = json.dumps(locations_list)
     json_data = json.loads(json_result)
