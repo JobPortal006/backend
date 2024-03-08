@@ -118,7 +118,6 @@ def company_id(company_name):
     check_sql = "SELECT id FROM company_details WHERE company_name = %s"
     con.execute(check_sql, [company_name])
     user = con.fetchone()
-    print(user,'u2--------')
     if user is not None:
         company_id = user[0]  
         print(f"Company ID: {company_id}")

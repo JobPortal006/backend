@@ -22,7 +22,9 @@ def job_details_by_companyName(request):
         if company_name is not None:
             conditions = and_(CompanyDetails.company_name == company_name)
             result = search_jobs_query.execute_query(conditions)
+            print(result,'condition result')
         jobs=search_jobs.job_response_details(result,set_data_id)
+        print(jobs,'result')
         global job_response
         job_response = jobs
         if jobs:

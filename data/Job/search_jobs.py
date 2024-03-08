@@ -5,9 +5,9 @@ import json
 from datetime import datetime
 from humanize import naturaldelta
 import base64
-from django.http import JsonResponse
 from data import message
 from data.Job.Query import search_jobs_query
+from data.Job import json_response
 from sqlalchemy import and_, or_
 from data.Account_creation.Tables.table import SkillSets, Location, JobPost
 
@@ -105,7 +105,7 @@ def search_job(request):
             conditions = or_(SkillSets.skill_set == skill_result,JobPost.job_title == job_title,
                 Location.location == location,JobPost.experience == experience)
             result = search_jobs_query.execute_query(conditions)
-        jobs=job_response_details(result,set_data_id)
+        jobs=json_response.job_response_details(result,set_data_id)
         global job_response
         job_response = jobs
         if jobs:
@@ -131,7 +131,6 @@ def get_view_jobs(request):
         retry_database_operation(connection.close)
     
 def job_response_details(results,set_data_id):
-    print("success")
     jobs = []
     with connection.cursor() as cursor:
         for row in results:  # Corrected variable name from 'results' to 'row'
@@ -146,7 +145,7 @@ def job_response_details(results,set_data_id):
             skills = cursor.fetchall()
             company_logo = row[10]
             company_logo = base64.b64encode(company_logo).decode('utf-8')
-            created_at = row[13]
+            created_at = row[14]
             created_at_humanized = naturaldelta(datetime.utcnow() - created_at)
             job = {
                 'id': row[0],
@@ -160,7 +159,8 @@ def job_response_details(results,set_data_id):
                 'salary_range': row[8],
                 'no_of_vacancies': row[9],
                 'company_logo': company_logo,
-                'job_role': row[11],
+                'company_logo_path':row[11],
+                'job_role': row[12],
                 'skills': [skill[0] for skill in skills],
                 'created_at': created_at_humanized
             }
