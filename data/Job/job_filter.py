@@ -17,6 +17,7 @@ def job_filter(request):
             jobs = search_jobs.job_response
             if jobs is None:
                 jobs = job_filter_result()
+            print(jobs)
             condition = ""
             def where_condition(data,location_value, dyanamic_value, condition):
                 key_value = None
@@ -54,7 +55,6 @@ def job_filter(request):
                 job_result = [job for job in jobs if eval(new_val)]
             global job_response
             job_response=job_result
-            # print(" -------",job_result)
             if not job_result:
                 return message.response('Error', 'searchJobError')
             return message.response1('Success', 'getJobDetails', job_result)

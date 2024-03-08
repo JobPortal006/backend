@@ -131,7 +131,6 @@ def get_view_jobs(request):
         retry_database_operation(connection.close)
     
 def job_response_details(results,set_data_id):
-    print("success")
     jobs = []
     with connection.cursor() as cursor:
         for row in results:  # Corrected variable name from 'results' to 'row'
