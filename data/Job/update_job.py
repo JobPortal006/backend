@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db import connection
-from data.Account_creation import message
+from data import message
 from django.http import JsonResponse
 from data.Job.Query import update_job_query 
 
@@ -28,9 +28,7 @@ def update_jobs(request):
             # id = data.get('id')
             global select_updatePostjob
             print(data)
-            
             valuesCheck = message.check(job_id,job_title,job_description,employee_type,job_role,location,qualification,experience,salary_range,no_of_vacancies,company_name)
-                
             if valuesCheck:
                 employee_id =  update_job_query.getId_companyDetails(job_id)
             else:
@@ -51,10 +49,16 @@ def update_jobs(request):
                 results = update_job_query.execute_join_jobPost(where_con,job_id)
                 if results:
                     jobs = update_job_query.result_fun(results)
+                    print(jobs,'result------------')
                     select_updatePostjob = jobs
-                    json_data = json.loads(jobs.content)
+                    # json_data_string = json.dumps(jobs)
+                    # print(json_data_string)
+                    # json_data = json.loads(jobs.content)
+                    # # json_data = json.loads(j_d)
+                    # print(json_data,"-------->")
                     
-                    return JsonResponse(json_data,safe=False)
+                    # return JsonResponse(json_data_string,safe=False)
+                    return message.response1('Success', 'getJobDetails', jobs)
                 else:
                     return message.response('Success','updatePostJob')
                         

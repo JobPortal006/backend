@@ -1,7 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
 import json
-from data.Account_creation import message
-from django.http import JsonResponse
+from data import message
 from data.Job.Query import search_jobs_query
 from data.Job import search_jobs
 from sqlalchemy import and_
@@ -26,7 +25,6 @@ def job_details_by_employeeType(request):
         jobs=search_jobs.job_response_details(result,set_data_id)
         global job_response
         job_response = jobs
-        # return JsonResponse(jobs, safe=False)
         if jobs:
            return message.response1('Success','searchJob',jobs)
         else:

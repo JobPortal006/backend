@@ -4,7 +4,7 @@ from django.db import OperationalError, connection
 import json
 from functools import wraps
 from time import sleep
-from data.Account_creation import message
+from data import message
 from django.http import JsonResponse
 from data.Job.Query import post_job_insert_query 
 from django.core.management import call_command
@@ -29,10 +29,9 @@ def retry_database_operation(func):
             sleep(sleep_duration)
           else:
             # Trigger a project restart on max retries
-            print("Restarting the project...")
             call_command('runserver', '--noreload')
             # You may need to customize this based on your project structure
-            return JsonResponse({'error': 'Database connection error. Project restarting...'}, status=500)
+            return message.serverErrorResponse()
         finally:
             connection.close()  # Close the connection explicitly
   return wrapper
@@ -59,7 +58,7 @@ def locations(cursor, request):
 @csrf_exempt
 @retry_database_operation
 def experience(cursor,request):
-   cursor.execute("SELECT DISTINCT jp.experience JOIN job_post jp ON l.id = jp.location_id")
+   cursor.execute("SELECT DISTINCT experience from job_post")
    rows = cursor.fetchall()
    print(rows)
    locations_list = [{'experience': row[0]} for row in rows]    

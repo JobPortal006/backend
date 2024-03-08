@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.db import connection
 from data.Account_creation.Query import signup_query,login_query
-from data.Account_creation import message
+from data import message
 
 con = connection.cursor()
 

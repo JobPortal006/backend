@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.db import connection
 from data.Account_creation.Query import login_query
-from data.Account_creation import message
+from data import message
 
 con = connection.cursor()
 

@@ -3,7 +3,7 @@ from django.http import JsonResponse
 import base64
 from datetime import datetime
 from humanize import naturaldelta
-from data.Account_creation import message
+from data import message
 
 
 con = connection.cursor()
@@ -139,11 +139,10 @@ def location_eType_jRole(location,employee_type,job_role,job_id):
         con.close()
         return message.tryExceptError(str(e))
    
-def execute_join_jobPost(f1,list1): 
+def execute_join_jobPost(f1, list1):
     try:
-       
+        print(f1,'condition------')
         with connection.cursor() as cursor:
-        # Wrap list1 in a tuple when passing it as a parameter
             cursor.execute("""
                 SELECT 
                     j.id,
@@ -168,58 +167,59 @@ def execute_join_jobPost(f1,list1):
                 JOIN skill_sets ss ON ssm.skill_id = ss.id
                 JOIN company_details c ON j.company_id = c.id
                 WHERE  
-            """ + f1, tuple(list1))  # Note the comma after list1 to create a tuple with a single element
+            """ + f1, tuple(list1))
 
-            rows = cursor.fetchone()
+            rows = cursor.fetchall()
+            print(rows,"query result")
             if not rows:
                 print("EMPTY")
             return rows
     except Exception as e:
         return message.tryExceptError(str(e))
-def result_fun(results):    
-    with connection.cursor() as cursor:
-        try:
-            jobs=[]
-                
-            if results:
-                # for row in results:
-                    job_id = results[0]
-                    
-                    check_sql = """
-                        SELECT ss.skill_set
-                        FROM skill_sets ss 
-                        JOIN skill_set_mapping ssm ON ss.id = ssm.skill_id
-                        WHERE ssm.job_id = %s
-                    """
-                    cursor.execute(check_sql, [job_id])   
-                    skills = cursor.fetchall()
-                    skills = [str(skill) if isinstance(skill, bytes) else skill for skill in skills]
-                    
-                    cursor.execute("SELECT company_details.company_logo FROM company_details join job_post on company_details.id = job_post.company_id WHERE job_post.id = %s", [job_id])
-                    logo_result = cursor.fetchone()
-                    company_logo = logo_result[0]
-                    company_logo = base64.b64encode(company_logo).decode('utf-8')
-                    created_at = results[12]
-                    created_at_humanized = naturaldelta(datetime.utcnow() - created_at)
-                    
-                    job = {
-                        'id': results[0],
-                        'job_title': results[1],
-                        'job_description':results[2],
-                        'qualification':results[3],
-                        'company_name': results[4],
-                        'employee_type': results[5],
-                        'location': results[6],
-                        'experience': results[7],
-                        'salary_range': results[8],
-                        'no_of_vacancies': results[9],
-                        # 'company_logo': company_logo,
-                        'job_role': results[11],
-                        "skills": [skill[0] for skill in skills],
-                        'created_at': created_at_humanized  
-                    }
-                    jobs.append(job) 
-            return JsonResponse(jobs,safe=False)
-        except Exception as e:
-            con.close() 
-            return JsonResponse({"error": str(e)})
+
+def result_fun(results):
+    try:
+        jobs = []
+
+        for row in results:
+            job_id = row[0]
+
+            check_sql = """
+                SELECT ss.skill_set
+                FROM skill_sets ss 
+                JOIN skill_set_mapping ssm ON ss.id = ssm.skill_id
+                WHERE ssm.job_id = %s
+            """
+            con.execute(check_sql, [job_id])
+            skills = con.fetchall()
+            skills = [str(skill) if isinstance(skill, bytes) else skill for skill in skills]
+
+            con.execute("SELECT company_details.company_logo FROM company_details join job_post on company_details.id = job_post.company_id WHERE job_post.id = %s", [job_id])
+            logo_result = con.fetchone()
+            company_logo = logo_result[0]
+            company_logo = base64.b64encode(company_logo).decode('utf-8')
+            created_at = row[12]
+            created_at_humanized = naturaldelta(datetime.utcnow() - created_at)
+
+            job = {
+                'id': row[0],
+                'job_title': row[1],
+                'job_description': row[2],
+                'qualification': row[3],
+                'company_name': row[4],
+                'employee_type': row[5],
+                'location': row[6],
+                'experience': row[7],
+                'salary_range': row[8],
+                'no_of_vacancies': row[9],
+                'company_logo': company_logo,
+                'job_role': row[11],
+                "skills": [skill[0] for skill in skills],
+                'created_at': created_at_humanized
+            }
+            jobs.append(job)
+
+        return jobs
+    except Exception as e:
+        con.close()
+        return JsonResponse({"error": str(e)})

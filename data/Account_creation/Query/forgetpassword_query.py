@@ -1,6 +1,6 @@
 from django.db import connection
 import bcrypt
-from data.Account_creation import message
+from data import message
 
 con = connection.cursor()  
 

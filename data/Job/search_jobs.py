@@ -6,7 +6,7 @@ from datetime import datetime
 from humanize import naturaldelta
 import base64
 from django.http import JsonResponse
-from data.Account_creation import message
+from data import message
 from data.Job.Query import search_jobs_query
 from sqlalchemy import and_, or_
 from data.Account_creation.Tables.table import SkillSets, Location, JobPost
@@ -131,6 +131,7 @@ def get_view_jobs(request):
         retry_database_operation(connection.close)
     
 def job_response_details(results,set_data_id):
+    print("success")
     jobs = []
     with connection.cursor() as cursor:
         for row in results:  # Corrected variable name from 'results' to 'row'
@@ -143,22 +144,24 @@ def job_response_details(results,set_data_id):
             cursor.nextset()
             cursor.callproc('GetSkillSet', [job_id])
             skills = cursor.fetchall()
-            company_logo = row[8]
+            company_logo = row[10]
             company_logo = base64.b64encode(company_logo).decode('utf-8')
-            created_at = row[10]
+            created_at = row[13]
             created_at_humanized = naturaldelta(datetime.utcnow() - created_at)
             job = {
                 'id': row[0],
                 'job_title': row[1],
-                'company_name': row[2],
-                'employee_type': row[3],
-                'location': row[4],
-                'experience': row[5],
-                'salary_range': row[6],
-                'no_of_vacancies': row[7],
+                'job_description':row[2],
+                'qualification':row[3],
+                'company_name': row[4],
+                'employee_type': row[5],
+                'location': row[6],
+                'experience': row[7],
+                'salary_range': row[8],
+                'no_of_vacancies': row[9],
                 'company_logo': company_logo,
-                'job_role': row[9],
-                "skills": [skill[0] for skill in skills],
+                'job_role': row[11],
+                'skills': [skill[0] for skill in skills],
                 'created_at': created_at_humanized
             }
             jobs.append(job)

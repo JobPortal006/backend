@@ -1,13 +1,11 @@
 from django.views.decorators.csrf import csrf_exempt
 import json
-from data.Account_creation import message
-from django.http import JsonResponse
+from data import message
 from data.Job import search_jobs
 job_response = ""
 @csrf_exempt
-def result_filter(request):
+def job_filter(request):
     if request.method == 'POST':
-        
         try:  
             data = json.loads(request.body)
             print(data)
@@ -19,67 +17,51 @@ def result_filter(request):
             jobs = search_jobs.job_response
             if jobs is None:
                 jobs = job_filter_result()
-            where_cons = ""
-            
-            def where_condition(data,location_value, dyanamic_value, where_cons):
+            condition = ""
+            def where_condition(data,location_value, dyanamic_value, condition):
                 key_value = None
                 for key, value in data.items():
                     if value == location_value:
                         key_value = key
                         break
-                
                 if dyanamic_value and key_value:
-                    if where_cons:
-                        where_cons += f" and  job['{key_value}'] == '{dyanamic_value}'"
+                    if condition:
+                        condition += f" and  job['{key_value}'] == '{dyanamic_value}'"
                     else:
-                        where_cons = f"job['{key_value}'] == '{dyanamic_value}'"
-
-                return where_cons
-            
+                        condition = f"job['{key_value}'] == '{dyanamic_value}'"
+                return condition
             if experience_value:
                 for i in experience_value:
                     if i:
-                        where_cons = where_condition(data,experience_value,i,where_cons)
-            
+                        condition = where_condition(data,experience_value,i,condition)
             if location_value:
-                    for i in location_value:
-                         if i:
-                              where_cons = where_condition(data,location_value,i,where_cons)
-                              
+                for i in location_value:
+                    if i:
+                        condition = where_condition(data,location_value,i,condition)        
             if employee_type_value:
-                    where_cons = where_condition(data,employee_type_value,employee_type_value,where_cons)     
-            
+                    condition = where_condition(data,employee_type_value,employee_type_value,condition)     
             if job_role_value:
-                    for i in job_role_value:
-                         if i:
-                              where_cons = where_condition(data,job_role_value,i,where_cons)
-               
+                for i in job_role_value:
+                    if i:
+                        condition = where_condition(data,job_role_value,i,condition)
             if salary_range_value: 
-                where_cons = where_condition(data,salary_range_value,salary_range_value,where_cons)
-             
-            print("WHERE_CON",where_cons)
-           
-            
-            job_result = [job for job in jobs if eval(where_cons)]
-            print(job_result," --------- ")
+                condition = where_condition(data,salary_range_value,salary_range_value,condition)
+            print("Where condition----->",condition)
+            job_result = [job for job in jobs if eval(condition)]
             if not job_result:
-                conditions = where_cons.split(" and ")
+                conditions = condition.split(" and ")
                 new_val = " or ".join(conditions)
-                print("OR ",new_val)
                 job_result = [job for job in jobs if eval(new_val)]
             global job_response
             job_response=job_result
             # print(" -------",job_result)
             if not job_result:
-                # return JsonResponse("No Found Jobs",safe=False)
                 return message.response('Error', 'searchJobError')
             return message.response1('Success', 'getJobDetails', job_result)
-        
         except Exception as e:
             return message.tryExceptError(str(e))
-        
     else:
-        return JsonResponse("Method Failed",safe=False)
+        return message.response('Error', 'Error')
     
 def job_filter_result():
     return job_response

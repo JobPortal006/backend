@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from data.Account_creation.Tables.table import Signup, CompanyDetails, Address
 from sqlalchemy.orm import declarative_base
-from data.Account_creation import message
+from data import message
 import json
 import base64
 import boto3 

@@ -16,13 +16,13 @@ def errorResponse(error):
 
 #server error response
 def serverErrorResponse():
-    manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'manage.py')
-    os.utime(manage_py_path, None)
+    # manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'manage.py')
+    # os.utime(manage_py_path, None)
     return  JsonResponse({"status":False,"statusCode":500,"message":"Internal Server Error"},safe=False)
 
 def tryExceptError(message):
-    manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'manage.py')
-    os.utime(manage_py_path, None)
+    # manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'manage.py')
+    # os.utime(manage_py_path, None)
     return  JsonResponse({f"status":False,"statusCode":500,"message":message},safe=False)
 
 def Login():
@@ -61,6 +61,7 @@ def response(val,key):
             'UpdateJobPost_Method':'Use to PUT method',
             'getMethod':'Use to GET method',
             'deleteJobPost_Method':'Use to DELETE method',
+            'updateJobError':'Job not updated successguly'
         }
     }
     if val == 'Success':

@@ -62,3 +62,30 @@ def resume_id(resume):
         resume_id = con.lastrowid 
         print(f"Resume ID: {resume_id}")
         return resume_id
+    
+def user_expectation_table(job_id,user_id,current_ctc,expected_ctc,total_experience,notice_period):
+    try:
+        con = connection.cursor()    
+        sql ="insert into user_expectation (job_id,user_id,total_experience,current_ctc,expected_ctc,notice_period) values(%s,%s,%s,%s,%s,%s)"
+        values = (job_id,user_id,current_ctc,expected_ctc,total_experience,notice_period)
+        check_val = con.execute(sql,values)
+        last_id = con.lastrowid
+        if check_val:
+            con.execute("SELECT * FROM user_expectation WHERE id = %s", [last_id])    
+            results = con.fetchone()
+            user_exp = []  # Initialize user_exp as a list
+            if results:
+                additional_information = {
+                    'id': results[0],
+                    'job_id': results[1],
+                    'user_id': results[2],
+                    'current_ctc': results[3],
+                    'expected_ctc': results[4],
+                    'total_experience': results[5],
+                    'notice_period': results[6],
+                }
+                user_exp.append(additional_information) 
+            con.close()    
+            return user_exp
+    except Exception as e:
+            return JsonResponse(str(e),safe=False)
