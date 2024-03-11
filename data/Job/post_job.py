@@ -57,12 +57,12 @@ def post_jobs(request):
         email= data.get('email')
         additional_queries= data.get('additional_queries')
         print(data)
-        print(email)
         valuesCheck = message.check(job_title,job_description,employee_type,job_role,location,skill_set,qualification,experience,salary_range,no_of_vacancies)
         print(valuesCheck)
         if valuesCheck:
+            qualifications_list = data.get('qualification')
             employee_id = post_job_insert_query.email_id(email)
-            # employee_id, registered_by, email = create_account_user_query.user_check(email)  # Get employee_id using company_name
+            # employee_id, registered_by, email = create_account_user_query.email_check(email)  # Get employee_id using company_name
             company_id = post_job_insert_query.company_id(company_name)  # Get company_id using company_name
             if employee_id is not None and company_id is not None:
                 employee_type_id = post_job_insert_query.employee_type_id(employee_type)  # Get employee_type_id here
@@ -71,6 +71,7 @@ def post_jobs(request):
                 location_id = post_job_insert_query.location_id(location)  # Get location_id here
                 if employee_type_id is not None and job_role_id is not None and location_id is not None:
                     # If location_id is not in the table, it will execute
+                    qualification="B.E"
                     resul_postJob = post_job_insert_query.jobPost_insertQuery(employee_id, company_id, job_title, job_description, qualification, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, location_id,additional_queries)
                     print(resul_postJob, 'result_postJob')
                     job_id = post_job_insert_query.get_id(job_title)  # After insert the job_post data, get that job_id
@@ -79,6 +80,10 @@ def post_jobs(request):
                         print(skill)
                         skill_id = post_job_insert_query.skill_set(skill)  # Insert the skill_set in skill_sets table
                         post_job_insert_query.skill_set_insert(employee_id, skill_id, job_id)  # Map the skill_id in skill_set_mapping table
+                    for qualification_value in qualifications_list:
+                        print(qualification_value)
+                        qualification_id = post_job_insert_query.qualification(qualification_value) # Insert the qualification in qualifications table
+                        post_job_insert_query.qualification_insert(employee_id, qualification_id, job_id) # Map the qualification_id in qualification_mapping table
                     if resul_postJob:
                         return message.response1('Success', 'postJob', employee_id)
                     else:

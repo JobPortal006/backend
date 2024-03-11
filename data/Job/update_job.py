@@ -40,6 +40,7 @@ def update_jobs(request):
                 return JsonResponse("Invalid Datas ",safe=False)
             if job_id:
                 update_job_query.jobPost_updateQuery( job_title, job_description, qualification, experience, salary_range, no_of_vacancies, job_id)
+                update_job_query.update_qualificationSet(qualification,job_id)
                 update_job_query.update_skillSet(skill_set,job_id)
                 update_job_query.location_eType_jRole(location,employee_type,job_role,job_id)
                 # where_con ="j.id = %s"     

@@ -23,7 +23,6 @@ def execute_query(conditions):
             JobPost.id,
             JobPost.job_title,
             JobPost.job_description,
-            JobPost.qualification,
             CompanyDetails.company_name,
             EmployeeTypes.employee_type,
             Location.location,

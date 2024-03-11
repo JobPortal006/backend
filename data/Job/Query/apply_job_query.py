@@ -23,10 +23,11 @@ def get_user_details(user_id,job_id):
         job_post = session.query(JobPost).filter_by(id=job_id).first()
         additional_queries = job_post.additional_queries
         response_data = {
-                'email': user.email,
-                'mobile_number': user.mobile_number,
-                'resume_path': resume.resume_path,
-                'additional_queries': additional_queries
+            'user_id': user.id,
+            'email': user.email,
+            'mobile_number': user.mobile_number,
+            'resume_path': resume.resume_path,
+            'additional_queries': additional_queries
         }
         return response_data
 

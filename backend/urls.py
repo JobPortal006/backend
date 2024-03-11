@@ -5,7 +5,8 @@ from data.Account_creation.Employeer_account import employeer_account, get_emplo
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from data.Job import all_job_details, post_job, search_jobs,employer_post_jobs,jobs_data,job_details_by_companyName,job_details_by_employeeType,update_job,delete_job,job_filter,apply_job,get_job_details
+from data.Job import all_job_details, post_job, search_jobs,employer_post_jobs,job_details_by_companyName,job_details_by_employeeType,update_job,delete_job,job_filter,apply_job,get_job_details
+from data.Job import jobs_data
 
 urlpatterns = [
     path('admin/', admin.site.urls),

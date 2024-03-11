@@ -2,9 +2,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import OperationalError, DatabaseError, connection
 from time import sleep
 import json
-from datetime import datetime
-from humanize import naturaldelta
-import base64
 from data import message
 from data.Job.Query import search_jobs_query
 from data.Job import json_response

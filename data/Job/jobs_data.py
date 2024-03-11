@@ -6,7 +6,6 @@ from functools import wraps
 from time import sleep
 from data import message
 from django.http import JsonResponse
-from data.Job.Query import post_job_insert_query 
 from django.core.management import call_command
 
 con = connection.cursor()

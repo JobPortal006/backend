@@ -133,21 +133,12 @@ def update_user_details(request):
         department = job_preference_data.get('department')
         industry = job_preference_data.get('industry')
         key_skills = job_preference_data.get('key_skills')
-        prefered_locations = job_preference_data.get('preferred_locations')
+        prefered_locations = job_preference_data.get('prefered_locations')
         # Extracting professional details
         # professional_details_list = professional_details_data.get("companies", [])
         # employment_status = professional_details_data
         # print(employment_status,'employment_status-------')
-        if professional_details_data is None:
-            employment_status = "Fresher"
-            # professional_details_data = json.loads(request.POST.get('professionalDetails', '{}'))
-            isExperienced = professional_details_data.get('isExperienced')
-            print(isExperienced)
-        else:
-            employment_status = "Experienced"
-            # professional_details_data = json.loads(request.POST.get('professionalDetails', '{}'))
-            companies = professional_details_data.get('companies', [])
-            # number_of_companies = professional_details_data.get('numberOfCompanies', 0)
+        
         # Fetching user ID
         print(mobile_number,'mobile------------')
         user_id, registered_by, mobile_number = create_account_user_query.mobile_number(mobile_number)
@@ -210,9 +201,21 @@ def update_user_details(request):
         
         # Delete existing professional details for the user
         update_user_account_query.delete_existing_professional_details(session, user_id)
+        numberOfCompanies = professional_details_data.get('numberOfCompanies')
 
-        # Update ProfessionalDetails table
-        update_user_account_query.update_professional_details(session, user_id, companies)
+        if numberOfCompanies == "0":
+            employment_status = "Fresher"
+            # professional_details_data = json.loads(request.POST.get('professionalDetails', '{}'))
+            # numberOfCompanies = professional_details_data.get('numberOfCompanies')
+            # print(numberOfCompanies)
+        else:
+            employment_status = "Experienced"
+            # professional_details_data = json.loads(request.POST.get('professionalDetails', '{}'))
+            companies = professional_details_data.get('companies', [])
+            # number_of_companies = professional_details_data.get('numberOfCompanies', 0)
+
+            # Update ProfessionalDetails table
+            update_user_account_query.update_professional_details(session, user_id, companies)
             
         # Update resemeDetails table
         # resume_key = f'resume/{user_id}_{resume_name}'
@@ -231,7 +234,6 @@ def update_user_details(request):
             # resume_key = update_user_account_query.upload_resume_path(resume_path,existing_resume_key) 
             resume_key = resume_path  
  
-
         update_user_account_query.update_resume_details(session, user_id, employment_status, resume_key)
         
         updated_data = get_user_account.user_details(session,user_id)

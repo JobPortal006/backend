@@ -14,3 +14,4 @@ def update_password(password,email):
   rows_affected = con.rowcount
   insert=message.rowcount(rows_affected) 
   return True,insert
+  

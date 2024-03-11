@@ -103,8 +103,8 @@ class user_register(View): # View class provides a creating views by defining me
                 industry = job_preference_data.get('industry')
                 key_skills = job_preference_data.get('key_skills')
                 prefered_locations = job_preference_data.get('prefered_locations')
-                # Get user_id using mobile number in signup table
-                user_id, registered_by , email= create_account_user_query.user_check(email)
+                # Get user_id using email in signup table
+                user_id, registered_by , email= create_account_user_query.email_check(email)
                 print(user_id, registered_by, email)
                 # if user_id:
                 #     if email_address == email:

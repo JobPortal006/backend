@@ -5,6 +5,7 @@ from rest_framework.authtoken.models import Token
 from django.db import connection
 from data.Account_creation.Query import login_query
 from data import message
+from data.Account_creation.Query import create_account_user_query
 
 con = connection.cursor()
 
@@ -30,9 +31,13 @@ def login(request):
           # Generate or retrieve the token for the user
           token, created = Token.objects.get_or_create(user=user)
           success_message = message.Login()
+          # Get user_id using email in signup table
+          user_id, registered_by , email= create_account_user_query.email_check(email)
+          print(user_id, registered_by, email)
           response_data = {
             'message': success_message,
-            'token': token.key  # Include the token in the response
+            'token': token.key,  # Include the token in the response
+            'user_id': user_id
           }
           return message.handleSuccess(response_data)
         else:

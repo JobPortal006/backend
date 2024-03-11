@@ -3,7 +3,7 @@ from django.db import connection
 con = connection.cursor()
 
 #Get id in signup table using mobile number
-def user_check(email):
+def email_check(email):
     check_sql = "SELECT id, signup_by, email FROM signup WHERE email = %s"
     con.execute(check_sql, [email])
     user = con.fetchone()

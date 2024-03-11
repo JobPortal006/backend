@@ -1,5 +1,5 @@
 from django.db import connection
-from data.Job.Query import job_details_query
+from data.Job import json_response
 
 # Send a job details data in JSON format 
 # Data is send in response as (Data/Month/Year)
@@ -15,7 +15,7 @@ def employer_post_jobs(employee_id, processed_job_ids):
                         continue
                     print(job_id)
                     processed_job_ids.add(job_id)
-                    result=job_details_query.response(results,job_id,cursor,processed_job_ids)
+                    result=json_response.response(results,job_id,cursor,processed_job_ids)
                     # print(result)
                 return result
             else:

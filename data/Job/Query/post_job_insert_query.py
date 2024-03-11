@@ -92,6 +92,34 @@ def skill_set_insert(employee_id,skill_id,job_id):
     jobPost_values = (employee_id,skill_id,job_id)
     con.execute(jobPost_sql, jobPost_values)
 
+# Get the qualification id using qualification value
+# If qualification input is not present in the table, insert the qualification value into qualification table 
+def qualification(qualification):
+    print(qualification)
+    check_sql = "SELECT id FROM qualification WHERE qualification = %s"
+    con.execute(check_sql, [qualification])
+    user = con.fetchone()
+    print(user)
+    if user is not None:
+        qualification_id = user[0]  
+        print(f"qualification ID: {qualification_id}")
+        return qualification_id
+    else:
+        check_sql = "INSERT INTO qualification(qualification) VALUES (%s)"
+        con.execute(check_sql, [qualification])
+        con.execute("SELECT LAST_INSERT_ID()")
+        user = con.fetchone()
+        if user is not None:
+            qualification_id = user[0]  
+            print(f"qualification ID: {qualification_id}")
+            return qualification_id
+
+# Insert qualification_id int qualification_mapping table
+def qualification_insert(employee_id,qualification_id,job_id):
+    jobPost_sql = "INSERT INTO qualification_mapping(employee_id,qualification_id,job_id) VALUES (%s, %s, %s)"
+    jobPost_values = (employee_id,qualification_id,job_id)
+    con.execute(jobPost_sql, jobPost_values)
+
 # Get job_post id here
 def get_id(job_title):
     check_sql = "SELECT id FROM job_post WHERE job_title = %s"

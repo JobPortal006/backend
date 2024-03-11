@@ -212,6 +212,28 @@ class SkillSetMapping(Base):
     skill = relationship('SkillSets')
     job = relationship('JobPost')
 
+class Qualification(Base):
+    __tablename__ = 'qualification'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    qualification = Column(String(255))
+    created_at = Column(TIMESTAMP, server_default=func.now())
+    updated_at = Column(TIMESTAMP, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
+
+class QualificationMapping(Base):
+    __tablename__ = 'qualification_mapping'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    employee_id = Column(Integer, ForeignKey('signup.id'))
+    qualification_id = Column(Integer, ForeignKey('qualification.id'))
+    job_id = Column(Integer, ForeignKey('job_post.id'))
+    created_at = Column(TIMESTAMP, server_default=func.now())
+    updated_at = Column(TIMESTAMP, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
+    
+    employee = relationship('Signup')
+    qualification = relationship('Qualification')
+    job = relationship('JobPost')
+
 # class ApplyJob(Base):
 #     __tablename__ = 'apply_job'
 

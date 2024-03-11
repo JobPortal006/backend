@@ -85,6 +85,60 @@ def update_skillSet(skill_set,postJob_id):
         con.close()
         return message.tryExceptError(str(e))
     
+def update_qualificationSet(qualification,postJob_id):
+    try:
+        con = connection.cursor()
+        for i in qualification:
+            var = i
+            con.execute("select id from qualification where qualification = %s",[var])   
+            result = con.fetchone()   
+            
+            if result:
+                id = result[0]
+                sql_2 = "select id from qualification_mapping where job_id=%s and qualification_id=%s"
+                value_2 =[postJob_id,id]
+                con.execute(sql_2,value_2)
+                data = con.fetchone()
+                if data:
+                    print("Updated Mapping")
+                else:
+                    sql_3 = "insert into qualification_mapping (qualification_id,job_id) values(%s,%s)"
+                    value_3 = (id,postJob_id)
+                    con.execute(sql_3,value_3)
+            else:
+                con.execute("insert into qualification(qualification) values(%s)",[var])
+                id = con.lastrowid
+                    
+                sql_3 = "insert into qualification_mapping (qualification_id,job_id) values(%s,%s)"
+                value_3 = (id,postJob_id)
+                con.execute(sql_3,value_3)
+                    
+        con.execute("select qualification_id from qualification_mapping where job_id = %s", [postJob_id])
+        qualification_id_mapping = con.fetchall()
+
+        print("Loop 1")
+        for row in qualification_id_mapping:
+            qualifications_id = row[0]
+            b1 = False
+            for deleting_id in qualification: # field name
+                con.execute("select id from qualification where qualification = %s",[deleting_id])
+                deleting_id = con.fetchone()
+                if qualifications_id == deleting_id[0]:
+                    b1 = True
+                    break 
+                 
+            if not b1:
+                con.execute("DELETE FROM qualification_mapping WHERE qualification_id = %s", [qualifications_id])
+
+        # Commit the changes to the d  database
+        con.commit()
+        con.close()
+        return True    
+                        
+    except Exception as e:
+        con.close()
+        return message.tryExceptError(str(e))
+    
 def location_eType_jRole(location,employee_type,job_role,job_id):
     try:
         con = connection.cursor()
