@@ -10,10 +10,11 @@ def delete_jobPost(request):
     if request.method == 'DELETE':
         try:
             data = json.loads(request.body)
-            print(data)
             job_id = data.get('job_id')
+            print(job_id)
             if job_id != None:
                 value = delete_job_query.delete_postJob(job_id)
+                # print(value)
                 if value == 1:
                     return message.response("Success","deletePostJob")
                 else:

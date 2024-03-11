@@ -22,7 +22,7 @@ urlpatterns = [
     path('get_employeer_details/', get_employeer_account.get_employeer_details),
     path('update_employeer_details/', update_employeer_account.update_employee_details),
     path('delete_image/',update_employeer_account.delete_image),
-
+   
     # JOB POST ---- APIs 
     path('job_post/',post_job.post_jobs),
     path('location/',jobs_data.locations),

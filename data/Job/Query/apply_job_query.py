@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from django.http import JsonResponse
-from data.Account_creation.Tables.table import Signup, ResumeDetails
+from data.Account_creation.Tables.table import Signup, ResumeDetails, JobPost
 from sqlalchemy.orm import declarative_base
 from django.views.decorators.csrf import csrf_exempt
 import base64
@@ -10,7 +10,7 @@ from django.db import connection
 Base = declarative_base()
 con = connection.cursor()
 @csrf_exempt
-def get_user_details(user_id):
+def get_user_details(user_id,job_id):
     try:
         engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend')
         Base.metadata.create_all(engine)
@@ -20,11 +20,13 @@ def get_user_details(user_id):
 
         user = session.query(Signup).filter_by(id=user_id).first()
         resume = session.query(ResumeDetails).filter_by(user_id=user_id).first()
-        resume_base64 = base64.b64encode(resume.resume).decode('utf-8')
+        job_post = session.query(JobPost).filter_by(id=job_id).first()
+        additional_queries = job_post.additional_queries
         response_data = {
                 'email': user.email,
                 'mobile_number': user.mobile_number,
-                'resume': resume_base64 
+                'resume_path': resume.resume_path,
+                'additional_queries': additional_queries
         }
         return response_data
 

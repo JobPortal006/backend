@@ -26,8 +26,7 @@ def tryExceptError(message):
     return  JsonResponse({f"status":False,"statusCode":500,"message":message},safe=False)
 
 def Login():
-    parameter_value = "Login Successfully"
-    return parameter_value
+    return "Login Successfully"
  
 def response(val,key):
     key_value_mapping = {

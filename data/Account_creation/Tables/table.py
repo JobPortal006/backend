@@ -153,6 +153,7 @@ class JobPost(Base):
     experience = Column(String(50))
     salary_range = Column(String(50))
     no_of_vacancies = Column(Integer)
+    additional_queries = Column(String(255))
     employee_type_id = Column(Integer, ForeignKey('employees_types.id'))
     job_role_id = Column(Integer, ForeignKey('job_role.id'))
     location_id = Column(Integer, ForeignKey('location.id'))

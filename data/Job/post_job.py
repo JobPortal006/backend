@@ -55,6 +55,7 @@ def post_jobs(request):
         no_of_vacancies = data.get('no_of_vacancies') 
         company_name = data.get('company_name')
         email= data.get('email')
+        additional_queries= data.get('additional_queries')
         print(data)
         print(email)
         valuesCheck = message.check(job_title,job_description,employee_type,job_role,location,skill_set,qualification,experience,salary_range,no_of_vacancies)
@@ -70,7 +71,7 @@ def post_jobs(request):
                 location_id = post_job_insert_query.location_id(location)  # Get location_id here
                 if employee_type_id is not None and job_role_id is not None and location_id is not None:
                     # If location_id is not in the table, it will execute
-                    resul_postJob = post_job_insert_query.jobPost_insertQuery(employee_id, company_id, job_title, job_description, qualification, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, location_id)
+                    resul_postJob = post_job_insert_query.jobPost_insertQuery(employee_id, company_id, job_title, job_description, qualification, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, location_id,additional_queries)
                     print(resul_postJob, 'result_postJob')
                     job_id = post_job_insert_query.get_id(job_title)  # After insert the job_post data, get that job_id
                     print(job_id)
@@ -90,4 +91,4 @@ def post_jobs(request):
             return message.response('Error', 'InputError')
     except Exception as e:
         print(f"The Error is: {str(e)}")
-        return message.tryExceptError(str(e))
+        return message.tryExceptError(str(e))   
