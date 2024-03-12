@@ -10,9 +10,6 @@ def employeer_post_jobs(request):
     try:
         data = json.loads(request.body)
         employee_id = data.get('employee_id')
-        # valuesCheck = message.check(employee_id)
-        # employee_id = 13
-        print(employee_id,'e---------')
         all_results = []  
         if employee_id is not None:
             processed_job_ids = set() # Using set() method store all job_id here, it will not repeat the duplicate job_id

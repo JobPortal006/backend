@@ -63,6 +63,7 @@ def response(val,key):
             'getMethod':'Use to GET method',
             'deleteJobPost_Method':'Use to DELETE method',
             'updateJobError':'Job not updated successguly',
+            'userApplyJobError':'You already appliel for this job',
             'applyJobError':'Job apply failed'
         }
     }

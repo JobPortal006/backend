@@ -4,8 +4,9 @@ from django.http import JsonResponse
 from data.Account_creation.Tables.table import Signup, ResumeDetails, JobPost
 from sqlalchemy.orm import declarative_base
 from django.views.decorators.csrf import csrf_exempt
-import base64
+from data.Job import json_response
 from django.db import connection
+from data import message
 
 Base = declarative_base()
 con = connection.cursor()
@@ -66,15 +67,28 @@ def get_resume_id(resume,user_id):
         print(f"Resume ID: {resume_id}")
         return resume_id
     
-def apply_job_table(job_id,user_id,resume_id):
+def apply_job_table(job_id, user_id, resume_id):
     try:
-        con = connection.cursor()    
-        sql ="insert into apply_job (job_id,user_id,resume_id) values(%s,%s,%s)"
-        values = (job_id,user_id,resume_id)
-        con.execute(sql,values)
-        return True
+        con = connection.cursor()
+
+        # Check if the entry already exists
+        check_sql = "SELECT * FROM apply_job WHERE job_id = %s AND user_id = %s"
+        check_values = (job_id, user_id)
+        con.execute(check_sql, check_values)
+        existing_entry = con.fetchone()
+
+        if existing_entry:
+            return False
+        else:
+            # Entry does not exist, insert the data
+            insert_sql = "INSERT INTO apply_job (job_id, user_id, resume_id) VALUES (%s, %s, %s)"
+            insert_values = (job_id, user_id, resume_id)
+            con.execute(insert_sql, insert_values)
+            return True
     except Exception as e:
-        return JsonResponse(str(e),safe=False)
+        return JsonResponse(str(e), safe=False)
+    finally:
+        con.close()
     
 def additional_queries_table(job_id,user_id,current_ctc,expected_ctc,total_experience,notice_period):
     try:
@@ -104,4 +118,26 @@ def additional_queries_table(job_id,user_id,current_ctc,expected_ctc,total_exper
     except Exception as e:
             return JsonResponse(str(e),safe=False)
     
-    
+
+# Send a job details data in JSON format 
+# Data is send in response as (Data/Month/Year)
+def view_apply_jobs(user_id, processed_job_ids):
+    try:
+        with connection.cursor() as cursor:
+            cursor.callproc('GetApplyJobDetails', [user_id])
+            results = cursor.fetchall()
+            if results is not None:
+                for row in results:
+                    job_id = row[0]
+                    if job_id in processed_job_ids:
+                        continue
+                    processed_job_ids.add(job_id)
+                    result=json_response.response(results,job_id,cursor,processed_job_ids)
+                    # print(result)
+                return result
+            else:
+                print("No results found")
+                return None
+    except Exception as e:
+        print(f"Error: {e}")
+        return False

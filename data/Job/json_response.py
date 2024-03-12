@@ -97,7 +97,7 @@ def response(results, job_id, cursor, processed_job_ids):
             "created_at": created_at.strftime('%d %b %Y'),
             "date": created_at_humanized,
             "company_id": company_id,
-            "company_logo": company_logo,
+            # "company_logo": company_logo,
             "company_logo_path": company_logo_path,
             "company_name": company_name,
             "industry_type": industry_type,
