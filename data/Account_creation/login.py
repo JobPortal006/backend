@@ -37,7 +37,8 @@ def login(request):
           response_data = {
             'message': success_message,
             'token': token.key,  # Include the token in the response
-            'user_id': user_id
+            'candidate_id': user_id,
+            'registered_by': registered_by
           }
           return message.handleSuccess(response_data)
         else:

@@ -51,8 +51,8 @@ def insert_apply_job(user_id,job_id,company_id,resume_id):
     
 # Get the employee_type_id using job_role value
 # If employee_type input is not present in the table, insert the employee_type value into resume table 
-def resume_id(resume):
-    check_sql = "SELECT id FROM resume WHERE resume = %s"
+def get_resume_id(resume,user_id):
+    check_sql = "SELECT id FROM resume_details WHERE resume_path = %s"
     con.execute(check_sql, [resume])
     user = con.fetchone()
     if user:
@@ -60,35 +60,48 @@ def resume_id(resume):
         print(f"Resume ID: {resume_id}")  # Insert resume data in resumes table
         return resume_id
     else:
-        check_sql = "INSERT INTO resume (resume) VALUES (%s)" # After insert the resume, get that resume_id
-        con.execute(check_sql, [resume])
+        check_sql = "INSERT INTO resume_details (user_id,resume_path) VALUES (%s,%s)" # After insert the resume, get that resume_id
+        con.execute(check_sql, [user_id,resume])
         resume_id = con.lastrowid 
         print(f"Resume ID: {resume_id}")
         return resume_id
     
-def user_expectation_table(job_id,user_id,current_ctc,expected_ctc,total_experience,notice_period):
+def apply_job_table(job_id,user_id,resume_id):
     try:
         con = connection.cursor()    
-        sql ="insert into user_expectation (job_id,user_id,total_experience,current_ctc,expected_ctc,notice_period) values(%s,%s,%s,%s,%s,%s)"
+        sql ="insert into apply_job (job_id,user_id,resume_id) values(%s,%s,%s)"
+        values = (job_id,user_id,resume_id)
+        con.execute(sql,values)
+        return True
+    except Exception as e:
+        return JsonResponse(str(e),safe=False)
+    
+def additional_queries_table(job_id,user_id,current_ctc,expected_ctc,total_experience,notice_period):
+    try:
+        con = connection.cursor()    
+        sql ="insert into additional_queries (job_id,user_id,total_experience,current_ctc,expected_ctc,notice_period) values(%s,%s,%s,%s,%s,%s)"
         values = (job_id,user_id,current_ctc,expected_ctc,total_experience,notice_period)
         check_val = con.execute(sql,values)
-        last_id = con.lastrowid
-        if check_val:
-            con.execute("SELECT * FROM user_expectation WHERE id = %s", [last_id])    
-            results = con.fetchone()
-            user_exp = []  # Initialize user_exp as a list
-            if results:
-                additional_information = {
-                    'id': results[0],
-                    'job_id': results[1],
-                    'user_id': results[2],
-                    'current_ctc': results[3],
-                    'expected_ctc': results[4],
-                    'total_experience': results[5],
-                    'notice_period': results[6],
-                }
-                user_exp.append(additional_information) 
-            con.close()    
-            return user_exp
+        # last_id = con.lastrowid
+        # if check_val:
+        #     con.execute("SELECT * FROM additional_queries WHERE id = %s", [last_id])    
+        #     results = con.fetchone()
+        #     user_exp = []  # Initialize user_exp as a list
+        #     if results:
+        #         additional_information = {
+        #             'id': results[0],
+        #             'job_id': results[1],
+        #             'user_id': results[2],
+        #             'current_ctc': results[3],
+        #             'expected_ctc': results[4],
+        #             'total_experience': results[5],
+        #             'notice_period': results[6],
+        #         }
+        #         user_exp.append(additional_information) 
+        #     con.close()    
+        #     return user_exp
+        return True
     except Exception as e:
             return JsonResponse(str(e),safe=False)
+    
+    

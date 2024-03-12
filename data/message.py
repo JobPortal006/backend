@@ -41,7 +41,8 @@ def response(val,key):
             'searchJob':'Job find successfully',
             'updatePostJob':'Successfully Update',
             'deletePostJob':'Job deleted successfully',
-            'updateJob':'Job Updated Successfully'
+            'updateJob':'Job Updated Successfully',
+            'applyJob':'Job Applied Successfully'
         },
         'Error':{
             'emailError': 'Email is already exists. Please use a different email address.',
@@ -61,7 +62,8 @@ def response(val,key):
             'UpdateJobPost_Method':'Use to PUT method',
             'getMethod':'Use to GET method',
             'deleteJobPost_Method':'Use to DELETE method',
-            'updateJobError':'Job not updated successguly'
+            'updateJobError':'Job not updated successguly',
+            'applyJobError':'Job apply failed'
         }
     }
     if val == 'Success':

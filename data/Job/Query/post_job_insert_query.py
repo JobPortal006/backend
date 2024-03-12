@@ -2,11 +2,11 @@ from django.db import connection
 con = connection.cursor()
 
 # Insert the Job Post data into job_post table
-def jobPost_insertQuery(employee_id, company_id, job_title, job_description, qualification, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, location_id,additional_queries):
+def jobPost_insertQuery(employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, location_id,additional_queries):
     try:
         # Print SQL query and parameters for debugging
-        jobPost_sql = "INSERT INTO job_post (employee_id, company_id, job_title, job_description, qualification, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, location_id,additional_queries) VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        jobPost_values = (employee_id, company_id, job_title, job_description, qualification, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, location_id,additional_queries)
+        jobPost_sql = "INSERT INTO job_post (employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, location_id,additional_queries) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        jobPost_values = (employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, location_id,additional_queries)
         con.execute(jobPost_sql, jobPost_values)
         return True
     except Exception as e:

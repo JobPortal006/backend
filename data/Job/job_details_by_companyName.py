@@ -22,12 +22,10 @@ def job_details_by_companyName(request):
         if company_name is not None:
             conditions = and_(CompanyDetails.company_name == company_name)
             result = search_jobs_query.execute_query(conditions)
-            print(result,'condition result')
         jobs=json_response.job_response_details(result,set_data_id)
-        print(jobs,'result')
         global job_response
         job_response = jobs
-        if jobs:
+        if jobs: 
            return message.response1('Success', 'getJobDetails', jobs)
         else:
             return message.response1('Error','searchJobError',data={})

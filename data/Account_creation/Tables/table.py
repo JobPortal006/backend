@@ -149,7 +149,6 @@ class JobPost(Base):
     company_id = Column(Integer, ForeignKey('company_details.id'))
     job_title = Column(String(255))
     job_description = Column(Text)
-    qualification = Column(String(255))
     experience = Column(String(50))
     salary_range = Column(String(50))
     no_of_vacancies = Column(Integer)
@@ -234,8 +233,22 @@ class QualificationMapping(Base):
     qualification = relationship('Qualification')
     job = relationship('JobPost')
 
-# class ApplyJob(Base):
-#     __tablename__ = 'apply_job'
+class ApplyJob(Base):
+    __tablename__ = 'apply_job'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey('signup.id'))
+    resume_id = Column(Integer, ForeignKey('resume_details.id'))
+    job_id = Column(Integer, ForeignKey('job_post.id'))
+    created_at = Column(TIMESTAMP, server_default=func.now())
+    updated_at = Column(TIMESTAMP, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
+    
+    signup = relationship('Signup')
+    resume_details = relationship('ResumeDetails')
+    job_post = relationship('JobPost')
+
+# class AdditionalQueries(Base):
+#     __tablename__ = 'additional_queries'
 
 #     id = Column(Integer, primary_key=True, autoincrement=True)
 #     job_id = Column(Integer, ForeignKey('job_post.id'))
@@ -248,6 +261,7 @@ class QualificationMapping(Base):
 #     # Define relationships (assuming you have corresponding models for job_post and signup)
 #     job_post = relationship('JobPost', back_populates='apply_job')
 #     signup = relationship('Signup', back_populates='apply_job')
+    
 
 engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend')
 Base.metadata.create_all(engine)        
