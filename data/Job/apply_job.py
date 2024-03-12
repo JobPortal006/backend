@@ -74,7 +74,7 @@ def apply_jobs(request):
             resume_path = request.POST.get('resume_path')  
             print(resume_path, 'resume_path-------')  
         session = create_session()
-        check_val = message.check(job_id,user_id,resume_path)
+        check_val = message.check(job_id,user_id)
         if check_val:
             existing_resume_key = update_user_account_query.get_resume_path(session,user_id)
             if resume_file is not None:
