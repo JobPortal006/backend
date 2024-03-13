@@ -6,6 +6,9 @@ from django.http import JsonResponse
 from data.Job.Query import apply_job_query
 from data.Account_creation.User_account.Query import update_user_account_query
 from data.message import create_session
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 con = connection.cursor()
 
@@ -34,7 +37,7 @@ def apply_jobs(request):
         expected_ctc = request.POST.get('expected_ctc')
         total_experience = request.POST.get('total_experience')
         notice_period = request.POST.get('notice_period')
-
+    
         resume_file = request.FILES.get('resume_path')
         if resume_file is not None:
             resume_name = resume_file.name
@@ -43,6 +46,8 @@ def apply_jobs(request):
             resume_path = request.POST.get('resume_path')  
         session = create_session()
         check_val = message.check(job_id,user_id)
+        user_email = apply_job_query.user_email(user_id)
+        company_email = apply_job_query.company_email(job_id)
         if check_val:
             existing_resume_key = update_user_account_query.get_resume_path(session,user_id)
             if resume_file is not None:
@@ -55,6 +60,8 @@ def apply_jobs(request):
             if apply_job_result:
                 if additional_queries == "Yes":
                     apply_job_query.additional_queries_table(job_id,user_id,current_ctc,expected_ctc,total_experience,notice_period)
+                    send_email(user_email)
+                    send_email(company_email)
                     return message.response('Success','applyJob')
                 else:
                     return message.response('Error','applyJobError')
@@ -108,4 +115,11 @@ def get_view_apply_jobs(request):
         print(f"The Error is: {str(e)}")
         return message.tryExceptError(str(e))
    
-   
+@csrf_exempt   
+def send_email(email):
+    subject = 'Job Applied Successfully'
+    message_html = render_to_string('email.html')
+    message_plain = strip_tags(message_html)
+    from_email = 'brochill547@gmail.com'
+    recipient_list = [email]
+    send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)

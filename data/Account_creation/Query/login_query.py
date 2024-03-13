@@ -41,3 +41,11 @@ def loginWithOTP(mobile_number):
         return True
     else:
         return False
+    
+def email_check(email):
+    con = connection.cursor() 
+    sql = "SELECT * FROM signup WHERE email = %s"
+    con.execute(sql, [email])
+    user = con.fetchone()
+    con.close()
+    return True if user else False

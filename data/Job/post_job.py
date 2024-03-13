@@ -63,7 +63,7 @@ def post_jobs(request):
             qualifications_list = data.get('qualification')
             employee_id = post_job_insert_query.email_id(email)
             # employee_id, registered_by, email = create_account_user_query.email_check(email)  # Get employee_id using company_name
-            company_id = post_job_insert_query.company_id(company_name)  # Get company_id using company_name
+            company_id = post_job_insert_query.company_id(employee_id)  # Get company_id using company_name
             if employee_id is not None and company_id is not None:
                 employee_type_id = post_job_insert_query.employee_type_id(employee_type)  # Get employee_type_id here
                 job_role_id = post_job_insert_query.job_role_id(job_role)  # Get job_role_id here

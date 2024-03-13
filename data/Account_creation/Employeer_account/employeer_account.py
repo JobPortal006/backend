@@ -48,16 +48,13 @@ class employer_register(View): # View class provides a creating views by definin
                 mobile_number = request.POST.get('mobile_number')
                 print(mobile_number)
 
-                street_permanent = request.POST.get('street')
-                city_permanent = request.POST.get('city')
-                state_permanent = request.POST.get('state')
-                country_permanent = request.POST.get('country')
-                pincode_permanent = request.POST.get('pincode')
-                address_type_permanent = request.POST.get('address_type')
+                # street_permanent = request.POST.get('street')
+                # city_permanent = request.POST.get('city')
+                # state_permanent = request.POST.get('state')
+                # country_permanent = request.POST.get('country')
+                # pincode_permanent = request.POST.get('pincode')
+                # address_type_permanent = request.POST.get('address_type')
 
-                # company_logo = company_details.get('company_logo') 
-                # company_logo = request.FILES.get("company_logo")
-                # company_logo = company_logo.read()
                 company_logo = request.FILES.get("company_logo")
                 company_logo_name = company_logo.name
                 company_logo_content = company_logo.read()  # Read the content of the file
@@ -81,22 +78,44 @@ class employer_register(View): # View class provides a creating views by definin
                         userid_check = create_account_employeer_query.userid_check(user_id)
                         print(userid_check)
                         if userid_check:    
-                            address_details_permanent_data= message.address_details_permanent(
-                                    street_permanent, city_permanent, state_permanent, country_permanent,
-                                    pincode_permanent, address_type_permanent)
+                            # address_details_permanent_data= message.address_details_permanent(
+                            #         street_permanent, city_permanent, state_permanent, country_permanent,
+                            #         pincode_permanent, address_type_permanent)
                             # Check company details data is empty or not
                             company_details_data = message.company_details(company_logo,company_name,company_industry, company_description, no_of_employees,company_website_link)
-                            print(address_details_permanent_data,company_details_data)
-                            if address_details_permanent_data and company_details_data:
-                                address_id = create_account_employeer_query.get_id(user_id,registered_by,street_permanent)
+                            print(company_details_data)
+                            if company_details_data:
+                                address_id = create_account_employeer_query.get_id(user_id,registered_by)
+                                # address_id = 1
                                 company_details_result = create_account_employeer_query.company_details(user_id,company_logo_content,company_name,
                                     company_industry,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,address_id,company_logo_path)
                                 print('Company_details_result ->', company_details_result)
                                 if company_details_result:
-                                    address_details_permanent_result = create_account_user_query.address_details(
-                                        user_id, registered_by, street_permanent, city_permanent, state_permanent, country_permanent,
-                                        pincode_permanent, address_type_permanent)
-                                    print('Address_details_permanent ->', address_details_permanent_result)
+                                    for i in range(2):  # Assuming there are at most two addresses, adjust as needed
+                                        address_street = request.POST.get(f'address_{i}_street')
+                                        address_city = request.POST.get(f'address_{i}_city')
+                                        address_state = request.POST.get(f'address_{i}_state')
+                                        address_country = request.POST.get(f'address_{i}_country')
+                                        address_pincode = request.POST.get(f'address_{i}_pincode')
+                                        address_type = request.POST.get(f'address_{i}_address_type')
+                                        print(f"address_street: {address_street}")
+                                        print(f"address_city: {address_city}")
+                                        print(f"address_state: {address_state}")
+                                        print(f"address_country: {address_country}")
+                                        print(f"address_pincode: {address_pincode}")
+                                        print(f"address_type: {address_type}")
+                                        if address_street is not None:
+                                            address_details_data = message.address_details_permanent(
+                                                address_street,
+                                                address_city,
+                                                address_state,
+                                                address_country,
+                                                address_pincode,
+                                                address_type)
+                                        address_details_permanent_result = create_account_user_query.address_details(
+                                            user_id, registered_by, address_street, address_city, address_state, address_country,
+                                            address_pincode, address_type)
+                                        print('Address_details_permanent ->', address_details_permanent_result)
 
                                 # sending email
                                 subject = 'Account Creation'

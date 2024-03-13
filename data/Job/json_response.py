@@ -58,17 +58,11 @@ def response(results, job_id, cursor, processed_job_ids):
         processed_job_ids.add(job_id)
         print(f"Job ID: {job_id}")
         (job_post_id, job_title, job_description, experience, salary_range, no_of_vacancies, created_at,
-            company_logo, company_name, industry_type, company_description, no_of_employees, company_website_link, company_logo_path,
-            location, employee_type, job_role,street, city, state, country, pincode) = row
+            company_name, industry_type, company_description, no_of_employees, company_website_link, company_logo_path,
+            location, employee_type, job_role) = row
         created_at_humanized = naturaldelta(datetime.utcnow() - created_at)
         # Fetching skills for the current row
         cursor.nextset()
-        # check_sql = """
-        #     SELECT ss.skill_set
-        #     FROM skill_sets ss
-        #     JOIN skill_set_mapping ssm ON ss.id = ssm.skill_id
-        #     WHERE ssm.job_id = %s
-        # """
         cursor.callproc('GetSkillSet', [job_id])
         skills = cursor.fetchall()
 
@@ -78,14 +72,16 @@ def response(results, job_id, cursor, processed_job_ids):
         # Call the second stored procedure
         cursor.callproc('GetQualification', [job_id])
         qualification = cursor.fetchall()
-        cursor.execute("SELECT company_details.id,company_details.company_logo FROM company_details join job_post on company_details.id = job_post.company_id WHERE job_post.id = %s", [job_id])
-        company_id,logo_result = cursor.fetchone()
-        # print(company_id,logo_result,'c----------')
-        # cursor.execute("SELECT company_details.company_logo FROM company_details join job_post on company_details.id = job_post.company_id WHERE job_post.id = %s", [job_id])
-        # logo_result = cursor.fetchone()
-        # company_logo = logo_result[0]
-        # print(company_logo,'l--------')
-        company_logo = base64.b64encode(logo_result).decode('utf-8')
+        cursor.execute("SELECT company_details.id FROM company_details join job_post on company_details.id = job_post.company_id WHERE job_post.id = %s", [job_id])
+        company_id = cursor.fetchone()
+        cursor.execute("SELECT a.street,a.city,a.state,a.country,a.pincode FROM address a WHERE a.city= %s", [location])
+        address_data = cursor.fetchone()
+        if address_data:
+            street, city, state, country, pincode = address_data
+        else:
+            # Handle the case when address_data is None
+            street, city, state, country, pincode = "", "", "", "", ""
+
         job_data = {
             "job_post_id": job_post_id,
             "job_title": job_title,
@@ -97,7 +93,6 @@ def response(results, job_id, cursor, processed_job_ids):
             "created_at": created_at.strftime('%d %b %Y'),
             "date": created_at_humanized,
             "company_id": company_id,
-            # "company_logo": company_logo,
             "company_logo_path": company_logo_path,
             "company_name": company_name,
             "industry_type": industry_type,

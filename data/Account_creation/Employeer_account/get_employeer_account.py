@@ -1,15 +1,10 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from data.Account_creation.Tables.table import Signup, CompanyDetails, Address
-from sqlalchemy.orm import declarative_base
 from data import message
 import json
 import base64
 import boto3 
-
-# Base = declarative_base()
 
 @csrf_exempt
 def get_employeer_details(request):
@@ -17,11 +12,6 @@ def get_employeer_details(request):
         data = json.loads(request.body)
         employee_id = data.get('employee_id')
         print(employee_id)
-        # engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend')
-
-        # Base.metadata.create_all(engine)
-        # Session = sessionmaker(bind=engine)
-        # session = Session()
         session = message.create_session()
         employeer_details = {}
         
@@ -35,8 +25,18 @@ def get_employeer_details(request):
 
         # Retrieve Address details
         address_details = session.query(Address).filter_by(user_id=employee_id).all()
-        for address in address_details:
-            employeer_details['company_address'] = {
+        # for address in address_details:
+        #     employeer_details['company_address'] = {
+        #         'address_type': address.address_type,
+        #         'city': address.city,
+        #         'country': address.country,
+        #         'pincode': address.pincode,
+        #         'state': address.state,
+        #         'street': address.street,
+        #     }
+        employeer_details['company_addresses'] = []  # Use a list to store multiple addresses
+        for i, address in enumerate(address_details):
+            address_data = {
                 'address_type': address.address_type,
                 'city': address.city,
                 'country': address.country,
@@ -44,14 +44,12 @@ def get_employeer_details(request):
                 'state': address.state,
                 'street': address.street,
             }
+            employeer_details['company_addresses'].append({f'address_{i + 1}': address_data})
 
         # Retrieve CompanyDetails
         company_details = session.query(CompanyDetails).filter_by(employee_id=employee_id).first()
         if company_details:
-            # Retrieve company logo from S3
-            # company_logo = company_details.company_logo
-            # company_logo_base64 = base64.b64encode(company_logo).decode('utf-8') if company_logo else None
-            company_logo_base64 = get_company_logo_from_s3(company_details.company_logo_path)
+            # company_logo_base64 = get_company_logo_from_s3(company_details.company_logo_path)
             
             employeer_details['company_details'] = {
                 'company_name': company_details.company_name,
@@ -61,7 +59,7 @@ def get_employeer_details(request):
                 'company_website_link': company_details.company_website_link,
                 'contact_person_name': company_details.contact_person_name,
                 'contact_person_position': company_details.contact_person_position,
-                'company_logo': company_logo_base64,
+                # 'company_logo': company_logo_base64,
                 'company_logo_path':company_details.company_logo_path
             }
 

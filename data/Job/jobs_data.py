@@ -57,14 +57,14 @@ def locations(cursor, request):
 @csrf_exempt
 @retry_database_operation
 def experience(cursor,request):
-   cursor.execute("SELECT DISTINCT experience from job_post")
-   rows = cursor.fetchall()
-   print(rows)
-   locations_list = [{'experience': row[0]} for row in rows]    
-   json_result = json.dumps(locations_list)
-   json_data = json.loads(json_result)
-   print(json_data)
-   return JsonResponse(json_data,safe=False) 
+  cursor.execute("SELECT DISTINCT experience from job_post")
+  rows = cursor.fetchall()
+  print(rows)
+  locations_list = [{'experience': row[0]} for row in rows]    
+  json_result = json.dumps(locations_list)
+  json_data = json.loads(json_result)
+  print(json_data)
+  return JsonResponse(json_data,safe=False) 
 
 # Get all job_role data in job_role table
 @csrf_exempt
@@ -102,6 +102,26 @@ def company_name(cursor, request):
     json_data = json.loads(json_result)
     print(json_data)
     return JsonResponse(json_data, safe=False)
+
+# Function to retrieve location data
+@csrf_exempt
+@retry_database_operation
+def address_location(cursor, request):
+    try:
+        data = json.loads(request.body)
+        user_id =  data.get('user_id')
+        cursor.execute("SELECT DISTINCT a.city FROM address a WHERE user_id=%s",[user_id])
+        rows = cursor.fetchall()
+        locations_list = [{'address_location': row[0]} for row in rows]
+        json_result = json.dumps(locations_list)
+        json_data = json.loads(json_result)
+        print(json_data)
+        return JsonResponse(json_data, safe=False)
+    except Exception as e:
+        # Handle the specific exception or log the error
+        print(f"An error occurred: {e}")
+        # Raise the exception to trigger the project restart
+        raise
 
 @csrf_exempt
 @retry_database_operation

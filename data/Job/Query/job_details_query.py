@@ -1,8 +1,4 @@
 from django.db import connection
-import json
-from datetime import datetime
-from humanize import naturaldelta
-import base64
 from data.Job import json_response
 
 # Send a job details data in JSON format 

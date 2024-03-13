@@ -54,6 +54,3 @@ def send_signup_email(email):
     from_email = 'brochill547@gmail.com'
     recipient_list = [email]
     send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
-
-
-

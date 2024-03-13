@@ -142,9 +142,9 @@ def email_id(email):
         return employee_id
     
 # Get company_id here
-def company_id(company_name):
-    check_sql = "SELECT id FROM company_details WHERE company_name = %s"
-    con.execute(check_sql, [company_name])
+def company_id(employee_id):
+    check_sql = "SELECT id FROM company_details WHERE employee_id = %s"
+    con.execute(check_sql, [employee_id])
     user = con.fetchone()
     if user is not None:
         company_id = user[0]  

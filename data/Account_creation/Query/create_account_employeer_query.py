@@ -23,11 +23,11 @@ def userid_check(user_id):
     else:
         return True
     
-def get_id(user_id,registered_by,street_permanent):
-    check_sql = "SELECT id FROM address WHERE user_id = %s and registered_by=%s and street = %s"
-    con.execute(check_sql, [user_id,registered_by,street_permanent])
+def get_id(user_id,registered_by):
+    check_sql = "SELECT id FROM address WHERE user_id = %s and registered_by=%s"
+    con.execute(check_sql, [user_id,registered_by])
     user = con.fetchone()
     if user:
         address_id = user[0]  
-        print(f"Company ID: {address_id}")
+        print(f"Address ID: {address_id}")
         return address_id

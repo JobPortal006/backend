@@ -6,6 +6,7 @@ from django.db import connection
 from data.Account_creation.Query import login_query
 from data import message
 from data.Account_creation.Query import create_account_user_query
+from django.http import JsonResponse
 
 con = connection.cursor()
 
@@ -67,4 +68,12 @@ def loginWithOTP(request):
     except Exception:
        return message.serverErrorResponse()
     
-    
+@csrf_exempt 
+def user_email_checks(request):
+    try:
+        data = json.loads(request.body)
+        email = data.get('email')
+        email= login_query.email_check(email)
+        return message.response('Success', 'check_email') if email else message.response('Error', 'check_email')
+    except Exception as e:
+      return JsonResponse(str(e),safe=False)

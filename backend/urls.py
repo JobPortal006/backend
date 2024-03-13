@@ -12,6 +12,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('signup/', signup.signup,name='signup'),
     path('login/',login.login,name='login'),
+    path('user_email_checks/',login.user_email_checks),
     path('loginWithOTP/',login.loginWithOTP,name='loginWithOTP'),
     path('forgetpassword/',forget_password.forgetpassword,name='forgetpassword'),
     path('updatepassword/',forget_password.updatepassword,name='updatepassword'),
@@ -26,6 +27,7 @@ urlpatterns = [
    
     # JOB POST ---- APIs 
     path('job_post/',post_job.post_jobs),
+    path('address_location/',jobs_data.address_location),
     path('location/',jobs_data.locations),
     path('experience/',jobs_data.experience),
     path('company_name/',jobs_data.company_name),

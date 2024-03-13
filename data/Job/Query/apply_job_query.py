@@ -95,25 +95,7 @@ def additional_queries_table(job_id,user_id,current_ctc,expected_ctc,total_exper
         con = connection.cursor()    
         sql ="insert into additional_queries (job_id,user_id,total_experience,current_ctc,expected_ctc,notice_period) values(%s,%s,%s,%s,%s,%s)"
         values = (job_id,user_id,current_ctc,expected_ctc,total_experience,notice_period)
-        check_val = con.execute(sql,values)
-        # last_id = con.lastrowid
-        # if check_val:
-        #     con.execute("SELECT * FROM additional_queries WHERE id = %s", [last_id])    
-        #     results = con.fetchone()
-        #     user_exp = []  # Initialize user_exp as a list
-        #     if results:
-        #         additional_information = {
-        #             'id': results[0],
-        #             'job_id': results[1],
-        #             'user_id': results[2],
-        #             'current_ctc': results[3],
-        #             'expected_ctc': results[4],
-        #             'total_experience': results[5],
-        #             'notice_period': results[6],
-        #         }
-        #         user_exp.append(additional_information) 
-        #     con.close()    
-        #     return user_exp
+        con.execute(sql,values)
         return True
     except Exception as e:
             return JsonResponse(str(e),safe=False)
@@ -141,3 +123,19 @@ def view_apply_jobs(user_id, processed_job_ids):
     except Exception as e:
         print(f"Error: {e}")
         return False
+
+def user_email(user_id):
+    con = connection.cursor() 
+    sql = "SELECT email FROM signup WHERE id = %s"
+    con.execute(sql, [user_id])
+    email = con.fetchone()
+    con.close()
+    return email if email else None
+
+def company_email(job_id):
+    con = connection.cursor() 
+    sql = "select s.email from signup s join company_details c on c.employee_id = s.id join job_post j on j.company_id=c.id where j.id= %s"
+    con.execute(sql, [job_id])
+    email = con.fetchone()
+    con.close()
+    return email if email else None
