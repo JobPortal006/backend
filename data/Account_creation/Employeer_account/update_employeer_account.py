@@ -1,22 +1,20 @@
 from django.http import JsonResponse
+import json
 from django.views.decorators.csrf import csrf_exempt
 from data.Account_creation.Employeer_account.Query import update_employeer_account_query
-from data.Account_creation.Query import create_account_user_query
+from data.Account_creation.Query import create_account_user_query,create_account_employeer_query
 from data.message import create_session
+from data.Account_creation.Tables.table import Address
+from data.token import decode_token
 
 @csrf_exempt
 def update_employee_details(request):
     try:
+        token = request.POST.get('token')
         contact_person_name = request.POST.get('contact_person_name')
-        print("contact_person_name:", contact_person_name)
-
         contact_person_position = request.POST.get('contact_person_position')
-        print("contact_person_position:", contact_person_position)
         email = request.POST.get('email')
-        print("email:", email)
-
         mobile_number = request.POST.get('mobile_number')
-        print("mobile_number:", mobile_number)
 
         # street_permanent = request.POST.get('street')
         # city_permanent = request.POST.get('city')
@@ -45,28 +43,30 @@ def update_employee_details(request):
         company_description = request.POST.get('company_description')
         no_of_employees = request.POST.get('no_of_employees')
         company_website_link = request.POST.get('company_website_link')
-
-        employee_id, registered_by , email_address= create_account_user_query.mobile_number(mobile_number)
-        print(employee_id, registered_by, email_address)
+        employee_id,registered_by,email = decode_token(token)
+        print(employee_id, registered_by,email)
 
         session = create_session()
         update_employeer_account_query.update_signup_details(session, employee_id, email, mobile_number)
-        for i in range(2):  # Assuming there are at most two addresses, adjust as needed
-            address_street = request.POST.get(f'address_{i}_street')
-            address_city = request.POST.get(f'address_{i}_city')
-            address_state = request.POST.get(f'address_{i}_state')
-            address_country = request.POST.get(f'address_{i}_country')
-            address_pincode = request.POST.get(f'address_{i}_pincode')
-            address_type = request.POST.get(f'address_{i}_address_type')
-            print(f"address_street: {address_street}")
-            print(f"address_city: {address_city}")
-            print(f"address_state: {address_state}")   
-            print(f"address_country: {address_country}")
-            print(f"address_pincode: {address_pincode}")
-            print(f"address_type: {address_type}")
-            if address_street is not None:
-                update_employeer_account_query.update_or_create_address(session, employee_id, address_street, address_city, address_state, address_country,address_pincode, address_type)
-        
+        # Delete existing address data for the given user_id and address_type
+        session.query(Address).filter_by(user_id=employee_id).delete()
+        company_address_json = request.POST.get('company_address', '[]')
+        # Parse the JSON string to get the array of objects
+        company_addresses = json.loads(company_address_json)
+        # Get the length of the array of objects
+        num_addresses = len(company_addresses)
+        print("Number of addresses:", num_addresses)
+        for i in range(num_addresses):  # Assuming there are at most two addresses, adjust as needed
+            current_address = company_addresses[i]
+            # Extract individual fields from the address object
+            address_street = current_address.get('street')
+            address_city = current_address.get('city')
+            address_state = current_address.get('state')
+            address_country = current_address.get('country')
+            address_pincode = current_address.get('pincode')
+            address_type = current_address.get('address_type')
+            if address_street is not None: 
+                update_employeer_account_query.update_or_create_address(session, employee_id,registered_by, address_street, address_city, address_state, address_country,address_pincode, address_type)
         existing_logo_key = update_employeer_account_query.get_company_logo_path(session,employee_id)
         print(existing_logo_key,'e------')
         if company_logo_file is not None:

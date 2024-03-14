@@ -12,7 +12,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('signup/', signup.signup,name='signup'),
     path('login/',login.login,name='login'),
-    path('user_email_checks/',login.user_email_checks),
+    path('google_email_checks/',login.user_email_checks),
     path('loginWithOTP/',login.loginWithOTP,name='loginWithOTP'),
     path('forgetpassword/',forget_password.forgetpassword,name='forgetpassword'),
     path('updatepassword/',forget_password.updatepassword,name='updatepassword'),

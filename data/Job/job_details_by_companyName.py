@@ -45,3 +45,4 @@ def job_details_by_companyName_view(request):
     except Exception as e:
         print(f"The Error is: {str(e)}")
         return message.tryExceptError(str(e))
+    

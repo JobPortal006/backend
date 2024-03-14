@@ -34,8 +34,7 @@ class PersonalDetails(Base):
     last_name = Column(String(50), nullable=False)
     date_of_birth = Column(Date, nullable=False)
     gender = Column(Enum('Male', 'Female', 'Others', name='gender_enum'), nullable=False)
-    profile_picture = Column(LargeBinary , nullable=False)
-    profile_picture_path = Column(String(50), nullable=False)
+    profile_picture_path = Column(String(255), nullable=False)
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
 
@@ -115,8 +114,7 @@ class ResumeDetails(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('signup.id'))
     employment_status = Column(Enum('Fresher', 'Experienced', name='employment_status_enum'), nullable=False)
-    resume = Column(LargeBinary , nullable=False)
-    resume_path = Column(String(100))
+    resume_path = Column(String(255))
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
 
@@ -129,7 +127,6 @@ class CompanyDetails(Base):
     no_of_employees = Column(Integer)
     company_industry = Column(String(100))
     company_description = Column(String(100))
-    company_logo = Column(LargeBinary , nullable=False)
     address_id = Column(Integer, ForeignKey('address.id'))
     company_logo_path = Column(String(100))
     created_at = Column(TIMESTAMP, server_default=func.now())
@@ -155,7 +152,6 @@ class JobPost(Base):
     additional_queries = Column(String(255))
     employee_type_id = Column(Integer, ForeignKey('employees_types.id'))
     job_role_id = Column(Integer, ForeignKey('job_role.id'))
-    location_id = Column(Integer, ForeignKey('location.id'))
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(TIMESTAMP, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
 
@@ -163,7 +159,6 @@ class JobPost(Base):
     company = relationship('CompanyDetails')
     employee_type = relationship('EmployeeTypes')
     job_role = relationship('JobRole')
-    location = relationship('Location')
 
 class Location(Base):
     __tablename__ = 'location'
@@ -231,6 +226,20 @@ class QualificationMapping(Base):
     
     employee = relationship('Signup')
     qualification = relationship('Qualification')
+    job = relationship('JobPost')
+
+class LocationMapping(Base):
+    __tablename__ = 'location_mapping'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    employee_id = Column(Integer, ForeignKey('signup.id'))
+    location_id = Column(Integer, ForeignKey('location.id'))
+    job_id = Column(Integer, ForeignKey('job_post.id'))
+    created_at = Column(TIMESTAMP, server_default=func.now())
+    updated_at = Column(TIMESTAMP, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
+    
+    employee = relationship('Signup')
+    location = relationship('Location')
     job = relationship('JobPost')
 
 class ApplyJob(Base):

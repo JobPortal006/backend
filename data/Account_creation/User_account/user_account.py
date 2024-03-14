@@ -9,6 +9,7 @@ from django.views import View
 from data import message
 import io
 import boto3
+from data.token import decode_token
 
 # Insert the data into required tables
 # Get user_id, email data by using mobile_number
@@ -29,6 +30,9 @@ class user_register(View): # View class provides a creating views by defining me
                 # job_preference_data = data.get('jobPreference', {})
                 # professional_details_data = data.get('professionalDetails', {})
                 # else:
+                token = request.POST.get('token')
+                user_id,registered_by,email = decode_token(token)
+                print(user_id, registered_by,email) 
                 user_details = json.loads(request.POST.get('userDetails', '{}'))
                 print(user_details)
                 address_data = json.loads(request.POST.get('address', '{}'))
@@ -43,7 +47,7 @@ class user_register(View): # View class provides a creating views by defining me
                 last_name = user_details.get('last_name')
                 gender = user_details.get('gender')
                 date_of_birth = user_details.get('date_of_birth')
-                email = user_details.get('email')
+                # email = user_details.get('email')
                 profile_picture = request.FILES.get('profilePicture')
                 profile_picture_name=profile_picture.name
                 profile_picture = profile_picture.read()
@@ -103,19 +107,10 @@ class user_register(View): # View class provides a creating views by defining me
                 industry = job_preference_data.get('industry')
                 key_skills = job_preference_data.get('key_skills')
                 prefered_locations = job_preference_data.get('prefered_locations')
-                # Get user_id using email in signup table
-                user_id, registered_by , email= create_account_user_query.email_check(email)
-                print(user_id, registered_by, email)
-                # if user_id:
-                #     if email_address == email:
-                #         # Check permanent address details data is empty or not
-                #         userid_check = create_account_employeer_query.userid_check(user_id)
-                #         print(userid_check)
-                #         if userid_check:  
-                if email:
+                if user_id:
                     userid_check = create_account_user_query.userid_check(user_id)
                     print(userid_check)
-                    if userid_check == False:
+                    if userid_check == True:
                         # Update the profile_picture variable to the correct URL 
                         # Check user details data is empty or not
                         personal_details_data = message.personal_details(first_name, last_name,date_of_birth, gender) 
@@ -136,7 +131,7 @@ class user_register(View): # View class provides a creating views by defining me
                         s3.upload_fileobj(io.BytesIO(profile_picture), 'backendcompanylogo', profile_picture_key)
                         print(profile_picture_key)
                         personal_details_result = create_account_user_query.personal_details(
-                            user_id, first_name, last_name, date_of_birth, gender, profile_picture,profile_picture_key)
+                            user_id, first_name, last_name, date_of_birth, gender,profile_picture_key)
                         print('Personal_details ->', personal_details_result)
 
                         address_details_current_result = create_account_user_query.address_details(
@@ -173,14 +168,14 @@ class user_register(View): # View class provides a creating views by defining me
                         print(resume_key)
                         if employment_status == 'Fresher' and employment_status is not None:
                             employment_status_result = create_account_user_query.resume_details(
-                                user_id, employment_status, resume,resume_key
+                                user_id, employment_status,resume_key
                             )
                             print('Professional_details ->', employment_status_result)
                             
                         else:
                             employment_status = 'Experienced'
                             employment_status_result = create_account_user_query.resume_details(
-                                user_id, employment_status, resume,resume_key
+                                user_id, employment_status,resume_key
                             )
                             companies = professional_details_data.get('companies', [])
                             for company in companies: 
@@ -200,8 +195,6 @@ class user_register(View): # View class provides a creating views by defining me
                         recipient_list = [email]
                         send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
                         return message.response('Success','accountCreation')
-                        # else:
-                        #   return message.response('Error','UserIdError')
                     else:
                         return message.response('Error','UserIdError')
                 else:

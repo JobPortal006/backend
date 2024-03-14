@@ -2,16 +2,17 @@ from django.db import connection
 con = connection.cursor()
 
 # Insert the Job Post data into job_post table
-def jobPost_insertQuery(employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, location_id,additional_queries):
+def jobPost_insertQuery(employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id,additional_queries):
     try:
         # Print SQL query and parameters for debugging
-        jobPost_sql = "INSERT INTO job_post (employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, location_id,additional_queries) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        jobPost_values = (employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, location_id,additional_queries)
+        jobPost_sql = "INSERT INTO job_post (employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id,additional_queries) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        jobPost_values = (employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id,additional_queries)
         con.execute(jobPost_sql, jobPost_values)
-        return True
+        job_id=con.execute("SELECT LAST_INSERT_ID()")
+        return True,job_id
     except Exception as e:
         print(f"Error during post a job: {e}")
-        return False
+        return False,None
     
 # Get the employee_type_id using job_role value
 # If employee_type input is not present in the table, insert the employee_type value into employees_types table 
@@ -113,6 +114,34 @@ def qualification(qualification):
             qualification_id = user[0]  
             print(f"qualification ID: {qualification_id}")
             return qualification_id
+        
+# Get the qualification id using qualification value
+# If qualification input is not present in the table, insert the qualification value into qualification table 
+def location(location):
+    print(location)
+    check_sql = "SELECT id FROM location WHERE location = %s"
+    con.execute(check_sql, [location])
+    user = con.fetchone()
+    print(user)
+    if user is not None:
+        location_id = user[0]  
+        print(f"location ID: {location_id}")
+        return location_id
+    else:
+        check_sql = "INSERT INTO location(location) VALUES (%s)"
+        con.execute(check_sql, [location])
+        con.execute("SELECT LAST_INSERT_ID()")
+        user = con.fetchone()
+        if user is not None:
+            location_id = user[0]  
+            print(f"location ID: {location_id}")
+            return location_id
+        
+# Insert qualification_id int qualification_mapping table
+def location_insert(employee_id,location_id,job_id):
+    jobPost_sql = "INSERT INTO location_mapping(employee_id,location_id,job_id) VALUES (%s, %s, %s)"
+    jobPost_values = (employee_id,location_id,job_id)
+    con.execute(jobPost_sql, jobPost_values)
 
 # Insert qualification_id int qualification_mapping table
 def qualification_insert(employee_id,qualification_id,job_id):

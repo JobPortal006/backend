@@ -21,16 +21,19 @@ def get_user_details(user_id,job_id):
 
         user = session.query(Signup).filter_by(id=user_id).first()
         resume = session.query(ResumeDetails).filter_by(user_id=user_id).first()
-        job_post = session.query(JobPost).filter_by(id=job_id).first()
-        additional_queries = job_post.additional_queries
-        response_data = {
-            'user_id': user.id,
-            'email': user.email,
-            'mobile_number': user.mobile_number,
-            'resume_path': resume.resume_path,
-            'additional_queries': additional_queries
-        }
-        return response_data
+        if resume is not None:
+            job_post = session.query(JobPost).filter_by(id=job_id).first()
+            additional_queries = job_post.additional_queries
+            response_data = {
+                'user_id': user.id,
+                'email': user.email,
+                'mobile_number': user.mobile_number,
+                'resume_path': resume.resume_path,
+                'additional_queries': additional_queries
+            }
+            return response_data
+        else:
+            return None
 
     except Exception as e:
         print(f"Error: {e}")
@@ -105,24 +108,25 @@ def additional_queries_table(job_id,user_id,current_ctc,expected_ctc,total_exper
 # Data is send in response as (Data/Month/Year)
 def view_apply_jobs(user_id, processed_job_ids):
     try:
+        results = None  # Initialize result variable
         with connection.cursor() as cursor:
             cursor.callproc('GetApplyJobDetails', [user_id])
             results = cursor.fetchall()
-            if results is not None:
+            if results:
                 for row in results:
                     job_id = row[0]
                     if job_id in processed_job_ids:
                         continue
                     processed_job_ids.add(job_id)
-                    result=json_response.response(results,job_id,cursor,processed_job_ids)
+                    result = json_response.response(results, job_id, cursor, processed_job_ids)
                     # print(result)
-                return result
+                return result 
             else:
                 print("No results found")
                 return None
     except Exception as e:
         print(f"Error: {e}")
-        return False
+        return None
 
 def user_email(user_id):
     con = connection.cursor() 

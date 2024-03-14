@@ -7,9 +7,13 @@ from data.Account_creation.Query import login_query
 from data import message
 from data.Account_creation.Query import create_account_user_query
 from django.http import JsonResponse
+import jwt
+import datetime
+import secrets
+from data.token import create_token
 
 con = connection.cursor()
-
+# secret_key = secrets.token_hex(32)
 # Check email and password is registered or not in Signup table
 # Create a token for each email and send token to response
 # Once logged in, update the loggedin time in table
@@ -23,22 +27,27 @@ def login(request):
         print(email)
         # Use your login_query function to validate credentials
         user = login_query.login(email, password)
+        # secret_key = "12345"
+        # payload = {
+        #   'email': email,
+        #   'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)  # Token time set
+        # }
+
         if user:
-          try:
-            user = User.objects.get(email=email)
-          except User.DoesNotExist:
-            # If user doesn't exist, create a new user
-            user = User.objects.create_user(username=email, email=email, password=password)
-          # Generate or retrieve the token for the user
-          token, created = Token.objects.get_or_create(user=user)
+          # token = jwt.encode(payload, secret_key, algorithm='HS256')
+          # print(token, "<- Token")
+          # # Token Decode
+          # decoded_token = jwt.decode(token, secret_key, algorithms=['HS256'])
+          # print(decoded_token.get('email'),"Original values")
+          token = create_token(email)
           success_message = message.Login()
           # Get user_id using email in signup table
           user_id, registered_by , email= create_account_user_query.email_check(email)
           print(user_id, registered_by, email)
           response_data = {
-            'message': success_message,
-            'token': token.key,  # Include the token in the response
-            'candidate_id': user_id,
+            'message': success_message,  
+            'token': token,  # Include the token in the response
+            # 'candidate_id': user_id,
             'registered_by': registered_by
           }
           return message.handleSuccess(response_data)
@@ -73,7 +82,11 @@ def user_email_checks(request):
     try:
         data = json.loads(request.body)
         email = data.get('email')
+        print(email)
         email= login_query.email_check(email)
-        return message.response('Success', 'check_email') if email else message.response('Error', 'check_email')
+        if email:
+          return message.response('Success','Signup')
+        else:
+          return message.response('Error','loginError')
     except Exception as e:
       return JsonResponse(str(e),safe=False)

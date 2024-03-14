@@ -10,18 +10,10 @@ def update_signup_details(session, employee_id, email, mobile_number):
         signup_details.mobile_number = mobile_number
 
 # Update or create Address details
-def update_or_create_address(session, employee_id, street, city, state, country,pincode, address_type):
-    address_details = session.query(Address).filter_by(user_id=employee_id, address_type=address_type).first()
-    if address_details:
-        address_details.city = city
-        address_details.country = country
-        address_details.pincode = pincode
-        address_details.state = state
-        address_details.street = street
-    else:
-        new_address = Address(user_id=employee_id, address_type=address_type, city=city,
-                              country=country, pincode=pincode, state=state, street=street)
-        session.add(new_address)
+def update_or_create_address(session, employee_id,registered_by, street, city, state, country,pincode, address_type):
+    new_address = Address(user_id=employee_id,registered_by=registered_by, address_type=address_type, city=city,
+                            country=country, pincode=pincode, state=state, street=street)
+    session.add(new_address)
 
 # Update or create CompanyDetails
 def update_or_create_company_details(session, employee_id, company_name, company_industry, company_description,

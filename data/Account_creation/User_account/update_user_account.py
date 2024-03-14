@@ -7,8 +7,8 @@ from data.Account_creation.User_account.Query import update_user_account_query
 from data.Account_creation.Query import create_account_user_query
 from data.message import create_session
 from data.Account_creation.User_account import get_user_account
+from data.token import decode_token
 
-# Base = declarative_base()
 
 @csrf_exempt
 def update_user_details(request):
@@ -20,6 +20,9 @@ def update_user_details(request):
         # education_data = data.get('data', {}).get('education_details', {})
         # job_preference_data = data.get('data', {}).get('jobPreference', {})
         # professional_details_data = data.get('data', {}).get('professionalDetails', {})
+        token = request.POST.get('token')
+        user_id,registered_by,email = decode_token(token)
+        print(user_id, registered_by,email) 
         user_details = json.loads(request.POST.get('userDetails', '{}'))
         signup_data = json.loads(request.POST.get('Signup', '{}'))
         address_data = json.loads(request.POST.get('address', '{}'))
@@ -53,13 +56,14 @@ def update_user_details(request):
         #     print(profile_picture_name)
         # print(profile_picture_path,'profile_picture_path')
         profile_picture_file = request.FILES.get('profilePicture')
+        print(profile_picture_file,'f--------')
         if profile_picture_file is not None:
-            profile_picture_name = profile_picture_path.name
-            profile_picture_file = profile_picture_path.read()
-            print(profile_picture_name,'n-----------')
+            profile_picture_name = profile_picture_file.name
+            profile_picture_file = profile_picture_file.read()  # Read the content of the file
+            print(profile_picture_name, 'n-----------')
         else:
             profile_picture_path = user_details.get('profile_picture_path')
-            print(profile_picture_path,'p===========')
+            print(profile_picture_path, 'p===========')
         # resume_data = json.loads(request.FILES.get('resume', '{"resume_path": null}'))
         
         # print(resume_data,'r------')
@@ -140,14 +144,9 @@ def update_user_details(request):
         # print(employment_status,'employment_status-------')
         
         # Fetching user ID
-        print(mobile_number,'mobile------------')
-        user_id, registered_by, mobile_number = create_account_user_query.mobile_number(mobile_number)
-        print(user_id, registered_by, mobile_number)
-        # Creating SQLAlchemy engine and session
-        # engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend')
-        # Base.metadata.create_all(engine)
-        # Session = sessionmaker(bind=engine)
-        # session = Session()
+        # print(mobile_number,'mobile------------')
+        # user_id, registered_by, mobile_number = create_account_user_query.mobile_number(mobile_number)
+        # print(user_id, registered_by, mobile_number)
         session = create_session()
 
         # s3 = boto3.client('s3', aws_access_key_id='AKIAZI2LB2XIRFQPYDJ4', aws_secret_access_key='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', region_name='eu-north-1')

@@ -1,6 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 import json
 from data import message
+from data.token import decode_token
 from data.Job.Query import employer_post_jobs_query
 job_response = ""
 
@@ -9,7 +10,10 @@ job_response = ""
 def employeer_post_jobs(request):
     try:
         data = json.loads(request.body)
-        employee_id = data.get('employee_id')
+        # employee_id = data.get('employee_id')
+        token = data.get('token')
+        employee_id,registered_by,email = decode_token(token)
+        print(employee_id, registered_by,email)
         all_results = []  
         if employee_id is not None:
             processed_job_ids = set() # Using set() method store all job_id here, it will not repeat the duplicate job_id
@@ -17,6 +21,8 @@ def employeer_post_jobs(request):
             if job_result is not None:# Check if search_result is not None before converting to a dictionary
                 job_result_dict = json.loads(job_result) # Convert search_result to a Python dictionary
                 all_results.append(job_result_dict) # Append results for each skill to the list
+            else:
+                return message.response1('Error', 'searchJobError', data={}) 
             global job_response
             job_response
         else:

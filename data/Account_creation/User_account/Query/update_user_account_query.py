@@ -132,7 +132,6 @@ def upload_resume_file(resume, resume_name, user_id,existing_resume_key):
     print(new_logo_key,'new_logo_key-----------')
     # Check if the new logo key is different from the existing one
     if existing_resume_key != new_logo_key:
-        print('1-------------')
         s3.upload_fileobj(io.BytesIO(resume), 'backendcompanylogo', new_logo_key)
         # if existing_resume_key is None:
         #     s3.delete_object(Bucket='backendcompanylogo', Key=existing_resume_key)
@@ -140,6 +139,5 @@ def upload_resume_file(resume, resume_name, user_id,existing_resume_key):
     return new_logo_key
 
 def upload_resume_path(resume_path,existing_logo_key):
-    print('path-----------')
     new_logo_key = resume_path 
     return new_logo_key

@@ -2,7 +2,9 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from data import message
 from data.Job import search_jobs
-job_response = ""
+from data.Job import job_details_by_employeeType
+from data.Job import job_details_by_companyName
+jobs = ""
 @csrf_exempt
 def job_filter(request):
     if request.method == 'POST':
@@ -15,9 +17,13 @@ def job_filter(request):
             job_role_value = data.get('job_role')
             salary_range_value = data.get('salary_range')
             jobs = search_jobs.job_response
-            if jobs is None:
+            if jobs is None or jobs == '':
                 jobs = job_filter_result()
-            # print(jobs)
+            if jobs is None or jobs == '':
+                jobs = job_details_by_companyName.job_response
+            if jobs is None or jobs == '':
+                jobs = job_details_by_employeeType.job_response
+            print(jobs,'filter result')
             condition = ""
             def where_condition(data,location_value, dyanamic_value, condition):
                 key_value = None
@@ -64,4 +70,4 @@ def job_filter(request):
         return message.response('Error', 'Error')
     
 def job_filter_result():
-    return job_response
+    return jobs

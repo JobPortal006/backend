@@ -9,6 +9,7 @@ from data.message import create_session
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from data.token import decode_token
 
 con = connection.cursor()
 
@@ -17,12 +18,19 @@ def fetch_apply_job(request):
     try:
         data = json.loads(request.body)
         post_data = data.get('postdata', {})
-        user_id = post_data.get('user_id')
+        # user_id = post_data.get('user_id')
+        token = post_data.get('token')
+        print(token)
+        user_id,registered_by,email = decode_token(token)
+        print(user_id, registered_by,email) 
         job_id = post_data.get('job_id')
         print(user_id,job_id)
 
         result = apply_job_query.get_user_details(user_id,job_id)
-        return JsonResponse(result)  # Return the dictionary directly as JsonResponse
+        if result is not None:
+            return JsonResponse(result)  # Return the dictionary directly as JsonResponse
+        else:
+            return message.response('Error','companyError')
 
     except Exception as e:
         return message.tryExceptError(str(e)) 
@@ -31,7 +39,9 @@ def fetch_apply_job(request):
 def apply_jobs(request):
     try:
         job_id = request.POST.get('job_id')
-        user_id = request.POST.get('user_id')
+        token = request.POST.get('token')
+        user_id,registered_by,email = decode_token(token)
+        print(user_id, registered_by,email) 
         additional_queries = request.POST.get('additional_queries')
         current_ctc = request.POST.get('current_ctc')
         expected_ctc = request.POST.get('expected_ctc')
@@ -80,8 +90,9 @@ job_response = ""
 def view_apply_jobs(request):
     try:
         data = json.loads(request.body)
-        user_id = data.get('user_id')
-        print(user_id)
+        token = data.get('token')
+        user_id,registered_by,email = decode_token(token)
+        print(user_id, registered_by,email)
         all_results = []  
         if user_id is not None:
             processed_job_ids = set() # Using set() method store all job_id here, it will not repeat the duplicate job_id
@@ -89,6 +100,8 @@ def view_apply_jobs(request):
             if job_result is not None:# Check if search_result is not None before converting to a dictionary
                 job_result_dict = json.loads(job_result) # Convert search_result to a Python dictionary
                 all_results.append(job_result_dict) # Append results for each skill to the list
+            else:
+                return message.response1('Error', 'searchJobError', data={}) 
             global job_response
             job_response
         else:

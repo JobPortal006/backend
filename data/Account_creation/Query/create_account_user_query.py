@@ -26,9 +26,9 @@ def mobile_number(mobile_number):
         return None, None, None
 
 # Insert the data into personal_details table
-def personal_details(user_id, first_name, last_name, date_of_birth, gender, profile_picture,profile_picture_key):
-    sql = "INSERT INTO personal_details (user_id, first_name, last_name, date_of_birth, gender, profile_picture, profile_picture_path) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-    values = (user_id, first_name, last_name, date_of_birth, gender, profile_picture,profile_picture_key)
+def personal_details(user_id, first_name, last_name, date_of_birth, gender,profile_picture_key):
+    sql = "INSERT INTO personal_details (user_id, first_name, last_name, date_of_birth, gender, profile_picture_path) VALUES (%s, %s, %s, %s, %s, %s)"
+    values = (user_id, first_name, last_name, date_of_birth, gender,profile_picture_key)
     try:
         con.execute(sql, values)
         connection.commit()
@@ -114,9 +114,9 @@ def professional_details(user_id, company_name, years_of_experience, job_role, s
         return False
     
 # Insert the data into resume_details table
-def resume_details(user_id,employment_status,resume,resume_key):
-    sql = "INSERT INTO resume_details (user_id,employment_status,resume,resume_path) VALUES (%s, %s, %s, %s)"
-    values = (user_id,employment_status,resume,resume_key)
+def resume_details(user_id,employment_status,resume_key):
+    sql = "INSERT INTO resume_details (user_id,employment_status,resume_path) VALUES (%s, %s, %s)"
+    values = (user_id,employment_status,resume_key)
     try:
         con.execute(sql, values)
         connection.commit()
@@ -137,7 +137,7 @@ def userid_check(user_id):
     query_professional_details = con.execute(check_sql_professional_details, [user_id])
     query_resume_details = con.execute(check_sql_resume_details, [user_id])
     print(query_personal,query_job_preferences,query_professional_details,query_resume_details,'1-----------')
-    if query_personal and query_job_preferences and query_professional_details and query_resume_details:
+    if query_personal == 0 and query_job_preferences == 0 and query_professional_details ==0 and query_resume_details == 0:
         return True
     else:
         return False

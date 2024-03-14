@@ -3,7 +3,7 @@ from django.db import connection
 from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import declarative_base
 import os
-from data.Account_creation.Tables.table import SkillSets, Location, JobPost, CompanyDetails, EmployeeTypes, JobRole, SkillSetMapping
+from data.Account_creation.Tables.table import SkillSets, Location, JobPost, CompanyDetails, EmployeeTypes, JobRole, SkillSetMapping, LocationMapping
 con = connection.cursor()
 Base = declarative_base()
 
@@ -25,22 +25,30 @@ def execute_query(conditions):
             JobPost.job_description,
             CompanyDetails.company_name,
             EmployeeTypes.employee_type,
-            Location.location,
+            # Location.location,
             JobPost.experience,
             JobPost.salary_range,
             JobPost.no_of_vacancies,
-            CompanyDetails.company_logo,
+            # CompanyDetails.company_logo,
             CompanyDetails.company_logo_path,
             JobRole.job_role,
-            SkillSets.skill_set,
+            # SkillSets.skill_set,
             JobPost.created_at
         )\
-            .join(Location, JobPost.location_id == Location.id)\
-            .join(EmployeeTypes, JobPost.employee_type_id == EmployeeTypes.id)\
-            .join(JobRole, JobPost.job_role_id == JobRole.id)\
-            .join(SkillSetMapping, JobPost.id == SkillSetMapping.job_id)\
-            .join(SkillSets, SkillSetMapping.skill_id == SkillSets.id)\
-            .join(CompanyDetails, JobPost.company_id == CompanyDetails.id)
+        .join(LocationMapping, JobPost.id == LocationMapping.job_id)\
+        .join(Location, LocationMapping.location_id == Location.id)\
+        .join(EmployeeTypes, JobPost.employee_type_id == EmployeeTypes.id)\
+        .join(JobRole, JobPost.job_role_id == JobRole.id)\
+        .join(SkillSetMapping, JobPost.id == SkillSetMapping.job_id)\
+        .join(SkillSets, SkillSetMapping.skill_id == SkillSets.id)\
+        .join(CompanyDetails, JobPost.company_id == CompanyDetails.id)
+            # .join(LocationMapping, JobPost.id == LocationMapping.job_id)\
+            # .join(Location, LocationMapping.location_id == Location.id)\
+            # .join(EmployeeTypes, JobPost.employee_type_id == EmployeeTypes.id)\
+            # .join(JobRole, JobPost.job_role_id == JobRole.id)\
+            # .join(SkillSetMapping, JobPost.id == SkillSetMapping.job_id)\
+            # .join(SkillSets, SkillSetMapping.skill_id == SkillSets.id)\
+            # .join(CompanyDetails, JobPost.company_id == CompanyDetails.id)
         # Applying filter conditions
         if conditions is not None:
             query = query.filter(conditions)

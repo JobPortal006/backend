@@ -21,9 +21,12 @@ def job_response_details(results,set_data_id):
             # Call the second stored procedure
             cursor.callproc('GetQualification', [job_id])
             qualification = cursor.fetchall()
-            company_logo = row[9]
-            company_logo = base64.b64encode(company_logo).decode('utf-8')
-            created_at = row[13]
+            cursor.nextset()
+            cursor.callproc('GetLocation', [job_id])
+            location = cursor.fetchall()
+            # company_logo = row[9]
+            # company_logo = base64.b64encode(company_logo).decode('utf-8')
+            created_at = row[10]
             created_at_humanized = naturaldelta(datetime.utcnow() - created_at)
             job = {
                 'id': row[0],
@@ -32,13 +35,13 @@ def job_response_details(results,set_data_id):
                 'qualification':[qualification[0] for qualification in qualification],
                 'company_name': row[3],
                 'employee_type': row[4],
-                'location': row[5],  
-                'experience': row[6],
-                'salary_range': row[7],
-                'no_of_vacancies': row[8],
-                'company_logo': company_logo,
-                'company_logo_path':row[10],
-                'job_role': row[11],
+                'location': [location[0] for location in location],  
+                'experience': row[5],
+                'salary_range': row[6],
+                'no_of_vacancies': row[7],
+                # 'company_logo': company_logo,
+                'company_logo_path':row[8],
+                'job_role': row[9],
                 'skills': [skill[0] for skill in skills],
                 'created_at': created_at_humanized
             }
@@ -50,18 +53,21 @@ def job_response_details(results,set_data_id):
 # Send the response here
 def response(results, job_id, cursor, processed_job_ids):
     data = []
-    for row in results:  # Corrected variable name from 'results' to 'row'
+    for row in results:
         job_id = row[0]
         # Check if job_id is already processed, skip if it is
         # if job_id in processed_job_ids:
         #     continue
         processed_job_ids.add(job_id)
         print(f"Job ID: {job_id}")
-        (job_post_id, job_title, job_description, experience, salary_range, no_of_vacancies, created_at,
-            company_name, industry_type, company_description, no_of_employees, company_website_link, company_logo_path,
-            location, employee_type, job_role) = row
+        job_post_id, job_title, job_description, experience, salary_range, no_of_vacancies, created_at, \
+            company_name, industry_type, company_description, no_of_employees, company_website_link, company_logo_path, \
+            employee_type, job_role = row
+
+        # Calculate humanized creation date
         created_at_humanized = naturaldelta(datetime.utcnow() - created_at)
-        # Fetching skills for the current row
+
+        # Fetch skills for the current row
         cursor.nextset()
         cursor.callproc('GetSkillSet', [job_id])
         skills = cursor.fetchall()
@@ -69,24 +75,35 @@ def response(results, job_id, cursor, processed_job_ids):
         # Move to the next result set
         cursor.nextset()
 
-        # Call the second stored procedure
+        # Call the stored procedure to get qualifications
         cursor.callproc('GetQualification', [job_id])
-        qualification = cursor.fetchall()
+        qualifications = cursor.fetchall()
+
+        # Call the stored procedure to get location
+        cursor.nextset()
+        cursor.callproc('GetLocation', [job_id])
+        locations = cursor.fetchall()
+
+        # Get company id
+        cursor.nextset()
         cursor.execute("SELECT company_details.id FROM company_details join job_post on company_details.id = job_post.company_id WHERE job_post.id = %s", [job_id])
-        company_id = cursor.fetchone()
-        cursor.execute("SELECT a.street,a.city,a.state,a.country,a.pincode FROM address a WHERE a.city= %s", [location])
-        address_data = cursor.fetchone()
-        if address_data:
-            street, city, state, country, pincode = address_data
-        else:
-            # Handle the case when address_data is None
-            street, city, state, country, pincode = "", "", "", "", ""
+        company_id = cursor.fetchone()[0]  # Fetching first column of the result tuple
+
+        # Fetch address data
+        street, city, state, country, pincode = "", "", "", "", ""
+        if locations:
+            location = locations[0]  # Assuming first location is used
+            city = location[0]  # Assuming city is the first column in location table
+            cursor.execute("SELECT street, city, state, country, pincode FROM address WHERE city = %s", [city])
+            address_data = cursor.fetchone()
+            if address_data:
+                street, city, state, country, pincode = address_data
 
         job_data = {
             "job_post_id": job_post_id,
             "job_title": job_title,
             "job_description": job_description,
-            "qualification": [qualification[0] for qualification in qualification],
+            "qualification": [qualification[0] for qualification in qualifications],
             "experience": experience,
             "salary_range": salary_range,
             "no_of_vacancies": no_of_vacancies,
@@ -100,7 +117,7 @@ def response(results, job_id, cursor, processed_job_ids):
             "no_of_employees": no_of_employees,
             "company_website_link": company_website_link,
             "skills": [skill[0] for skill in skills],
-            "location": location,
+            "location": [location[0] for location in locations],  # Assuming first column is used for location name
             "employee_type": employee_type,
             "job_role": job_role,
             "address": {

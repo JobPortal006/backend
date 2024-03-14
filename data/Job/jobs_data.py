@@ -7,6 +7,7 @@ from time import sleep
 from data import message
 from django.http import JsonResponse
 from django.core.management import call_command
+from data.token import decode_token
 
 con = connection.cursor()
 
@@ -109,7 +110,10 @@ def company_name(cursor, request):
 def address_location(cursor, request):
     try:
         data = json.loads(request.body)
-        user_id =  data.get('user_id')
+        # user_id=data.get("user_id")
+        token = data.get('token')
+        user_id,registered_by,email = decode_token(token)
+        print(user_id, registered_by,email)
         cursor.execute("SELECT DISTINCT a.city FROM address a WHERE user_id=%s",[user_id])
         rows = cursor.fetchall()
         locations_list = [{'address_location': row[0]} for row in rows]

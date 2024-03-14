@@ -85,7 +85,7 @@ def response1(val,key,data):
             'postJob':'Successfully post a job',
             'searchJob':'Job find successfully',
             'getSearchJob':'Get job result successfully',
-            'getJobDetails':'Job find successgully'
+            'getJobDetails':'Job find successfully'
         },  
         'Error':{
             'companyError':'You have not completed the registration process',
