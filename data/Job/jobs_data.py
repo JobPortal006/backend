@@ -41,7 +41,7 @@ def retry_database_operation(func):
 @retry_database_operation
 def locations(cursor, request):
     try:
-        cursor.execute("SELECT DISTINCT l.location FROM location l JOIN job_post jp ON l.id = jp.location_id")
+        cursor.execute("SELECT DISTINCT l.location FROM location l JOIN location_mapping lm ON l.id=lm.location_id")
         rows = cursor.fetchall()
         locations_list = [{'location': row[0]} for row in rows]
         json_result = json.dumps(locations_list)
@@ -95,8 +95,7 @@ def employment_type(cursor,request):
 @csrf_exempt
 @retry_database_operation
 def company_name(cursor, request):
-    cursor.execute("SELECT DISTINCT id,company_name FROM company_details")
-    # cursor.execute("SELECT DISTINCT cd.id,cd.company_name FROM company_details cd JOIN job_post jp ON cd.id = jp.company_id")
+    cursor.execute("SELECT DISTINCT cd.id,cd.company_name FROM company_details cd JOIN job_post jp ON cd.id = jp.company_id")
     rows = cursor.fetchall()
     locations_list = [{'company_name': row[1]} for row in rows]
     json_result = json.dumps(locations_list)

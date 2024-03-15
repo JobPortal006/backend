@@ -5,11 +5,11 @@ from data import message
 def delete_postJob(job_id):
    try:
       con = connection.cursor()
-      con.execute("select id,employee_type_id,job_role_id,location_id from job_post where id = %s", [job_id])
+      con.execute("select id,employee_type_id,job_role_id from job_post where id = %s", [job_id])
       job_result = con.fetchone()
 
-      job_id, employee_type_id, job_role_id, location_id = job_result
-      print(job_id, employee_type_id, job_role_id, location_id)
+      job_id, employee_type_id, job_role_id = job_result
+      print(job_id, employee_type_id, job_role_id)
 
       con.execute("select id,skill_id from skill_set_mapping where job_id=%s", [job_id])  
       final_result = con.fetchall()
@@ -20,7 +20,7 @@ def delete_postJob(job_id):
       else:
          for i, skill_id in final_result:
             con.execute("delete from skill_set_mapping where id = %s", [i])
-            print("Deleting", i)
+            print("Deleting skill set", i)
 
             # Use skill_id here
             con.execute("SELECT COUNT(*) FROM skill_set_mapping WHERE skill_id = %s", (skill_id,))
@@ -37,13 +37,30 @@ def delete_postJob(job_id):
       else:
          for i, qualification_id in final_result:
             con.execute("delete from qualification_mapping where id = %s", [i])
-            print("Deleting", i)
+            print("Deleting qualification", i)
 
-            # Use skill_id here
-            con.execute("SELECT COUNT(*) FROM qualification_mapping WHERE skill_id = %s", (qualification_id,))
+            # Use qualification_id here
+            con.execute("SELECT COUNT(*) FROM qualification_mapping WHERE qualification_id = %s", (qualification_id,))
             count = con.fetchone()[0]
             if count == 0:
                con.execute("DELETE FROM qualification WHERE id = %s", (qualification_id,))
+
+      con.execute("select id,location_id from location_mapping where job_id=%s", [job_id])  
+      final_result = con.fetchall()
+      print(final_result)
+      
+      if final_result is None or final_result == '':
+         print("Id does not contain job list")
+      else:
+         for i, location_id in final_result:
+            con.execute("delete from location_mapping where id = %s", [i])
+            print("Deleting location", i)
+  
+            # Use skill_id here
+            con.execute("SELECT COUNT(*) FROM location_mapping WHERE location_id = %s", (location_id,))
+            count = con.fetchone()[0]
+            if count == 0:
+               con.execute("DELETE FROM location WHERE id = %s", (location_id,))
       
       result = con.execute("DELETE FROM job_post WHERE id = %s", [job_id])
 
@@ -57,11 +74,6 @@ def delete_postJob(job_id):
          count = con.fetchone()[0]
          if count == 0:
             con.execute("DELETE FROM job_role WHERE id = %s", (job_role_id,))
-
-         con.execute("SELECT COUNT(*) FROM job_post WHERE location_id = %s", (location_id,))
-         count = con.fetchone()[0]
-         if count == 0:
-            con.execute("DELETE FROM location WHERE id = %s", (location_id,))
 
          # Note: The skill_id variable is not needed here as it was used in the loop earlier.
 

@@ -33,102 +33,50 @@ def jobPost_updateQuery( job_title, job_description, qualification, experience, 
         con.close()
         return message.tryExceptError(str(e))  
     
-def update_skillSet(skill_set,postJob_id):
+def update_maping_tables(values,postJob_id,table_name,field_name,mapping_table,mapping_id):
     try:
         con = connection.cursor()
-        for i in skill_set:
+        for i in values:
             var = i
-            con.execute("select id from skill_sets where skill_set = %s",[var])   
-            result = con.fetchone()   
-            if result:
-                id = result[0]
-                sql_2 = "select id from skill_set_mapping where job_id=%s and skill_id=%s"
-                value_2 =[postJob_id,id]
-                con.execute(sql_2,value_2)
-                data = con.fetchone()
-                if data:
-                    print("Updated Mapping")
-                else:
-                    sql_3 = "insert into skill_set_mapping (skill_id,job_id) values(%s,%s)"
-                    value_3 = (id,postJob_id)
-                    con.execute(sql_3,value_3)
-            else:
-                con.execute("insert into skill_sets(skill_set) values(%s)",[var])
-                con.execute("select id from skill_sets where skill_set = %s",[var])
-                result = con.fetchone()  
-                if result:
-                    id = result[0]
-                    
-                    sql_3 = "insert into skill_set_mapping (skill_id,job_id) values(%s,%s)"
-                    value_3 = (id,postJob_id)
-                    con.execute(sql_3,value_3)    
-        con.execute("select skill_id from skill_set_mapping where job_id = %s", [postJob_id])
-        skill_id_mapping = con.fetchall()
-
-        for row in skill_id_mapping:
-            skill_id = row[0]
-            b1 = False
-            for deleting_id in skill_set:
-                con.execute("select id from skill_sets where skill_set = %s",[deleting_id])
-                deleting_id = con.fetchone()
-                # print("deleting_id:", deleting_id[0])
-                if skill_id == deleting_id[0]:
-                    b1 = True
-                    break 
-            if not b1:
-                con.execute("DELETE FROM skill_set_mapping WHERE skill_id = %s", [skill_id])
-        # Commit the changes to the d  database
-        con.commit()
-        con.close()
-        return True                  
-    except Exception as e:
-        con.close()
-        return message.tryExceptError(str(e))
-    
-def update_qualificationSet(qualification,postJob_id):
-    try:
-        con = connection.cursor()
-        for i in qualification:
-            var = i
-            con.execute("select id from qualification where qualification = %s",[var])   
+            con.execute(f"select id from {table_name} where {field_name} = %s",[var])   
             result = con.fetchone()   
             
             if result:
                 id = result[0]
-                sql_2 = "select id from qualification_mapping where job_id=%s and qualification_id=%s"
+                sql_2 = f"select id from {mapping_table} where job_id=%s and {mapping_id}=%s"
                 value_2 =[postJob_id,id]
                 con.execute(sql_2,value_2)
                 data = con.fetchone()
                 if data:
                     print("Updated Mapping")
                 else:
-                    sql_3 = "insert into qualification_mapping (qualification_id,job_id) values(%s,%s)"
+                    sql_3 = f"insert into {mapping_table} ({mapping_id},job_id) values(%s,%s)"
                     value_3 = (id,postJob_id)
                     con.execute(sql_3,value_3)
             else:
-                con.execute("insert into qualification(qualification) values(%s)",[var])
+                con.execute(f"insert into {table_name} ({field_name}) values(%s)",[var])
                 id = con.lastrowid
                     
-                sql_3 = "insert into qualification_mapping (qualification_id,job_id) values(%s,%s)"
+                sql_3 = f"insert into {mapping_table} ({mapping_id},job_id) values(%s,%s)"
                 value_3 = (id,postJob_id)
                 con.execute(sql_3,value_3)
                     
-        con.execute("select qualification_id from qualification_mapping where job_id = %s", [postJob_id])
-        qualification_id_mapping = con.fetchall()
+        con.execute(f"select {mapping_id} from {mapping_table} where job_id = %s", [postJob_id])
+        id_mapping = con.fetchall()
 
         print("Loop 1")
-        for row in qualification_id_mapping:
+        for row in id_mapping:
             qualifications_id = row[0]
             b1 = False
-            for deleting_id in qualification: # field name
-                con.execute("select id from qualification where qualification = %s",[deleting_id])
+            for deleting_id in values: # field name
+                con.execute(f"select id from {table_name} where {field_name} = %s",[deleting_id])
                 deleting_id = con.fetchone()
                 if qualifications_id == deleting_id[0]:
                     b1 = True
                     break 
                  
             if not b1:
-                con.execute("DELETE FROM qualification_mapping WHERE qualification_id = %s", [qualifications_id])
+                con.execute(f"DELETE FROM {mapping_table} WHERE {mapping_id} = %s", [qualifications_id])
 
         # Commit the changes to the d  database
         con.commit()
@@ -139,20 +87,11 @@ def update_qualificationSet(qualification,postJob_id):
         con.close()
         return message.tryExceptError(str(e))
     
-def location_eType_jRole(location,employee_type,job_role,job_id):
+def location_eType_jRole(employee_type,job_role,job_id):
     try:
         con = connection.cursor()
-        #  Location ---  Table
-        con.execute("select id from location where location = %s",[location])
-        res_id = con.fetchone()
-        if res_id:
-            loc_id = res_id[0]
-        else:
-            con.execute("insert into location(location) values(%s)",[location])
-            loc_id = con.lastrowid 
         print("employee_type :",employee_type)
         print("job_role : ",job_role)
-        print("location  : ",loc_id)
 
         # Employee_Type ----->    Table
         con.execute("select id from employees_types where employee_type = %s",[employee_type])
@@ -168,7 +107,7 @@ def location_eType_jRole(location,employee_type,job_role,job_id):
             job_id = con.lastrowid
         print("job_id : ",job_id)  
         
-        con.execute("update job_post set employee_type_id=%s, job_role_id=%s, location_id=%s where id=%s",[emp_id[0],jobR_id,loc_id,job_id])
+        con.execute("update job_post set employee_type_id=%s, job_role_id=%s where id=%s",[emp_id[0],jobR_id,job_id])
         print("Finish Upadted")
         con.close()
         return True

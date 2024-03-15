@@ -10,6 +10,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from data.token import decode_token
+from data.Job.Query import job_details_query
 
 con = connection.cursor()
 
@@ -56,7 +57,7 @@ def apply_jobs(request):
             resume_path = request.POST.get('resume_path')  
         session = create_session()
         check_val = message.check(job_id,user_id)
-        user_email = apply_job_query.user_email(user_id)
+        user_email = email
         company_email = apply_job_query.company_email(job_id)
         if check_val:
             existing_resume_key = update_user_account_query.get_resume_path(session,user_id)
@@ -65,16 +66,19 @@ def apply_jobs(request):
             else:
                 resume_key = resume_path  
             resume_id = apply_job_query.get_resume_id(resume_key,user_id)
-            apply_job_result = apply_job_query.apply_job_table(job_id,user_id,resume_id)
-            print(apply_job_result,'apply_job_result')
-            if apply_job_result:
+            user_job_apply=job_details_query.check_user_id(user_id)
+            print(user_job_apply,'user_job_apply')
+            if user_job_apply:
+                apply_job_result = apply_job_query.apply_job_table(job_id,user_id,resume_id)
+                print(apply_job_result,'apply_job_result')
                 if additional_queries == "Yes":
                     apply_job_query.additional_queries_table(job_id,user_id,current_ctc,expected_ctc,total_experience,notice_period)
+                if apply_job_result:
                     send_email(user_email)
                     send_email(company_email)
-                    return message.response('Success','applyJob')
+                    return message.response('Success', 'applyJob')
                 else:
-                    return message.response('Error','applyJobError')
+                    return message.response('Error', 'applyJobError')
             else:
                 return message.response('Error','userApplyJobError')
         else:

@@ -6,14 +6,14 @@ from sqlalchemy.orm import declarative_base
 from django.views.decorators.csrf import csrf_exempt
 from data.Job import json_response
 from django.db import connection
-from data import message
+import json
 
 Base = declarative_base()
 con = connection.cursor()
 @csrf_exempt
-def get_user_details(user_id,job_id):
+def get_user_details(user_id, job_id):
     try:
-        engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend')
+        engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/jobportal')
         Base.metadata.create_all(engine)
 
         Session = sessionmaker(bind=engine)
@@ -21,27 +21,32 @@ def get_user_details(user_id,job_id):
 
         user = session.query(Signup).filter_by(id=user_id).first()
         resume = session.query(ResumeDetails).filter_by(user_id=user_id).first()
+
         if resume is not None:
             job_post = session.query(JobPost).filter_by(id=job_id).first()
-            additional_queries = job_post.additional_queries
-            response_data = {
-                'user_id': user.id,
-                'email': user.email,
-                'mobile_number': user.mobile_number,
-                'resume_path': resume.resume_path,
-                'additional_queries': additional_queries
-            }
-            return response_data
+            if job_post is not None:
+                additional_queries = job_post.additional_queries
+                if additional_queries is None:
+                    additional_queries = "No"
+                response_data = {
+                    'user_id': user.id,
+                    'email': user.email,
+                    'mobile_number': user.mobile_number,
+                    'resume_path': resume.resume_path,
+                    'additional_queries': additional_queries
+                }
+                return response_data
+            else:
+                return {'status': 'Error', 'message': f'No job post found with id {job_id}'}
         else:
             return None
-
     except Exception as e:
         print(f"Error: {e}")
         return {'status': 'Error', 'message': str(e)}
 
 def insert_apply_job(user_id,job_id,company_id,resume_id):
     try:
-        engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend')
+        engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/jobportal')
         Base.metadata.create_all(engine)
 
         Session = sessionmaker(bind=engine)
@@ -128,18 +133,11 @@ def view_apply_jobs(user_id, processed_job_ids):
         print(f"Error: {e}")
         return None
 
-def user_email(user_id):
-    con = connection.cursor() 
-    sql = "SELECT email FROM signup WHERE id = %s"
-    con.execute(sql, [user_id])
-    email = con.fetchone()
-    con.close()
-    return email if email else None
-
 def company_email(job_id):
     con = connection.cursor() 
     sql = "select s.email from signup s join company_details c on c.employee_id = s.id join job_post j on j.company_id=c.id where j.id= %s"
     con.execute(sql, [job_id])
-    email = con.fetchone()
+    result = con.fetchone()
+    email = result[0] if result else None
     con.close()
-    return email if email else None
+    return email

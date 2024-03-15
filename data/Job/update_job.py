@@ -39,9 +39,27 @@ def update_jobs(request):
             else:
                 return JsonResponse("Invalid Datas ",safe=False)
             if job_id:
-                update_job_query.jobPost_updateQuery( job_title, job_description, qualification, experience, salary_range, no_of_vacancies, job_id)
-                update_job_query.update_qualificationSet(qualification,job_id)
-                update_job_query.update_skillSet(skill_set,job_id)
+                # update_job_query.jobPost_updateQuery( job_title, job_description, qualification, experience, salary_range, no_of_vacancies, job_id)
+                # update_job_query.update_qualificationSet(qualification,job_id)
+                # update_job_query.update_skillSet(skill_set,job_id)
+                table_name= "location"
+                field_name ="location"
+                mappind_table="location_mapping"
+                mappind_id="location_id"
+                update_job_query.update_maping_tables(location,job_id,table_name,field_name,mappind_table,mappind_id)
+                
+                table_name= "qualification"
+                field_name ="qualification"
+                mappind_table="qualification_mapping"
+                mappind_id="qualification_id"
+                update_job_query.update_maping_tables(qualification,job_id,table_name,field_name,mappind_table,mappind_id)
+                
+                table_name= "skill_sets"
+                field_name ="skill_set"
+                mappind_table="skill_set_mapping"
+                mappind_id="skill_id"
+                update_job_query.update_maping_tables(skill_set,job_id,table_name,field_name,mappind_table,mappind_id)
+                
                 update_job_query.location_eType_jRole(location,employee_type,job_role,job_id)
                 # where_con ="j.id = %s"     
                 # results = update_job_query.execute_join_jobPost(where_con,job_id)

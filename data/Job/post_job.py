@@ -48,7 +48,7 @@ def post_jobs(request):
         job_description = data.get('job_description')
         employee_type = data.get('employee_type')   
         job_role = data.get('job_role')  
-        location_list = data.get('location')            
+        location_list = data.get('location')         
         skill_set = data.get('skill_set')            
         qualification = data.get('qualification')
         experience = data.get('experience')
@@ -77,9 +77,8 @@ def post_jobs(request):
                     resul_postJob,job_id = post_job_insert_query.jobPost_insertQuery(employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id,additional_queries)
                     print(resul_postJob, 'result_postJob')
                     # job_id = post_job_insert_query.get_id(job_title)  # After insert the job_post data, get that job_id
-                    print(job_id)
                     for skill in skill_set:
-                        print(skill)
+                        print(skill)   
                         skill_id = post_job_insert_query.skill_set(skill)  # Insert the skill_set in skill_sets table
                         post_job_insert_query.skill_set_insert(employee_id, skill_id, job_id)  # Map the skill_id in skill_set_mapping table
                     for qualification_value in qualifications_list:

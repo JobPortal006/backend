@@ -2,17 +2,25 @@ from django.db import connection
 con = connection.cursor()
 
 # Insert the Job Post data into job_post table
-def jobPost_insertQuery(employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id,additional_queries):
+def jobPost_insertQuery(employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, additional_queries):
     try:
         # Print SQL query and parameters for debugging
-        jobPost_sql = "INSERT INTO job_post (employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id,additional_queries) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        jobPost_values = (employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id,additional_queries)
+        jobPost_sql = "INSERT INTO job_post (employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, additional_queries) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        jobPost_values = (employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, additional_queries)
+        
         con.execute(jobPost_sql, jobPost_values)
-        job_id=con.execute("SELECT LAST_INSERT_ID()")
-        return True,job_id
+        
+        # Fetch the last inserted ID
+        con.execute("COMMIT")
+        con.execute("SELECT LAST_INSERT_ID()")
+        job_id = con.fetchone()[0]  # Fetch the first column of the first row
+        
+        print("Job ID", job_id)
+        
+        return True, job_id
     except Exception as e:
         print(f"Error during post a job: {e}")
-        return False,None
+        return False, None
     
 # Get the employee_type_id using job_role value
 # If employee_type input is not present in the table, insert the employee_type value into employees_types table 

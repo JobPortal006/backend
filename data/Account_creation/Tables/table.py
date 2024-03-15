@@ -149,7 +149,8 @@ class JobPost(Base):
     experience = Column(String(50))
     salary_range = Column(String(50))
     no_of_vacancies = Column(Integer)
-    additional_queries = Column(String(255))
+    additional_queries = Column(String(50))
+    # additional_queries = relationship("AdditionalQueries", back_populates="job_post")
     employee_type_id = Column(Integer, ForeignKey('employees_types.id'))
     job_role_id = Column(Integer, ForeignKey('job_role.id'))
     created_at = Column(TIMESTAMP, server_default=func.now())
@@ -256,21 +257,20 @@ class ApplyJob(Base):
     resume_details = relationship('ResumeDetails')
     job_post = relationship('JobPost')
 
-# class AdditionalQueries(Base):
-#     __tablename__ = 'additional_queries'
+class AdditionalQueries(Base):
+    __tablename__ = 'additional_queries'
 
-#     id = Column(Integer, primary_key=True, autoincrement=True)
-#     job_id = Column(Integer, ForeignKey('job_post.id'))
-#     user_id = Column(Integer, ForeignKey('signup.id'))
-#     total_experience = Column(String(255))
-#     current_ctc = Column(String(255))
-#     expected_ctc = Column(String(255))
-#     notice_period = Column(String(255))
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    job_id = Column(Integer, ForeignKey('job_post.id'))
+    user_id = Column(Integer, ForeignKey('signup.id'))
+    total_experience = Column(String(255))
+    current_ctc = Column(String(255))
+    expected_ctc = Column(String(255))
+    notice_period = Column(String(255))
 
-#     # Define relationships (assuming you have corresponding models for job_post and signup)
-#     job_post = relationship('JobPost', back_populates='apply_job')
-#     signup = relationship('Signup', back_populates='apply_job')
+    # job_post = relationship('JobPost', back_populates='additional_queries')
+    signup = relationship('Signup')
     
 
-engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend')
+engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/jobportal')
 Base.metadata.create_all(engine)        

@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'backend',
+        'NAME': 'jobportal',
         'USER': 'theuser',
         'PASSWORD': 'thepassword',
         'HOST': '13.51.66.252',

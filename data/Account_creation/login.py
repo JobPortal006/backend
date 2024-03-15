@@ -45,7 +45,7 @@ def login(request):
           user_id, registered_by , email= create_account_user_query.email_check(email)
           print(user_id, registered_by, email)
           response_data = {
-            'message': success_message,  
+            'response': success_message,  
             'token': token,  # Include the token in the response
             # 'candidate_id': user_id,
             'registered_by': registered_by

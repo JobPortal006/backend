@@ -82,22 +82,12 @@ def response(results, job_id, cursor, processed_job_ids):
         # Call the stored procedure to get location
         cursor.nextset()
         cursor.callproc('GetLocation', [job_id])
-        locations = cursor.fetchall()
+        locations = cursor.fetchall()   
 
         # Get company id
         cursor.nextset()
         cursor.execute("SELECT company_details.id FROM company_details join job_post on company_details.id = job_post.company_id WHERE job_post.id = %s", [job_id])
         company_id = cursor.fetchone()[0]  # Fetching first column of the result tuple
-
-        # Fetch address data
-        street, city, state, country, pincode = "", "", "", "", ""
-        if locations:
-            location = locations[0]  # Assuming first location is used
-            city = location[0]  # Assuming city is the first column in location table
-            cursor.execute("SELECT street, city, state, country, pincode FROM address WHERE city = %s", [city])
-            address_data = cursor.fetchone()
-            if address_data:
-                street, city, state, country, pincode = address_data
 
         job_data = {
             "job_post_id": job_post_id,
@@ -120,15 +110,26 @@ def response(results, job_id, cursor, processed_job_ids):
             "location": [location[0] for location in locations],  # Assuming first column is used for location name
             "employee_type": employee_type,
             "job_role": job_role,
-            "address": {
-                "street": street,
-                "city": city,
-                "state": state,
-                "country": country,
-                "pincode": pincode,
-            }
+            "address": []
         }
         data.append(job_data)
+
+        # Fetch address data
+        street, city, state, country, pincode = "", "", "", "", ""
+        
+        for location in locations:
+            city = location[0]  # Assuming city is the first column in location table
+            cursor.execute("SELECT street, city, state, country, pincode FROM address WHERE city = %s", [city])
+            address_data = cursor.fetchone()
+            if address_data:
+                street, city, state, country, pincode = address_data
+                job_data["address"].append({
+                        "street": street,
+                        "city": city,
+                        "state": state,
+                        "country": country,
+                        "pincode": pincode,
+                    })
     data = sorted(data, key=lambda x: x['job_post_id'], reverse=True)
     def datetime_serializer(obj):
         try:

@@ -63,7 +63,7 @@ def response(val,key):
             'getMethod':'Use to GET method',
             'deleteJobPost_Method':'Use to DELETE method',
             'updateJobError':'Job not updated successguly',
-            'userApplyJobError':'You already appliel for this job',
+            'userApplyJobError':'You already applied for this job',
             'applyJobError':'Job apply failed'
         }
     }
@@ -74,7 +74,7 @@ def response(val,key):
     
 Base = declarative_base()   
 def create_session():
-    engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend')
+    engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/jobportal')
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     return Session()
@@ -85,7 +85,8 @@ def response1(val,key,data):
             'postJob':'Successfully post a job',
             'searchJob':'Job find successfully',
             'getSearchJob':'Get job result successfully',
-            'getJobDetails':'Job find successfully'
+            'getJobDetails':'Job find successfully',
+            'userJobApply':'User already applied for this job'
         },  
         'Error':{
             'companyError':'You have not completed the registration process',

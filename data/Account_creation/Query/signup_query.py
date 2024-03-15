@@ -2,7 +2,7 @@ from django.db import connection
 import bcrypt
 # Base = declarative_base()
 con = connection.cursor()
-# engine = create_engine('mysql://root:mysqllocal@localhost:3306/backend')
+# engine = create_engine('mysql://root:mysqllocal@localhost:3306/jobportal')
 # Base.metadata.create_all(engine)  # Create tables if not exists
 # Session = sessionmaker(bind=engine)
 # session = Session()

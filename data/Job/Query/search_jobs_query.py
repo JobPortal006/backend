@@ -8,14 +8,14 @@ con = connection.cursor()
 Base = declarative_base()
 
 # Use the appropriate database connection string
-# engine = create_engine('mysql://root:mysqllocal@localhost:3306/backend')
-engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/backend')
+# engine = create_engine('mysql://root:mysqllocal@localhost:3306/jobportal')
+engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/jobportal')
 
 Base.metadata.create_all(engine)
 
 def execute_query(conditions):
     try:
-        print(conditions,'condition--------->')
+        print('Condition--------->',conditions)
         Session = sessionmaker(bind=engine)
         session = Session()
         # Joining tables
@@ -25,14 +25,11 @@ def execute_query(conditions):
             JobPost.job_description,
             CompanyDetails.company_name,
             EmployeeTypes.employee_type,
-            # Location.location,
             JobPost.experience,
             JobPost.salary_range,
             JobPost.no_of_vacancies,
-            # CompanyDetails.company_logo,
             CompanyDetails.company_logo_path,
             JobRole.job_role,
-            # SkillSets.skill_set,
             JobPost.created_at
         )\
         .join(LocationMapping, JobPost.id == LocationMapping.job_id)\
@@ -42,13 +39,6 @@ def execute_query(conditions):
         .join(SkillSetMapping, JobPost.id == SkillSetMapping.job_id)\
         .join(SkillSets, SkillSetMapping.skill_id == SkillSets.id)\
         .join(CompanyDetails, JobPost.company_id == CompanyDetails.id)
-            # .join(LocationMapping, JobPost.id == LocationMapping.job_id)\
-            # .join(Location, LocationMapping.location_id == Location.id)\
-            # .join(EmployeeTypes, JobPost.employee_type_id == EmployeeTypes.id)\
-            # .join(JobRole, JobPost.job_role_id == JobRole.id)\
-            # .join(SkillSetMapping, JobPost.id == SkillSetMapping.job_id)\
-            # .join(SkillSets, SkillSetMapping.skill_id == SkillSets.id)\
-            # .join(CompanyDetails, JobPost.company_id == CompanyDetails.id)
         # Applying filter conditions
         if conditions is not None:
             query = query.filter(conditions)
