@@ -7,7 +7,7 @@ from data.Account_creation.Query import login_query
 from data import message
 from data.Account_creation.Query import create_account_user_query
 from django.http import JsonResponse
-import jwt
+# import jwt
 import datetime
 import secrets
 from data.token import create_token
