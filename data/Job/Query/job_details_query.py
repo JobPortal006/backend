@@ -20,11 +20,11 @@ def job_result(job_id, processed_job_ids):
         print(f"Error: {e}")
         return None
 
-def check_user_id(user_id):
-    check_sql = "SELECT a.id FROM apply_job a JOIN job_post j ON j.id = a.job_id WHERE a.user_id= %s"
-    con.execute(check_sql, [user_id])
+def check_user_id(user_id, job_id):
+    check_sql = "SELECT a.id FROM apply_job a JOIN job_post j ON j.id = a.job_id WHERE a.user_id = %s AND a.job_id = %s"
+    con.execute(check_sql, (user_id, job_id))
     user = con.fetchone()
     if user is not None:
-        return False
+        return True  # User has already applied for this job
     else:
-        return True
+        return False   # User has not applied for this job yet

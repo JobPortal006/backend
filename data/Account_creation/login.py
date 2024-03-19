@@ -27,18 +27,7 @@ def login(request):
         print(email)
         # Use your login_query function to validate credentials
         user = login_query.login(email, password)
-        # secret_key = "12345"
-        # payload = {
-        #   'email': email,
-        #   'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)  # Token time set
-        # }
-
         if user:
-          # token = jwt.encode(payload, secret_key, algorithm='HS256')
-          # print(token, "<- Token")
-          # # Token Decode
-          # decoded_token = jwt.decode(token, secret_key, algorithms=['HS256'])
-          # print(decoded_token.get('email'),"Original values")
           token = create_token(email)
           success_message = message.Login()
           # Get user_id using email in signup table
@@ -68,8 +57,21 @@ def loginWithOTP(request):
         mobile_number = data.get('mobile_number')
         print(mobile_number)
         val = login_query.loginWithOTP(mobile_number)
+        user_id, registered_by, email = create_account_user_query.mobile_number(mobile_number)
         if val:
-          return message.response('Success','loginWithOTP')
+          token = create_token(email)
+          success_message = message.Login()
+          # Get user_id using email in signup table
+          user_id, registered_by , email= create_account_user_query.email_check(email)
+          print(user_id, registered_by, email)
+          response_data = {
+            'response': success_message,  
+            'token': token,  # Include the token in the response
+            # 'candidate_id': user_id,
+            'registered_by': registered_by
+          }
+          return message.handleSuccess(response_data)
+          # return message.response('Success','loginWithOTP')
         else:
           return message.response('Error','loginWithOTPError')
       else:
@@ -79,14 +81,22 @@ def loginWithOTP(request):
     
 @csrf_exempt 
 def user_email_checks(request):
-    try:
-        data = json.loads(request.body)
-        email = data.get('email')
-        print(email)
-        email= login_query.email_check(email)
-        if email:
-          return message.response('Success','Signup')
-        else:
-          return message.response('Error','loginError')
-    except Exception as e:
-      return JsonResponse(str(e),safe=False)
+  try:
+    data = json.loads(request.body)
+    email = data.get('email')
+    print(email)
+    email_check= login_query.email_check(email)
+    if email_check:
+      token = create_token(email)
+      success_message = message.Login()
+      user_id, registered_by , email= create_account_user_query.email_check(email)
+      response_data = {
+        'response': success_message,  
+        'token': token,
+        'registered_by': registered_by
+      }
+      return message.handleSuccess(response_data)
+    else:
+      return message.response('Error','emailSentError')
+  except Exception as e:
+    return JsonResponse(str(e),safe=False)

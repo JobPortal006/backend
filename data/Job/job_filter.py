@@ -16,14 +16,17 @@ def job_filter(request):
             employee_type_value = data.get('employee_type')
             job_role_value = data.get('job_role')
             salary_range_value = data.get('salary_range')
+            salary_range_value = ''.join(salary_range_value.split())
             jobs = search_jobs.job_response
             if jobs is None or jobs == '':
-                jobs = job_filter_result()
+                jobs = job_search_result()
+                print(jobs,'filter job_search_result-------')
             if jobs is None or jobs == '':
-                jobs = job_details_by_companyName.job_response
+                jobs = job_company_name_result()
+                print(jobs,'filter job_company_name_result-------')
             if jobs is None or jobs == '':
-                jobs = job_details_by_employeeType.job_response
-            print(jobs,'filter result')
+                jobs = job_employee_type_result()
+                print(jobs,'filter job_employee_type_result--------')
             condition = ""
             def where_condition(data,location_value, dyanamic_value, condition):
                 key_value = None
@@ -33,24 +36,24 @@ def job_filter(request):
                         break
                 if dyanamic_value and key_value:
                     if condition:
-                        condition += f" and  job['{key_value}'] == '{dyanamic_value}'"
+                        condition += f" and '{dyanamic_value}' in job['{key_value}']"
                     else:
-                        condition = f"job['{key_value}'] == '{dyanamic_value}'"
+                        condition = f"'{dyanamic_value}' in job['{key_value}']"
                 return condition
             if experience_value:
                 for i in experience_value:
                     if i:
                         condition = where_condition(data,experience_value,i,condition)
             if location_value:
-                for i in location_value:
-                    if i:
-                        condition = where_condition(data,location_value,i,condition)        
+                    for i in location_value:
+                         if i:
+                              condition = where_condition(data,location_value,i,condition)             
             if employee_type_value:
                     condition = where_condition(data,employee_type_value,employee_type_value,condition)     
             if job_role_value:
-                for i in job_role_value:
-                    if i:
-                        condition = where_condition(data,job_role_value,i,condition)
+                    for i in job_role_value:
+                         if i:
+                              condition = where_condition(data,job_role_value,i,condition)
             if salary_range_value: 
                 condition = where_condition(data,salary_range_value,salary_range_value,condition)
             print("Where condition----->",condition)
@@ -69,5 +72,13 @@ def job_filter(request):
     else:
         return message.response('Error', 'Error')
     
-def job_filter_result():
+def job_search_result():
+    return jobs
+
+def job_company_name_result():
+    jobs = job_details_by_companyName.job_response
+    return jobs
+
+def job_employee_type_result():
+    jobs = job_details_by_employeeType.job_response
     return jobs

@@ -1,9 +1,8 @@
 import jwt
 import datetime
-import secrets
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
 from data.Account_creation.Query import create_account_user_query
+from jwt.exceptions import ExpiredSignatureError
+import json
 
 secret_key = "12345"
 
@@ -16,9 +15,12 @@ def decode_token(token):
     registered_by = decoded_token.get('registered_by')
     email = decoded_token.get('email')
     return user_id,registered_by,email
+  except ExpiredSignatureError:
+    print("Token expired")
+    return None, None, None
   except Exception as e:
     print(f"Exception: {str(e)}")
-    return JsonResponse("Internal Error",safe=False)
+    return None, None, None
     
 def create_token(email):
   user_id, registered_by , email= create_account_user_query.email_check(email)
@@ -31,3 +33,12 @@ def create_token(email):
   token = jwt.encode(payload, secret_key, algorithm='HS256')
   # print(token, "<- Token")
   return token
+
+def token_expired(request):
+  try:
+    data = json.loads(request.body)
+    token = data.get("token")
+    
+  except Exception as e:
+    print(f"{str(e)}")
+  

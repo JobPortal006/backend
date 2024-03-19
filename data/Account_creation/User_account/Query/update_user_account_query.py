@@ -77,6 +77,7 @@ def delete_existing_professional_details(session, user_id):
         session.delete(prof_detail)
 
 def update_professional_details(session, user_id, companies):
+    session.query(ProfessionalDetails).filter_by(user_id=user_id).delete()
     for company in companies:
         prof_detail = ProfessionalDetails(
             user_id=user_id,

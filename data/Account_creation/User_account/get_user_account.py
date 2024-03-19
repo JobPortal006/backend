@@ -1,11 +1,8 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from data.Account_creation.Tables.table import Signup,PersonalDetails,ProfessionalDetails,Address,CollegeDetails,EducationDetails,JobPreferences,ResumeDetails
 from sqlalchemy.orm import declarative_base
 import json
-import base64
 from data import message
 from data.token import decode_token
 
@@ -20,20 +17,22 @@ def get_user_details(request):
         token = data.get('token')
         user_id,registered_by,email = decode_token(token)
         print(user_id, registered_by,email) 
-        session = message.create_session()
-        user_details_data=user_details(session,user_id)
-        global job_response
-        job_response = user_details_data
-        session.close()   
-        if user_details_data is not None:
-            # return message.response1('Success', 'getJobDetails', user_details_data)
-            return JsonResponse(user_details_data)
+        if user_id is not None:
+            session = message.create_session()
+            user_details_data=user_details(session,user_id)
+            global job_response
+            job_response = user_details_data
+            session.close()   
+            if user_details_data is not None:
+                return message.response1('Success', 'getJobDetails', user_details_data)
+                # return JsonResponse(user_details_data)
+            else:
+                return message.response1('Error', 'searchJobError', data={})
         else:
-            return message.response1('Error', 'searchJobError', data={})
+            return message.response('Error', 'tokenError')
     except Exception as e:
         print(f"The Error is: {str(e)}")
         return message.serverErrorResponse()
-
 
 @csrf_exempt
 def get_user_details_view(request):
@@ -51,6 +50,7 @@ def get_user_details_view(request):
     
 def user_details(session,user_id):
     user_details = {}
+    # user_details['status'] = True
     signup_details = session.query(Signup).filter_by(id=user_id).first()
     if signup_details:
         user_details['Signup'] = { 

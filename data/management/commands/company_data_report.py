@@ -1,19 +1,14 @@
 from django.core.management.base import BaseCommand
 import pandas as pd
 from io import BytesIO
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from data.Account_creation.Tables.table import Signup, CompanyDetails, Address
 from django.core.mail import EmailMessage
+from data.message import create_session
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
-            # Establishing connection to the database
-            engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/jobportal')
-            Session = sessionmaker(bind=engine)
-            session = Session()
-
+            session = create_session()
             # Querying data from the CompanyDetails table
             query = session.query(CompanyDetails).all()
 
@@ -23,14 +18,14 @@ class Command(BaseCommand):
                 # Initialize list to hold address details
                 addresses = []
                 # Fetch all addresses associated with the current company detail
-                for address in session.query(Address).filter(Address.user_id == company_detail.employee_id).all():
+                for i, address in enumerate(session.query(Address).filter(Address.user_id == company_detail.employee_id).all(), start=1):
                     addresses.append({
-                        'street': address.street,
-                        'city': address.city,
-                        'state': address.state,
-                        'country': address.country,
-                        'pincode': address.pincode,
-                        'address_type': address.address_type
+                        f'street_{i}': address.street,
+                        f'city_{i}': address.city,
+                        f'state_{i}': address.state,
+                        f'country_{i}': address.country,
+                        f'pincode_{i}': address.pincode,
+                        f'address_type_{i}': address.address_type
                     })
                 data.append({
                     'id': company_detail.id,

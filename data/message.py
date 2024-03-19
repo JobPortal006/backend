@@ -8,22 +8,22 @@ def handleSuccess(success):
     return JsonResponse({"status": True, "statusCode": 200, "message": success})
 
 def handleSuccess1(success,data):
-    return JsonResponse({"status":True,"statusCode":200,"message":success,"data":data},safe=False)
+    return JsonResponse({"status":True,"statusCode":200,"message":success,"data":data})
 
 #dynamic error response
 def errorResponse(error):
-    return  JsonResponse({"status":False,"statusCode":404,"message":error},safe=False)
+    return  JsonResponse({"status":False,"statusCode":404,"message":error})
 
 #server error response
 def serverErrorResponse():
     # manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'manage.py')
     # os.utime(manage_py_path, None)
-    return  JsonResponse({"status":False,"statusCode":500,"message":"Internal Server Error"},safe=False)
+    return  JsonResponse({"status":False,"statusCode":500,"message":"Internal Server Error"})
 
 def tryExceptError(message):
     # manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'manage.py')
     # os.utime(manage_py_path, None)
-    return  JsonResponse({f"status":False,"statusCode":500,"message":message},safe=False)
+    return  JsonResponse({f"status":False,"statusCode":500,"message":message})
 
 def Login():
     return "Login Successfully"
@@ -64,7 +64,8 @@ def response(val,key):
             'deleteJobPost_Method':'Use to DELETE method',
             'updateJobError':'Job not updated successguly',
             'userApplyJobError':'You already applied for this job',
-            'applyJobError':'Job apply failed'
+            'applyJobError':'Job apply failed',
+            'tokenError':'Token is expired'
         }
     }
     if val == 'Success':
@@ -86,13 +87,15 @@ def response1(val,key,data):
             'searchJob':'Job find successfully',
             'getSearchJob':'Get job result successfully',
             'getJobDetails':'Job find successfully',
-            'userJobApply':'User already applied for this job'
+            'userApplyJob':False,
+            'userApplyJobResult':True
         },  
         'Error':{
             'companyError':'You have not completed the registration process',
             'searchJobError':'No data found',
             'ValuesCheckError':'Input Should not be empty',
-            'EmptyRequestBody':'Empty Request Body '
+            'EmptyRequestBody':'Empty Request Body',
+            'userApplyJobError':'You already applied for this job'
         }
     }
     if val == 'Success':

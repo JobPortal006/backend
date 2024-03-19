@@ -66,9 +66,9 @@ def apply_jobs(request):
             else:
                 resume_key = resume_path  
             resume_id = apply_job_query.get_resume_id(resume_key,user_id)
-            user_job_apply=job_details_query.check_user_id(user_id)
+            user_job_apply=job_details_query.check_user_id(user_id,job_id)
             print(user_job_apply,'user_job_apply')
-            if user_job_apply:
+            if user_job_apply == False:
                 apply_job_result = apply_job_query.apply_job_table(job_id,user_id,resume_id)
                 print(apply_job_result,'apply_job_result')
                 if additional_queries == "Yes":
