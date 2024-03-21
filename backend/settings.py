@@ -39,6 +39,7 @@ EMAIL_HOST_PASSWORD = 'irvf jinb zccd aqra'
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.46','http://192.168.1.73:3000/Password/','192.168.1.57','13.51.66.252']
 
+base_url = 'http://192.168.1.46:8000/'
 
 # Application definition
 
@@ -153,7 +154,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

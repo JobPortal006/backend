@@ -45,10 +45,9 @@ def execute_query(conditions):
         # Execute the query
         result = query.all()
         return result
-
     except Exception as e:
-        manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'manage.py')
-        os.utime(manage_py_path, None)
+        # manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'manage.py')
+        # os.utime(manage_py_path, None)
         print(f"Error during job search: {e}")
         return None
     

@@ -4,7 +4,7 @@ import json
 
 @pytest.fixture
 def api_url():
-    return 'http://192.168.1.39:8000/view_jobs/'
+    return 'http://192.168.1.46:8000/view_jobs/'
 
 @pytest.fixture
 def data():

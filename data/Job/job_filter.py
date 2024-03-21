@@ -2,8 +2,8 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from data import message
 from data.Job import search_jobs
-from data.Job import job_details_by_employeeType
 from data.Job import job_details_by_companyName
+from data.Job.job_details_by_employeeType import employee_type_response
 jobs = ""
 @csrf_exempt
 def job_filter(request):
@@ -15,18 +15,30 @@ def job_filter(request):
             location_value = data.get('location')
             employee_type_value = data.get('employee_type')
             job_role_value = data.get('job_role')
+            print(" -------=-=---------")
             salary_range_value = data.get('salary_range')
-            salary_range_value = ''.join(salary_range_value.split())
-            jobs = search_jobs.job_response
-            if jobs is None or jobs == '':
-                jobs = job_search_result()
+            # salary_range_value = ''.join(salary_range_value.split())
+            jobs = ''
+            print(search_jobs.search_fun_call ," 1----------------") 
+            if search_jobs.search_fun_call == 'search':
+                jobs = search_jobs.job_response
                 print(jobs,'filter job_search_result-------')
-            if jobs is None or jobs == '':
-                jobs = job_company_name_result()
+                search_jobs.search_fun_call = None
+                job_details_by_companyName.company_call_fun  = None
+                print("--------> dd",search_jobs.search_fun_call)
+                # if jobs == '':
+            print(job_details_by_companyName.company_call_fun ," 2----------------")   
+            if job_details_by_companyName.company_call_fun == 'company': 
+                print('1---------------')
+                jobs = job_details_by_companyName.job_response
                 print(jobs,'filter job_company_name_result-------')
-            if jobs is None or jobs == '':
-                jobs = job_employee_type_result()
-                print(jobs,'filter job_employee_type_result--------')
+                job_details_by_companyName.company_call_fun = None
+                search_jobs.search_fun_call = None
+                # if company_result == '':
+                #     jobs = search_result
+                #     if jobs == '':
+                #         jobs = job_employee_type_result()
+                #         print(jobs,'filter job_employee_type_result--------')
             condition = ""
             def where_condition(data,location_value, dyanamic_value, condition):
                 key_value = None
@@ -45,15 +57,15 @@ def job_filter(request):
                     if i:
                         condition = where_condition(data,experience_value,i,condition)
             if location_value:
-                    for i in location_value:
-                         if i:
-                              condition = where_condition(data,location_value,i,condition)             
+                for i in location_value:
+                        if i:
+                            condition = where_condition(data,location_value,i,condition)             
             if employee_type_value:
-                    condition = where_condition(data,employee_type_value,employee_type_value,condition)     
+                condition = where_condition(data,employee_type_value,employee_type_value,condition)     
             if job_role_value:
-                    for i in job_role_value:
-                         if i:
-                              condition = where_condition(data,job_role_value,i,condition)
+                for i in job_role_value:
+                        if i:
+                            condition = where_condition(data,job_role_value,i,condition)
             if salary_range_value: 
                 condition = where_condition(data,salary_range_value,salary_range_value,condition)
             print("Where condition----->",condition)
@@ -69,16 +81,21 @@ def job_filter(request):
             return message.response1('Success', 'getJobDetails', job_result)
         except Exception as e:
             return message.tryExceptError(str(e))
+        finally:
+        # global job_response
+            jobs = None
     else:
         return message.response('Error', 'Error')
     
-def job_search_result():
-    return jobs
+# def job_search_result():
 
-def job_company_name_result():
-    jobs = job_details_by_companyName.job_response
-    return jobs
+#     jobs = search_response()
+#     return jobs
+
+# def job_company_name_result():
+#     jobs = company_name_response()
+#     return jobs
 
 def job_employee_type_result():
-    jobs = job_details_by_employeeType.job_response
+    jobs = employee_type_response()
     return jobs

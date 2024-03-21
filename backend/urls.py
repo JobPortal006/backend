@@ -5,8 +5,9 @@ from data.Account_creation.Employeer_account import employeer_account, get_emplo
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from data.Job import all_job_details, post_job, search_jobs,employer_post_jobs,job_details_by_companyName,job_details_by_employeeType,update_job,delete_job,job_filter,apply_job,get_job_details
+from data.Job import all_job_details, post_job, search_jobs,employer_post_jobs,job_details_by_companyName,job_details_by_employeeType,update_job,delete_job,job_filter,apply_job,get_job_details,user_job_apply_list
 from data.Job import jobs_data
+from data import token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,6 +25,7 @@ urlpatterns = [
     path('get_employeer_details/', get_employeer_account.get_employeer_details),
     path('update_employeer_details/', update_employeer_account.update_employee_details),
     path('delete_image/',update_employeer_account.delete_image),
+    path('token_expired/',token.token_expired),
    
     # JOB POST ---- APIs 
     path('job_post/',post_job.post_jobs),
@@ -48,6 +50,7 @@ urlpatterns = [
     path('apply_job/',apply_job.apply_jobs),
     path('view_apply_jobs/',apply_job.view_apply_jobs),
     path('get_view_apply_jobs/',apply_job.get_view_apply_jobs),
+    path('user_job_apply_list/',user_job_apply_list.user_job_apply_list),
   
     path('get_job_details_by_id/',get_job_details.get_job_details_by_id),
     path('update_job/',update_job.update_jobs),

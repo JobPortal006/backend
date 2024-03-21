@@ -41,8 +41,9 @@ def response(val,key):
             'searchJob':'Job find successfully',
             'updatePostJob':'Successfully Update',
             'deletePostJob':'Job deleted successfully',
-            'updateJob':'Job Updated Successfully',
-            'applyJob':'Job Applied Successfully'
+            'updateData':'Data Updated Successfully',
+            'applyJob':'Job Applied Successfully',
+            'token':'Token is not expired'
         },
         'Error':{
             'emailError': 'Email is already exists. Please use a different email address.',

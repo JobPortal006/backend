@@ -1,36 +1,26 @@
 import pytest
 import requests
+from data.message import create_session
 import json
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import declarative_base
 from data.Account_creation.Tables.table import (
     JobPost, Location, EmployeeTypes, JobRole, SkillSets, SkillSetMapping, Signup,CompanyDetails
 )
-Base = declarative_base()
-
-engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/jobportal')
-Base.metadata.create_all(bind=engine)
-
-@pytest.fixture
-def api_url():
-    return 'http://192.168.1.39:8000/job_post/'
+from backend.settings import base_url
 
 @pytest.fixture
 def data():
     return {
-      "job_title": "QA Testing",
-      "job_description": "Develop and maintain software applications.",
-      "employee_type": "Day/Night Shift",
-      "job_role": "Backend Developer",
-      "location": "Rajastan",
-      "skill_set": ["Node JS","Java"],
-      "qualification": "Bachelor's Degree in Computer Science",
-      "experience": "2-4 years",
-      "salary_range": "4-6 LPA",
-      "no_of_vacancies": 3,
-      "company_name": "Hexaware",
-      "email":"brochill22@gmail.com"
+        "job_title": "AWS Developer",
+        "job_description": "Develop and maintain software applications.",
+        "employee_type": "Part Time",
+        "job_role": "Full Stack Developer",
+        "location": ["Chennai","Coimbatore"],
+        "skill_set": ["AWS"],
+        "qualification": ["B.E"],
+        "experience": "0-1 year",
+        "salary_range": "4 - 6 LPA",
+        "no_of_vacancies": 3,
+        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJlbWFpbCI6InJhZ3Vsa3RyMDA3QGdtYWlsLmNvbSIsInJlZ2lzdGVyZWRfYnkiOiJSZWNydWl0ZXIiLCJleHAiOjE3MTA1NjQ2ODV9.TOCwe5qSSyJxSWclTydc3Px487PDFW1OfQlFFqrtfDg"
     }
 
 def get_or_create_and_get_id(session, model, column_name, value):
@@ -42,11 +32,11 @@ def get_or_create_and_get_id(session, model, column_name, value):
     return obj.id
 
 @pytest.mark.django_db
-def test_create_job_post(api_url, data):
-    Session = sessionmaker(bind=engine)
-    session = Session()
+def test_create_job_post(data):
+    session = create_session()
     headers = {'Content-Type': 'application/json'}
     # API testing
+    api_url = base_url + 'job_post/'
     response = requests.post(api_url, data=json.dumps(data), headers=headers)
     assert response.status_code == 200
     response_data = response.json()
@@ -64,7 +54,6 @@ def test_create_job_post(api_url, data):
         # Get or create employee_type_id, job_role_id, and location_id
         employee_type_id = get_or_create_and_get_id(session, EmployeeTypes, 'employee_type', data['employee_type'])
         job_role_id = get_or_create_and_get_id(session, JobRole, 'job_role', data['job_role'])
-        location_id = get_or_create_and_get_id(session, Location, 'location', data['location'])
 
         # Insert data into the JobPost table
         job_post_data = {
@@ -77,8 +66,7 @@ def test_create_job_post(api_url, data):
             "salary_range": data['salary_range'],
             "no_of_vacancies": data['no_of_vacancies'],
             "employee_type_id": employee_type_id,
-            "job_role_id": job_role_id,
-            "location_id": location_id
+            "job_role_id": job_role_id
         }
 
         job_post_entry = JobPost(**job_post_data)

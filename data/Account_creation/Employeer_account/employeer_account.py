@@ -89,10 +89,10 @@ class employer_register(View): # View class provides a creating views by definin
                             company_details_data = message.company_details(company_logo,company_name,company_industry, company_description, no_of_employees,company_website_link)
                             print(company_details_data)
                             if company_details_data:
-                                address_id = create_account_employeer_query.get_id(employee_id,registered_by)
+                                # address_id = create_account_employeer_query.get_id(employee_id,registered_by)
                                 # address_id = 1
                                 company_details_result = create_account_employeer_query.company_details(employee_id,company_name,
-                                    company_industry,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,address_id,company_logo_path)
+                                    company_industry,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,company_logo_path)
                                 print('Company_details_result ->', company_details_result)
                                 if company_details_result:
                                     company_address_json = request.POST.get('company_address', '[]')

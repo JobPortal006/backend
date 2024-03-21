@@ -203,4 +203,4 @@ class user_register(View): # View class provides a creating views by defining me
                 return message.response('Error','Error')
         except Exception as e:
             print(str(e))
-            return message.serverErrorResponse()
+            return message.tryExceptError(str(e))

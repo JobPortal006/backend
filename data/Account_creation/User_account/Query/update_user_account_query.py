@@ -1,16 +1,6 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from data.Account_creation.Tables.table import Signup, PersonalDetails, ProfessionalDetails, Address, CollegeDetails, EducationDetails, JobPreferences, ResumeDetails
-import json
-import base64
 import io
 import boto3
-from data.Account_creation.Query import create_account_user_query
-from data import message
-from data.Account_creation.User_account import get_user_account
-from sqlalchemy.orm import declarative_base
 
 
 def update_personal_details(session, user_id, date_of_birth, first_name, gender, last_name, profile_picture_path):
@@ -109,9 +99,6 @@ def upload_profile_picture_file(profile_picture, profile_picture_name, user_id,e
     # Check if the new logo key is different from the existing one
     if existing_profile_picture_key != new_logo_key:
         s3.upload_fileobj(io.BytesIO(profile_picture), 'backendcompanylogo', new_logo_key)
-        # if existing_profile_picture_key is None:
-        #     s3.delete_object(Bucket='backendcompanylogo', Key=existing_profile_picture_key)
-        #     print(f"Existing object with key '{existing_profile_picture_key}' deleted from S3.")
     return new_logo_key
 
 def upload_profile_picture_path(company_logo,existing_logo_key):
@@ -130,13 +117,8 @@ def get_resume_path(session,user_id):
 def upload_resume_file(resume, resume_name, user_id,existing_resume_key):
     s3 = boto3.client('s3', aws_access_key_id='AKIAZI2LB2XIRFQPYDJ4', aws_secret_access_key='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', region_name='eu-north-1')
     new_logo_key = f'resume/{user_id}_{resume_name}'
-    print(new_logo_key,'new_logo_key-----------')
-    # Check if the new logo key is different from the existing one
     if existing_resume_key != new_logo_key:
         s3.upload_fileobj(io.BytesIO(resume), 'backendcompanylogo', new_logo_key)
-        # if existing_resume_key is None:
-        #     s3.delete_object(Bucket='backendcompanylogo', Key=existing_resume_key)
-        #     print(f"Existing object with key '{existing_resume_key}' deleted from S3.")
     return new_logo_key
 
 def upload_resume_path(resume_path,existing_logo_key):

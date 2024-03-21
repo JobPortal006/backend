@@ -32,23 +32,25 @@ def forgetpassword(request):
         return message.response('Error','emailSentError')  
     else:
       return message.response('Error','Error')
-  except Exception:
-      return message.serverErrorResponse()   
+  except Exception as e:
+    return message.tryExceptError(str(e))   
    
 # Update password in signup Table and inserted in hash format
 @csrf_exempt
 def updatepassword(request):
-    try :
-      if request.method == 'POST':  
-        data = json.loads(request.body)
-        password = data.get('password')
-        email = orgemail 
-        print(f"Email retrieved from session: {email}") 
-        password_update = forgetpassword_query.update_password(password,email)
-        if password_update: 
-          return message.response('Success','passwordUpdate')
-        else :
-          return message.response('Error','passwordUpdateError')
-    except Exception:
-      return message.serverErrorResponse()
+  try :
+    if request.method == 'POST':  
+      data = json.loads(request.body)
+      password = data.get('password')
+      email = orgemail 
+      print(f"Email retrieved from session: {email}") 
+      password_update = forgetpassword_query.update_password(password,email)
+      if password_update: 
+        return message.response('Success','passwordUpdate')
+      else :
+        return message.response('Error','passwordUpdateError')
+    else:
+      return message.response('Error','Error')
+  except Exception as e:
+    return message.tryExceptError(str(e))
  

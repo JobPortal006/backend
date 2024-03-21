@@ -19,7 +19,7 @@ def get_user_details(request):
         print(user_id, registered_by,email) 
         if user_id is not None:
             session = message.create_session()
-            user_details_data=user_details(session,user_id)
+            user_details_data=user_details(user_id)
             global job_response
             job_response = user_details_data
             session.close()   
@@ -32,7 +32,7 @@ def get_user_details(request):
             return message.response('Error', 'tokenError')
     except Exception as e:
         print(f"The Error is: {str(e)}")
-        return message.serverErrorResponse()
+        return message.tryExceptError(str(e))
 
 @csrf_exempt
 def get_user_details_view(request):
@@ -46,18 +46,17 @@ def get_user_details_view(request):
             return message.response1('Error', 'searchJobError', data={})  
     except Exception as e:
         print(f"The Error is: {str(e)}")
-        return message.serverErrorResponse()
+        return message.tryExceptError(str(e))
     
-def user_details(session,user_id):
+def user_details(user_id):
+    session = message.create_session()
     user_details = {}
-    # user_details['status'] = True
     signup_details = session.query(Signup).filter_by(id=user_id).first()
     if signup_details:
         user_details['Signup'] = { 
             'email': signup_details.email,
             'mobile_number': signup_details.mobile_number   
         }
-    # print(user_details,'1-----------')
     personal_details = session.query(PersonalDetails).filter_by(user_id=user_id).first()
     if personal_details is not None:
         # profile_picture_path = get_employeer_account.get_company_logo_from_s3(str(f'profile_picture/{user_id}_company_logo.jpg'))
@@ -69,7 +68,6 @@ def user_details(session,user_id):
             'last_name': personal_details.last_name,
             'profile_picture_path': personal_details.profile_picture_path
         }
-        # print(user_details,'2-------------')
         address_details = session.query(Address).filter_by(user_id=user_id).all()
         user_details['address'] = {}
         for address in address_details:
@@ -81,8 +79,6 @@ def user_details(session,user_id):
                 'state': address.state,
                 'street': address.street,
             }
-        # print(user_details,'3-------------')
-
         education_details = session.query(EducationDetails).filter_by(user_id=user_id).first()
         if education_details:
             user_details['education_details'] = {
@@ -95,7 +91,6 @@ def user_details(session,user_id):
                 'sslc_school_name': education_details.sslc_school_name,
                 'sslc_start_year': education_details.sslc_start_year,
             }
-        # print(user_details,'4-------------')
         college_details = session.query(CollegeDetails).filter_by(user_id=user_id, education_type='UG').first()
         if college_details:
             user_details['college_details'] = {
@@ -107,7 +102,6 @@ def user_details(session,user_id):
                 'department': college_details.department,
                 'education_type': college_details.education_type,
             }
-
             # Initialize PG_college_details and Diploma_college_details as dictionaries
             user_details['PG_college_details'] = {}
             user_details['Diploma_college_details'] = {}
@@ -136,8 +130,6 @@ def user_details(session,user_id):
                     'diploma_college_start_year': diploma_college_details.start_year,
                     'diploma_college_education_type': diploma_college_details.education_type
                 })
-
-        # print(user_details, '5-------------')
         job_preferences = session.query(JobPreferences).filter_by(user_id=user_id).first()
         if job_preferences:
             user_details['jobPreference'] = {
@@ -146,13 +138,11 @@ def user_details(session,user_id):
                 'key_skills': job_preferences.key_skills,
                 'prefered_locations': job_preferences.preferred_locations,
             }
-        # print(user_details,'6-------------')
         professional_details = session.query(ProfessionalDetails).filter_by(user_id=user_id).all()
         user_details['professionalDetails'] = {
             'companies': [],
             'numberOfCompanies': str(len(professional_details)),
         }
-        # print(user_details,'7-------------')
         for prof_detail in professional_details:
             user_details['professionalDetails']['companies'].append({
                 'company_name': prof_detail.company_name,
@@ -160,13 +150,11 @@ def user_details(session,user_id):
                 'job_role': prof_detail.job_role,
                 'skills': prof_detail.skills,
             })
-        # print(user_details,'8-------------')
         resume_details = session.query(ResumeDetails).filter_by(user_id=user_id).first()
         if resume_details:
             user_details['resume'] = {
                 'resume_path':resume_details.resume_path
             }
-        # print(user_details,'9-------------')
         return user_details
     else:
         return None

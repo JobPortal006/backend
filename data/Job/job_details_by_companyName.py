@@ -5,7 +5,7 @@ from data.Job.Query import search_jobs_query
 from data.Job import json_response
 from sqlalchemy import and_
 from data.Account_creation.Tables.table import CompanyDetails
-job_response = ""
+# job_response = ""
 
 # Search the job details data in database
 # Send a response as JSON format 
@@ -16,6 +16,8 @@ def job_details_by_companyName(request):
     try:
         data = json.loads(request.body)
         company_name = data.get('company_name')
+        global company_call_fun
+        company_call_fun = 'company'
         print(company_name)
         set_data_id = set()
         jobs = []
@@ -32,6 +34,11 @@ def job_details_by_companyName(request):
     except Exception as e:
         print(str(e))
         return message.tryExceptError(str(e))
+    
+def company_name_response():
+    global job_response
+    url_response = job_response
+    return url_response
 
 # Get API for job details by company name
 @csrf_exempt

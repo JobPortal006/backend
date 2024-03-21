@@ -2,7 +2,6 @@ from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
 from data.Account_creation.Employeer_account.Query import update_employeer_account_query
-from data.Account_creation.Query import create_account_user_query,create_account_employeer_query
 from data.message import create_session
 from data.Account_creation.Tables.table import Address
 from data.token import decode_token
@@ -68,7 +67,6 @@ def update_employee_details(request):
             if address_street is not None: 
                 update_employeer_account_query.update_or_create_address(session, employee_id,registered_by, address_street, address_city, address_state, address_country,address_pincode, address_type)
         existing_logo_key = update_employeer_account_query.get_company_logo_path(session,employee_id)
-        print(existing_logo_key,'e------')
         if company_logo_file is not None:
             company_logo_key = update_employeer_account_query.update_company_logo_file(company_logo_path, company_logo_name, employee_id, existing_logo_key)
 
@@ -79,7 +77,6 @@ def update_employee_details(request):
                                          contact_person_position,company_logo_key)
         session.commit()
         session.close()
-
         return JsonResponse({"success": "Data updated successfully"})
     except Exception as e:
         print(str(e))

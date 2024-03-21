@@ -24,7 +24,7 @@ def test_job_by_company_name():
 @pytest.mark.django_db
 def test_job_by_employee_type():
     headers = {'Content-Type': 'application/json'} 
-    url = 'http://192.168.1.39:8000/job_details_by_employeeType/' 
+    url = 'http://192.168.1.39:8000/job_details_by_employeeType/'  
     data = {
        "employee_type":"Part time"
     }

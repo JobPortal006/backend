@@ -62,7 +62,7 @@ def update_jobs(request):
                 if json_data:
                     return message.response1('Success', 'getJobDetails', json_data)
                 else:
-                    return message.response('Success','updatePostJob')
+                    return message.response('Success','updateData')
             # return JsonResponse("Updated Successfully",safe=False)
         except Exception as e:
             return message.tryExceptError(str(e))

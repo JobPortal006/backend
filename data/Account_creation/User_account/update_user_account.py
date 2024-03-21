@@ -185,4 +185,4 @@ def update_user_details(request):
             return message.response('Error', 'tokenError')
     except Exception as e:
         print(str(e))
-        return JsonResponse({"error": "Failed to update data"})
+        return message.tryExceptError(str(e))

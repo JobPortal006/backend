@@ -17,22 +17,19 @@ def retry_database_operation(func):
         max_retries = 3
         sleep_duration = 2
         for attempt in range(1, max_retries + 1):
-            with connection.cursor() as cursor:
-                try:
-                    result = func( *args, **kwargs)
-                    return result
-                except OperationalError as e:
-                    print(f"Attempt {attempt}: Database connection error - {e}")
-                    if attempt < max_retries:
-                        print(f"Retrying in {sleep_duration} seconds...")
-                        sleep(sleep_duration)
-                    else:
-                        # Trigger a project restart on max retries
-                        call_command('runserver', '--noreload')
-                        # You may need to customize this based on your project structure
-                        return message.serverErrorResponse()
-                finally:
-                    connection.close()  # Close the connection explicitly
+            try:
+                result = func(*args, **kwargs)
+                return result
+            except OperationalError as e:
+                print(f"Attempt {attempt}: Database connection error - {e}")
+                if attempt < max_retries:
+                    print(f"Retrying in {sleep_duration} seconds...")
+                    sleep(sleep_duration)
+                else:
+                    # Trigger a project restart on max retries
+                    call_command('runserver', '--noreload')
+                    # You may need to customize this based on your project structure
+                    return message.serverErrorResponse()
     return wrapper
 
 # Insert the data into required tables

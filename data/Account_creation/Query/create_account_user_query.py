@@ -95,7 +95,7 @@ def job_preference_details(user_id,key_skills, department, industry, prefered_lo
         con.execute(sql, values)
         connection.commit()
         return True
-    except Exception as e:
+    except Exception as e: 
         print(f"Error inserting data: {e}")
         connection.rollback()
         return False
@@ -136,7 +136,7 @@ def userid_check(user_id):
     query_job_preferences = con.execute(check_sql_job_preferences, [user_id])
     query_professional_details = con.execute(check_sql_professional_details, [user_id])
     query_resume_details = con.execute(check_sql_resume_details, [user_id])
-    print(query_personal,query_job_preferences,query_professional_details,query_resume_details,'1-----------')
+    print(query_personal,query_job_preferences,query_professional_details,query_resume_details,'Check user is already registered or not')
     if query_personal == 0 and query_job_preferences == 0 and query_professional_details ==0 and query_resume_details == 0:
         return True
     else:

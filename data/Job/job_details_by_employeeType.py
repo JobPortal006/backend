@@ -33,6 +33,11 @@ def job_details_by_employeeType(request):
     except Exception as e:
         print(str(e))
         return message.tryExceptError(str(e))
+    
+def employee_type_response():
+    global job_response
+    url_response = job_response
+    return url_response
 
 # Get API for job details by employee type
 @csrf_exempt
