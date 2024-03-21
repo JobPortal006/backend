@@ -51,6 +51,7 @@ urlpatterns = [
     path('view_apply_jobs/',apply_job.view_apply_jobs),
     path('get_view_apply_jobs/',apply_job.get_view_apply_jobs),
     path('user_job_apply_list/',user_job_apply_list.user_job_apply_list),
+    path('user_profile_list/',user_job_apply_list.user_profile_list),
   
     path('get_job_details_by_id/',get_job_details.get_job_details_by_id),
     path('update_job/',update_job.update_jobs),

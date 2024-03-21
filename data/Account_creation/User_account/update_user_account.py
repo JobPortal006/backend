@@ -6,6 +6,7 @@ from data.message import create_session
 from data.Account_creation.User_account import get_user_account
 from data.token import decode_token
 from data import message
+from data.Account_creation.Tables.table import Address, CollegeDetails
 
 @csrf_exempt
 def update_user_details(request):
@@ -22,7 +23,6 @@ def update_user_details(request):
         print(user_id, registered_by,email) 
         if user_id is not None:
             user_details = json.loads(request.POST.get('userDetails', '{}'))
-            signup_data = json.loads(request.POST.get('Signup', '{}'))
             address_data = json.loads(request.POST.get('address', '{}'))
             education_data = json.loads(request.POST.get('education_details', '{}'))
             college_data = json.loads(request.POST.get('college_details','{}'))
@@ -112,71 +112,73 @@ def update_user_details(request):
             existing_profile_picture_key = update_user_account_query.get_profile_picture_path(session,user_id)
             if profile_picture_file is not None:
                 profile_picture_key = update_user_account_query.upload_profile_picture_file(profile_picture_file, profile_picture_name, user_id, existing_profile_picture_key)
-
             else:       
                 profile_picture_key = profile_picture_path
-            update_user_account_query.update_personal_details(session, user_id, date_of_birth, first_name, gender, last_name, profile_picture_key)
+            with session.no_autoflush:
+                update_user_account_query.update_personal_details(session, user_id, date_of_birth, first_name, gender, last_name, profile_picture_key)
+                session.query(Address).filter_by(user_id=user_id).delete()
+                # Update Address table for permanent address
+                update_user_account_query.update_address(session, user_id,registered_by, address_type_permanent, city_permanent, country_permanent, pincode_permanent,
+                            state_permanent, street_permanent)
+            
+                if address_type_current is not None and address_type_current != '':
+                    # Update Address table for current address
+                    update_user_account_query.update_address(session, user_id,registered_by, address_type_current, city_current, country_current, pincode_current, state_current,
+                                street_current)
 
-            # Update Address table for permanent address
-            update_user_account_query.update_address(session, user_id, address_type_permanent, city_permanent, country_permanent, pincode_permanent,
-                        state_permanent, street_permanent)
-        
-            if address_type_current is not None and address_type_current != '':
-                # Update Address table for current address
-                update_user_account_query.update_address(session, user_id, address_type_current, city_current, country_current, pincode_current, state_current,
-                            street_current)
-
-            # Update EducationDetails table
-            update_user_account_query.update_education_details(session, user_id, sslc_end_year, sslc_percentage, sslc_school_name, sslc_start_year,
-                                    hsc_end_year, hsc_percentage, hsc_school_name, hsc_start_year)
-            if education_type == 'UG':
-                # Update CollegeDetails table for UG education type
-                update_user_account_query.update_college_details(session, user_id, education_type, college_end_year, college_name, college_percentage,
-                                    college_start_year, degree, department)
+                # Update EducationDetails table
+                update_user_account_query.update_education_details(session, user_id, sslc_end_year, sslc_percentage, sslc_school_name, sslc_start_year,
+                                        hsc_end_year, hsc_percentage, hsc_school_name, hsc_start_year)
+                session.query(CollegeDetails).filter_by(user_id=user_id).delete()
+                if college_name is not None and college_name != '':
+                    # Update CollegeDetails table for UG education type
+                    education_type = 'UG'
+                    update_user_account_query.update_college_details(session, user_id, education_type, college_end_year, college_name, college_percentage,
+                                        college_start_year, degree, department)
                 if pg_college_name is not None and pg_college_name != '':  
                     # Update CollegeDetails table for PG education type
-                    education_type = pg_college_education_type
+                    education_type = 'PG'
                     update_user_account_query.update_college_details(session, user_id, education_type, pg_college_end_year, pg_college_name, pg_college_percentage,
                                         pg_college_start_year, pg_college_degree, pg_college_department)
                 if diploma_college_name is not None and diploma_college_name != '':
                     # Update CollegeDetails table for Diploma education type
-                    education_type = diploma_college_education_type
+                    education_type = 'Diploma'
                     update_user_account_query.update_college_details(session, user_id, education_type, diploma_college_end_year, diploma_college_name,
                                         diploma_college_percentage, diploma_college_start_year, diploma_college_degree,
                                         diploma_college_department)
 
-            # Update JobPreferences table
-            update_user_account_query.update_job_preferences(session, user_id, department, industry, key_skills, prefered_locations)
-            
-            # Delete existing professional details for the user
-            update_user_account_query.delete_existing_professional_details(session, user_id)
-            numberOfCompanies = professional_details_data.get('numberOfCompanies')
+                # Update JobPreferences table
+                update_user_account_query.update_job_preferences(session, user_id, department, industry, key_skills, prefered_locations)
+                
+                # Delete existing professional details for the user
+                update_user_account_query.delete_existing_professional_details(session, user_id)
+                numberOfCompanies = professional_details_data.get('numberOfCompanies')
 
-            if numberOfCompanies == "0":
-                employment_status = "Fresher"
-            else:
-                employment_status = "Experienced"
-                # professional_details_data = json.loads(request.POST.get('professionalDetails', '{}'))
-                companies = professional_details_data.get('companies', [])
-                # number_of_companies = professional_details_data.get('numberOfCompanies', 0)
+                if numberOfCompanies == "0":
+                    employment_status = "Fresher"
+                else:
+                    employment_status = "Experienced"
+                    # professional_details_data = json.loads(request.POST.get('professionalDetails', '{}'))
+                    companies = professional_details_data.get('companies', [])
+                    # number_of_companies = professional_details_data.get('numberOfCompanies', 0)
 
-                # Update ProfessionalDetails table
-                update_user_account_query.update_professional_details(session, user_id, companies)
+                    # Update ProfessionalDetails table
+                    update_user_account_query.update_professional_details(session, user_id, companies)
 
-            existing_resume_key = update_user_account_query.get_resume_path(session,user_id)
-            if resume_file is not None:
-                resume_key = update_user_account_query.upload_resume_file(resume_file, resume_name, user_id, existing_resume_key)
-                # print(company_logo_key+" "+ "if condition ---->2")
+                existing_resume_key = update_user_account_query.get_resume_path(session,user_id)
+                if resume_file is not None:
+                    resume_key = update_user_account_query.upload_resume_file(resume_file, resume_name, user_id, existing_resume_key)
+                    # print(company_logo_key+" "+ "if condition ---->2")
 
-            else:
-                # resume_key = update_user_account_query.upload_resume_path(resume_path,existing_resume_key) 
-                resume_key = resume_path  
-    
-            update_user_account_query.update_resume_details(session, user_id, employment_status, resume_key)
-            
-            updated_data = get_user_account.user_details(session,user_id)
+                else:
+                    # resume_key = update_user_account_query.upload_resume_path(resume_path,existing_resume_key) 
+                    resume_key = resume_path  
+        
+                update_user_account_query.update_resume_details(session, user_id, employment_status, resume_key)
+                
 
-            session.commit()
+                session.commit()
+            updated_data = get_user_account.user_details(user_id)
             session.close()
 
             # return JsonResponse({"message": "Data updated successfully"})

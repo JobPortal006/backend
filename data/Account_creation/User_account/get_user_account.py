@@ -75,7 +75,7 @@ def user_details(user_id):
                 'address_type': address.address_type,
                 'city': address.city,
                 'country': address.country,
-                'pincode': address.pincode,
+                'pincode': address.pincode, 
                 'state': address.state,
                 'street': address.street,
             }
@@ -91,6 +91,10 @@ def user_details(user_id):
                 'sslc_school_name': education_details.sslc_school_name,
                 'sslc_start_year': education_details.sslc_start_year,
             }
+        # Initialize PG_college_details and Diploma_college_details as dictionaries
+        user_details['college_details'] = {}
+        user_details['PG_college_details'] = {}
+        user_details['Diploma_college_details'] = {}
         college_details = session.query(CollegeDetails).filter_by(user_id=user_id, education_type='UG').first()
         if college_details:
             user_details['college_details'] = {
@@ -102,34 +106,31 @@ def user_details(user_id):
                 'department': college_details.department,
                 'education_type': college_details.education_type,
             }
-            # Initialize PG_college_details and Diploma_college_details as dictionaries
-            user_details['PG_college_details'] = {}
-            user_details['Diploma_college_details'] = {}
 
-            # Include PG and Diploma details only for 'UG' education type
-            pg_college_details = session.query(CollegeDetails).filter_by(user_id=user_id, education_type='PG').first()
-            if pg_college_details:
-                user_details['PG_college_details'].update({
-                    'pg_college_degree': pg_college_details.degree,
-                    'pg_college_department': pg_college_details.department,
-                    'pg_college_end_year': pg_college_details.end_year,
-                    'pg_college_name': pg_college_details.college_name,
-                    'pg_college_percentage': pg_college_details.percentage,
-                    'pg_college_start_year': pg_college_details.start_year,
-                    'pg_college_education_type': pg_college_details.education_type
-                })
+        # Include PG and Diploma details only for 'UG' education type
+        pg_college_details = session.query(CollegeDetails).filter_by(user_id=user_id, education_type='PG').first()
+        if pg_college_details:
+            user_details['PG_college_details'].update({
+                'pg_college_degree': pg_college_details.degree,
+                'pg_college_department': pg_college_details.department,
+                'pg_college_end_year': pg_college_details.end_year,
+                'pg_college_name': pg_college_details.college_name,
+                'pg_college_percentage': pg_college_details.percentage,
+                'pg_college_start_year': pg_college_details.start_year,  
+                'pg_college_education_type': pg_college_details.education_type
+            })
 
-            diploma_college_details = session.query(CollegeDetails).filter_by(user_id=user_id, education_type='Diploma').first()
-            if diploma_college_details:
-                user_details['Diploma_college_details'].update({
-                    'diploma_college_degree': diploma_college_details.degree,
-                    'diploma_college_department': diploma_college_details.department,
-                    'diploma_college_end_year': diploma_college_details.end_year,
-                    'diploma_college_name': diploma_college_details.college_name,
-                    'diploma_college_percentage': diploma_college_details.percentage,
-                    'diploma_college_start_year': diploma_college_details.start_year,
-                    'diploma_college_education_type': diploma_college_details.education_type
-                })
+        diploma_college_details = session.query(CollegeDetails).filter_by(user_id=user_id, education_type='Diploma').first()
+        if diploma_college_details:
+            user_details['Diploma_college_details'].update({
+                'diploma_college_degree': diploma_college_details.degree,
+                'diploma_college_department': diploma_college_details.department,
+                'diploma_college_end_year': diploma_college_details.end_year,
+                'diploma_college_name': diploma_college_details.college_name,
+                'diploma_college_percentage': diploma_college_details.percentage,
+                'diploma_college_start_year': diploma_college_details.start_year,
+                'diploma_college_education_type': diploma_college_details.education_type
+            })
         job_preferences = session.query(JobPreferences).filter_by(user_id=user_id).first()
         if job_preferences:
             user_details['jobPreference'] = {

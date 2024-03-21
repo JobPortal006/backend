@@ -52,9 +52,9 @@ def apply_jobs(request):
         resume_file = request.FILES.get('resume_path')
         if resume_file is not None:
             resume_name = resume_file.name
-            resume_file = resume_file.read() 
+            resume_file = resume_file.read()
         else:
-            resume_path = request.POST.get('resume_path')  
+            resume_path = request.POST.get('resume_path') 
         session = create_session()
         check_val = message.check(job_id,user_id)
         user_email = email

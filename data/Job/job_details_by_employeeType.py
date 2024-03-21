@@ -5,6 +5,9 @@ from data.Job.Query import search_jobs_query
 from data.Job import json_response
 from sqlalchemy import and_
 from data.Account_creation.Tables.table import EmployeeTypes
+
+from data.Job import search_jobs
+from data.Job import job_details_by_companyName 
 job_response = ""
 
 # Search the job details data in database
@@ -16,6 +19,11 @@ def job_details_by_employeeType(request):
     try:
         data = json.loads(request.body)
         employee_type = data.get('employee_type')
+        global employee_call_fun 
+        employee_call_fun = 'employee'
+        job_details_by_companyName.company_fun_call = None
+        search_jobs.search_fun_call = None
+
         print(employee_type)
         set_data_id = set()
         jobs = []

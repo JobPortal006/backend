@@ -96,7 +96,8 @@ def response1(val,key,data):
             'searchJobError':'No data found',
             'ValuesCheckError':'Input Should not be empty',
             'EmptyRequestBody':'Empty Request Body',
-            'userApplyJobError':'You already applied for this job'
+            'userApplyJobError':'You already applied for this job',
+            'userJobViewError':'User not applied for this job'
         }
     }
     if val == 'Success':

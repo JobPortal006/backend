@@ -11,6 +11,7 @@ def update_signup_details(session, employee_id, email, mobile_number):
 
 # Update or create Address details
 def update_or_create_address(session, employee_id,registered_by, street, city, state, country,pincode, address_type):
+    session.query(Address).filter_by(user_id=employee_id).delete()
     new_address = Address(user_id=employee_id,registered_by=registered_by, address_type=address_type, city=city,
                             country=country, pincode=pincode, state=state, street=street)
     session.add(new_address)

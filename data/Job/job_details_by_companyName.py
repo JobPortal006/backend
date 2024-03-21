@@ -4,7 +4,10 @@ from data import message
 from data.Job.Query import search_jobs_query
 from data.Job import json_response
 from sqlalchemy import and_
+from data.Job import search_jobs
 from data.Account_creation.Tables.table import CompanyDetails
+from data.Job import job_details_by_employeeType
+
 # job_response = ""
 
 # Search the job details data in database
@@ -16,8 +19,11 @@ def job_details_by_companyName(request):
     try:
         data = json.loads(request.body)
         company_name = data.get('company_name')
-        global company_call_fun
-        company_call_fun = 'company'
+        # company_call_fun
+        global company_fun_call
+        company_fun_call = 'company'
+        search_jobs.search_fun_call = None
+        job_details_by_employeeType.employee_call_fun = None
         print(company_name)
         set_data_id = set()
         jobs = []

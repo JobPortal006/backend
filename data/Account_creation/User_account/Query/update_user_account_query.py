@@ -13,7 +13,7 @@ def update_personal_details(session, user_id, date_of_birth, first_name, gender,
         personal_details.profile_picture_path = profile_picture_path
 
 
-def update_address(session, user_id, address_type, city, country, pincode, state, street):
+def update_address(session, user_id,registered_by ,address_type, city, country, pincode, state, street):
     address_obj = session.query(Address).filter_by(user_id=user_id, address_type=address_type).first()
     if address_obj:
         address_obj.city = city
@@ -21,22 +21,29 @@ def update_address(session, user_id, address_type, city, country, pincode, state
         address_obj.pincode = pincode
         address_obj.state = state
         address_obj.street = street
+        address_obj.registered_by = registered_by
     else:
-        new_address = Address(user_id=user_id, address_type=address_type, city=city, country=country, pincode=pincode,
+        new_address = Address(user_id=user_id,registered_by=registered_by, address_type=address_type, city=city, country=country, pincode=pincode,
                               state=state, street=street)
         session.add(new_address)
 
 
 def update_college_details(session, user_id, education_type, end_year, college_name, percentage, start_year, degree, department):
-    college_details = session.query(CollegeDetails).filter_by(user_id=user_id, education_type=education_type).first()
-    if college_details:
-        college_details.end_year = end_year
-        college_details.college_name = college_name
-        college_details.education_type = education_type
-        college_details.percentage = percentage
-        college_details.start_year = start_year
-        college_details.degree = degree
-        college_details.department = department
+    # If college_details doesn't exist, create a new instance
+    college_details = CollegeDetails(
+        user_id=user_id,
+        education_type=education_type,
+        end_year=end_year,
+        college_name=college_name,
+        percentage=percentage,
+        start_year=start_year,
+        degree=degree,
+        department=department
+    )
+    # Add the new college_details to the session
+    session.add(college_details)
+    # Commit the transaction to persist the changes
+    session.commit()
 
 
 def update_education_details(session, user_id, sslc_end_year, sslc_percentage, sslc_school_name, sslc_start_year,

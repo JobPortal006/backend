@@ -8,7 +8,8 @@ from data.Job import json_response
 from sqlalchemy import and_, or_
 from data.Job.post_job import retry_database_operation
 from data.Account_creation.Tables.table import SkillSets, Location, JobPost
-
+from data.Job import job_details_by_companyName
+from data.Job import job_details_by_employeeType
 # job_response = ""
 
 # def retry_database_operation(operation, max_retries=3, sleep_duration=2):
@@ -51,6 +52,8 @@ def search_job(request):
         print("Skill Results:", skill_result)
         print("Job Titles:", job_title)
         search_fun_call = 'search'
+        job_details_by_companyName.company_fun_call  = None
+        job_details_by_employeeType.employee_call_fun = None
         # Combine conditions using and_ and or_
         # check skill_result in Database  
         if skill_result and not job_title and not experience and not location:

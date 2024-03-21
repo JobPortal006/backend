@@ -48,7 +48,6 @@ def update_employee_details(request):
         session = create_session()
         update_employeer_account_query.update_signup_details(session, employee_id, email, mobile_number)
         # Delete existing address data for the given user_id and address_type
-        session.query(Address).filter_by(user_id=employee_id).delete()
         company_address_json = request.POST.get('company_address', '[]')
         # Parse the JSON string to get the array of objects
         company_addresses = json.loads(company_address_json)
@@ -64,6 +63,7 @@ def update_employee_details(request):
             address_country = current_address.get('country')
             address_pincode = current_address.get('pincode')
             address_type = current_address.get('address_type')
+            session.query(Address).filter_by(user_id=employee_id).delete()
             if address_street is not None: 
                 update_employeer_account_query.update_or_create_address(session, employee_id,registered_by, address_street, address_city, address_state, address_country,address_pincode, address_type)
         existing_logo_key = update_employeer_account_query.get_company_logo_path(session,employee_id)
