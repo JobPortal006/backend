@@ -1,10 +1,7 @@
 import pytest
 import requests
 import json
-
-@pytest.fixture
-def api_url():
-    return 'http://192.168.1.46:8000/view_jobs/'
+from backend.settings import base_url
 
 @pytest.fixture
 def data():
@@ -15,8 +12,9 @@ def data():
     }
 
 @pytest.mark.django_db
-def test_search_job(api_url, data):
-    headers = {'Content-Type': 'application/json'}  
+def test_search_job(data):
+    headers = {'Content-Type': 'application/json'} 
+    api_url = base_url + 'search_jobs/' 
     response = requests.post(api_url, data=json.dumps(data), headers=headers)
     assert response.status_code == 200
     response_data = response.json()

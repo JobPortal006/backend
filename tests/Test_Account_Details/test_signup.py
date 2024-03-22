@@ -1,20 +1,9 @@
 import pytest
 import requests
 import json
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import declarative_base
 from data.Account_creation.Tables.table import Signup
-
-# Define the SQLAlchemy model
-Base = declarative_base()
-
-engine = create_engine('mysql://theuser:thepassword@172.31.34.63:3306/jobportal')
-Base.metadata.create_all(bind=engine)
-
-@pytest.fixture
-def api_url():
-    return 'http://192.168.1.39:8000/signup/'
+from backend.settings import base_url
+from data.message import create_session
 
 @pytest.fixture
 def data():
@@ -26,10 +15,10 @@ def data():
     }
 
 @pytest.mark.django_db
-def test_create_user_success(api_url, data):
-    Session = sessionmaker(bind=engine)
-    session = Session()
+def test_create_user_success(data):
+    session = create_session()
     headers = {'Content-Type': 'application/json'}  
+    api_url = base_url + 'signup/'
     response = requests.post(api_url, data=json.dumps(data), headers=headers)
     assert response.status_code == 200
     response_data = response.json()
@@ -57,8 +46,7 @@ def test_create_user_success(api_url, data):
 
 @pytest.mark.django_db
 def test_create_user_failure(api_url, data):
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    session = create_session()
     headers = {'Content-Type': 'application/json'}  
     response = requests.post(api_url, data=json.dumps(data), headers=headers)
     assert response.status_code == 200

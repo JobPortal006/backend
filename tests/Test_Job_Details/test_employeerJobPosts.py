@@ -1,15 +1,16 @@
 import pytest
 import requests
 import json
+from backend.settings import base_url
 
 @pytest.mark.django_db
 def test_employeer_job_posts():
     headers = {'Content-Type': 'application/json'} 
-    url = 'http://192.168.1.39:8000/employer_post_jobs/' 
+    api_url = base_url + 'employer_post_jobs/'
     data = {
         "employee_id":1
     }
-    response = requests.post(url, data=json.dumps(data), headers=headers)
+    response = requests.post(api_url, data=json.dumps(data), headers=headers)
     assert response.status_code == 200
     response_data = response.json()
     print(response_data)

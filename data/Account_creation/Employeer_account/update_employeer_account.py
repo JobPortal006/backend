@@ -53,7 +53,8 @@ def update_employee_details(request):
         company_addresses = json.loads(company_address_json)
         # Get the length of the array of objects
         num_addresses = len(company_addresses)
-        print("Number of addresses:", num_addresses)
+        # print("Number of addresses:", num_addresses)
+        session.query(Address).filter_by(user_id=employee_id).delete()
         for i in range(num_addresses):  # Assuming there are at most two addresses, adjust as needed
             current_address = company_addresses[i]
             # Extract individual fields from the address object
@@ -63,7 +64,6 @@ def update_employee_details(request):
             address_country = current_address.get('country')
             address_pincode = current_address.get('pincode')
             address_type = current_address.get('address_type')
-            session.query(Address).filter_by(user_id=employee_id).delete()
             if address_street is not None: 
                 update_employeer_account_query.update_or_create_address(session, employee_id,registered_by, address_street, address_city, address_state, address_country,address_pincode, address_type)
         existing_logo_key = update_employeer_account_query.get_company_logo_path(session,employee_id)

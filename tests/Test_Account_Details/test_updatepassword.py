@@ -1,9 +1,7 @@
-import pytest
+from backend.settings import base_url
 import requests
 
 def test_updatepassword():
-    # Define the API endpoint
-    api_url = "http://192.168.1.39:8000/updatepassword/"
 
     # Define the data to be sent
     data = {
@@ -11,6 +9,7 @@ def test_updatepassword():
         "email":"brochill547@gmail.com"
     }
     # Send a POST request with the data
+    api_url = base_url + 'updatepassword/'
     response = requests.post(api_url, json=data)
     assert response.status_code == 200
     response_data = response.json()

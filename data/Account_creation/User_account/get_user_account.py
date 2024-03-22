@@ -1,12 +1,15 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from data.Account_creation.Tables.table import Signup,PersonalDetails,ProfessionalDetails,Address,CollegeDetails,EducationDetails,JobPreferences,ResumeDetails
-from sqlalchemy.orm import declarative_base
 import json
 from data import message
 from data.token import decode_token
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+import base64
+private_key = RSA.generate(2048)
+public_key = private_key.publickey()
 
-Base = declarative_base()
 job_response = ""
 @csrf_exempt
 def get_user_details(request):
@@ -52,10 +55,13 @@ def user_details(user_id):
     session = message.create_session()
     user_details = {}
     signup_details = session.query(Signup).filter_by(id=user_id).first()
+    cipher = PKCS1_OAEP.new(public_key)
+    encrypted_email = base64.b64encode(cipher.encrypt(signup_details.email.encode())).decode()
     if signup_details:
         user_details['Signup'] = { 
             'email': signup_details.email,
-            'mobile_number': signup_details.mobile_number   
+            'mobile_number': signup_details.mobile_number,
+            'encrypted_email': encrypted_email
         }
     personal_details = session.query(PersonalDetails).filter_by(user_id=user_id).first()
     if personal_details is not None:

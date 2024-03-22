@@ -1,9 +1,9 @@
-import pytest
+from backend.settings import base_url
 import requests
 
 def test_userRegister():
     # Define the API endpoint
-    api_url = "http://192.168.1.39:8000/userRegister/"
+    api_url = base_url + 'userRegister/'
 
     # Define the data to be sent
     data = {

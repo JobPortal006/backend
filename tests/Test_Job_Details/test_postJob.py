@@ -44,6 +44,8 @@ def test_create_job_post(data):
     message = response_data.get('message', '')
     if response_data['statusCode'] == 200:
         # Fetch the employee_id after the signup is inserted
+        token = data['token']
+        # employee_id,registered_by,email = decode_token(token)
         inserted_signup = session.query(Signup).filter_by(email=data['email']).first()
         employee_id = inserted_signup.id
 
