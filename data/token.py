@@ -42,7 +42,6 @@ def token_expired(request):
     token = data.get('token')
     print(token)
     decoded_token = jwt.decode(token, secret_key, algorithms=['HS256'])
-    print(decoded_token,'d----')
     # return JsonResponse(decoded_token)  # Return decoded token if not expired
     return message.response('Success','token') 
   except ExpiredSignatureError:

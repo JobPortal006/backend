@@ -6,7 +6,8 @@ from data.message import create_session
 from data.Account_creation.User_account import get_user_account
 from data.token import decode_token
 from data import message
-from data.Account_creation.Tables.table import Address, CollegeDetails
+from data.Account_creation.Tables.table import Address, CollegeDetails, JobPreferences, SkillSets, Location
+from data.Job.Query import post_job_insert_query 
 
 @csrf_exempt
 def update_user_details(request):
@@ -94,7 +95,7 @@ def update_user_details(request):
             pg_college_name = pg_college__data.get("pg_college_name")
             pg_college_percentage = pg_college__data.get("pg_college_percentage")
             pg_college_start_year = pg_college__data.get("pg_college_start_year")
-            pg_college_education_type = diploma_college_data.get("pg_college_education_type")
+            # pg_college_education_type = diploma_college_data.get("pg_college_education_type")
 
             diploma_college_name = diploma_college_data.get("diploma_college_name")
             diploma_college_start_year = diploma_college_data.get("diploma_college_start_year")
@@ -102,7 +103,7 @@ def update_user_details(request):
             diploma_college_percentage = diploma_college_data.get("diploma_college_percentage")
             diploma_college_department = diploma_college_data.get("diploma_college_department")
             diploma_college_degree = diploma_college_data.get("diploma_college_degree")
-            diploma_college_education_type = diploma_college_data.get("diploma_college_education_type")
+            # diploma_college_education_type = diploma_college_data.get("diploma_college_education_type")
             # Extracting job preference details
             department = job_preference_data.get('department')
             industry = job_preference_data.get('industry')
@@ -146,8 +147,22 @@ def update_user_details(request):
                     update_user_account_query.update_college_details(session, user_id, education_type, diploma_college_end_year, diploma_college_name,
                                         diploma_college_percentage, diploma_college_start_year, diploma_college_degree,
                                         diploma_college_department)
-
+                session.query(JobPreferences).filter_by(user_id=user_id).delete()
                 # Update JobPreferences table
+                # skill_ids = []
+                # key_skills = key_skills.split(",")
+                # for skill in key_skills:
+                #     skill_details = session.query(SkillSets).filter_by(id=skill).first()
+                #     skill_id = post_job_insert_query.skill_set(skill_details.skill_set) # Insert the skill_set in skill_sets table
+                #     skill_ids.append(str(skill_id))  # Append the skill_id to the list and convert it to a string
+                # location_ids = []
+                # prefered_locations = prefered_locations.split(",")
+                # for location in prefered_locations:
+                #     location_details = session.query(Location).filter_by(id=location).first()
+                #     location_id = post_job_insert_query.location(location_details.location)# Insert the location in locations table
+                #     location_ids.append(str(location_id))  # Append the location_id to the list and convert it to a string
+                # key_skills = ",".join(skill_ids)
+                # prefered_locations = ",".join(location_ids)
                 update_user_account_query.update_job_preferences(session, user_id, department, industry, key_skills, prefered_locations)
                 
                 # Delete existing professional details for the user

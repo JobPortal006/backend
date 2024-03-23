@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from data.Account_creation.Tables.table import Signup,PersonalDetails,ProfessionalDetails,Address,CollegeDetails,EducationDetails,JobPreferences,ResumeDetails
+from data.Account_creation.Tables.table import Signup,PersonalDetails,ProfessionalDetails,Address,CollegeDetails,EducationDetails,JobPreferences,ResumeDetails,SkillSets,Location
 import json
 from data import message
 from data.token import decode_token
@@ -139,11 +139,29 @@ def user_details(user_id):
             })
         job_preferences = session.query(JobPreferences).filter_by(user_id=user_id).first()
         if job_preferences:
+            # skill_details_list = []
+            # key_skills = job_preferences.key_skills
+            # skill_ids = key_skills.split(",")
+            # for skill_id in skill_ids:
+            #     skill_details = session.query(SkillSets).filter_by(id=skill_id).first()
+            #     if skill_details:
+            #         skill_details_list.append(str(skill_details.skill_set))
+            # # key_skills = ",".join(skill_details_list)
+            # prefered_locations_list = []
+            # prefered_locations = job_preferences.prefered_locations
+            # location_ids = prefered_locations.split(",")
+            # for location_id in location_ids:
+            #     location_details = session.query(Location).filter_by(id=location_id).first()
+            #     if location_details:
+            #         prefered_locations_list.append(str(location_details.location))
+            # prefered_locations = ",".join(prefered_locations_list)
             user_details['jobPreference'] = {
                 'department': job_preferences.department,
                 'industry': job_preferences.industry,
                 'key_skills': job_preferences.key_skills,
                 'prefered_locations': job_preferences.preferred_locations,
+                # 'key_skills': skill_details_list,
+                # 'prefered_locations': prefered_locations_list
             }
         professional_details = session.query(ProfessionalDetails).filter_by(user_id=user_id).all()
         user_details['professionalDetails'] = {
@@ -160,7 +178,8 @@ def user_details(user_id):
         resume_details = session.query(ResumeDetails).filter_by(user_id=user_id).first()
         if resume_details:
             user_details['resume'] = {
-                'resume_path':resume_details.resume_path
+                'resume_path':resume_details.resume_path,
+                'employment_status':resume_details.employment_status
             }
         return user_details
     else:

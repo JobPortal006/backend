@@ -30,7 +30,10 @@ urlpatterns = [
     # JOB POST ---- APIs 
     path('job_post/',post_job.post_jobs),
     path('address_location/',jobs_data.address_location),
-    path('location/',jobs_data.locations),
+    path('locations/',jobs_data.locations),
+    path('skills/',jobs_data.skills),
+    path('company_industry/',jobs_data.company_industry),
+    path('job_apply_locations/',jobs_data.job_apply_locations),
     path('experience/',jobs_data.experience),
     path('company_name/',jobs_data.company_name),
     path('job_role/',jobs_data.job_role),
@@ -57,6 +60,7 @@ urlpatterns = [
     path('update_job/',update_job.update_jobs),
     path('delete_job/',delete_job.delete_jobPost),
     path('filter_job/',job_filter.job_filter),
+    path('filter_result/',job_filter.filter_result),
 ]
   
 if settings.DEBUG:

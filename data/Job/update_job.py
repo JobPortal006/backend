@@ -53,6 +53,7 @@ def update_jobs(request):
                 mappind_table="skill_set_mapping"
                 mappind_id="skill_id"
                 update_job_query.update_maping_tables(skill_set,job_id,table_name,field_name,mappind_table,mappind_id)
+                
                 update_job_query.jobPost_updateQuery( job_title, job_description, qualification, experience, salary_range, no_of_vacancies,job_id)
 
                 set_data_id = set()

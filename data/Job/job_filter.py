@@ -1,6 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 import json
 from data import message
+from django.http import JsonResponse
 from data.Job import search_jobs
 from data.Job import job_details_by_companyName 
 from data.Job import job_details_by_employeeType
@@ -99,16 +100,12 @@ def job_filter(request):
             return message.tryExceptError(str(e))
     else:
         return message.response('Error', 'Error')
-    
-# def job_search_result():
 
-#     jobs = search_response()
-#     return jobs
-
-# def job_company_name_result():
-#     jobs = company_name_response()
-#     return jobs
-
-# def job_employee_type_result():
-#     jobs = employee_type_response()
-#     return jobs
+@csrf_exempt   
+def filter_result(request):
+    data = json.loads(request.body)
+    print(data)
+    if data:
+        return JsonResponse(data, safe=False)
+    else:
+        return message.response('Error', 'searchJobError')

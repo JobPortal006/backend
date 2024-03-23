@@ -39,7 +39,7 @@ def retry_database_operation(func):
 # Function to retrieve location data
 @csrf_exempt
 @retry_database_operation
-def locations(cursor, request):
+def job_apply_locations(cursor, request):
     try:
         cursor.execute("SELECT DISTINCT l.location FROM location l JOIN location_mapping lm ON l.id=lm.location_id")
         rows = cursor.fetchall()
@@ -114,13 +114,16 @@ def address_location(cursor, request):
         token = data.get('token')
         user_id,registered_by,email = decode_token(token)
         print(user_id, registered_by,email)
-        cursor.execute("SELECT DISTINCT a.city FROM address a WHERE user_id=%s",[user_id])
-        rows = cursor.fetchall()
-        locations_list = [{'address_location': row[0]} for row in rows]
-        json_result = json.dumps(locations_list)
-        json_data = json.loads(json_result)
-        print(json_data)
-        return JsonResponse(json_data, safe=False)
+        if user_id is not None:
+          cursor.execute("SELECT DISTINCT a.city FROM address a WHERE user_id=%s",[user_id])
+          rows = cursor.fetchall()
+          locations_list = [{'address_location': row[0]} for row in rows]
+          json_result = json.dumps(locations_list)
+          json_data = json.loads(json_result)
+          print(json_data)
+          return JsonResponse(json_data, safe=False)
+        else:
+          return message.response('Error', 'tokenError')
     except Exception as e:
         # Handle the specific exception or log the error
         print(f"An error occurred: {e}")
@@ -164,3 +167,40 @@ def check_skill_in_mapping(cursor, skill_set):
     except Exception as e:
         print(f"Error in check_skill_in_mapping: {str(e)}")
         return False
+    
+
+# Get all job_role data in job_role table
+@csrf_exempt
+@retry_database_operation
+def locations(cursor,request):
+   cursor.execute("select DISTINCT location from location")
+   rows = cursor.fetchall()
+   locations_list = [{'location': row[0]} for row in rows]    
+   json_result = json.dumps(locations_list)
+   json_data = json.loads(json_result)
+   print(json_data)
+   return JsonResponse(json_data,safe=False)
+
+# Get all job_role data in job_role table
+@csrf_exempt
+@retry_database_operation
+def skills(cursor,request):
+   cursor.execute("select DISTINCT skill_set from skill_sets")
+   rows = cursor.fetchall()
+   locations_list = [{'skill_set': row[0]} for row in rows]    
+   json_result = json.dumps(locations_list)
+   json_data = json.loads(json_result)
+   print(json_data)
+   return JsonResponse(json_data,safe=False)
+
+# Get all job_role data in job_role table
+@csrf_exempt
+@retry_database_operation
+def company_industry(cursor,request):
+   cursor.execute("select DISTINCT company_industry from company_details")
+   rows = cursor.fetchall()
+   locations_list = [{'company_industry': row[0]} for row in rows]    
+   json_result = json.dumps(locations_list)
+   json_data = json.loads(json_result)
+   print(json_data)
+   return JsonResponse(json_data,safe=False)

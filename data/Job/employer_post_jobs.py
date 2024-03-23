@@ -25,12 +25,12 @@ def employeer_post_jobs(request):
                 return message.response1('Error', 'searchJobError', data={}) 
             global job_response
             job_response
+            if job_result is not None:
+                return message.response1('Success', 'searchJob', all_results)
+            else:
+                return message.response1('Error', 'searchJobError', data={})  
         else:
-            return message.response('Error','InputError')
-        if job_result is not None:
-            return message.response1('Success', 'searchJob', all_results)
-        else:
-            return message.response1('Error', 'searchJobError', data={})  
+            return message.response('Error', 'tokenError')
     except Exception as e:
         print(f"The Error is: {str(e)}")
         return message.tryExceptError(str(e))

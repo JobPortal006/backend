@@ -24,15 +24,17 @@ def fetch_apply_job(request):
         print(token)
         user_id,registered_by,email = decode_token(token)
         print(user_id, registered_by,email) 
-        job_id = post_data.get('job_id')
-        print(user_id,job_id)
+        if user_id is not None:
+            job_id = post_data.get('job_id')
+            print(user_id,job_id)
 
-        result = apply_job_query.get_user_details(user_id,job_id)
-        if result is not None:
-            return JsonResponse(result)  # Return the dictionary directly as JsonResponse
+            result = apply_job_query.get_user_details(user_id,job_id)
+            if result is not None:
+                return JsonResponse(result)  # Return the dictionary directly as JsonResponse
+            else:
+                return message.response('Error','companyError')
         else:
-            return message.response('Error','companyError')
-
+            return message.response('Error', 'tokenError')
     except Exception as e:
         return message.tryExceptError(str(e)) 
 
@@ -55,34 +57,37 @@ def apply_jobs(request):
             resume_file = resume_file.read()
         else:
             resume_path = request.POST.get('resume_path') 
-        session = create_session()
-        check_val = message.check(job_id,user_id)
-        user_email = email
-        company_email = apply_job_query.company_email(job_id)
-        if check_val:
-            existing_resume_key = update_user_account_query.get_resume_path(session,user_id)
-            if resume_file is not None:
-                resume_key = update_user_account_query.upload_resume_file(resume_file, resume_name, user_id, existing_resume_key)
-            else:
-                resume_key = resume_path  
-            resume_id = apply_job_query.get_resume_id(resume_key,user_id)
-            user_job_apply=job_details_query.check_user_id(user_id,job_id)
-            print(user_job_apply,'user_job_apply')
-            if user_job_apply == False:
-                apply_job_result = apply_job_query.apply_job_table(job_id,user_id,resume_id)
-                print(apply_job_result,'apply_job_result')
-                if additional_queries == "Yes":
-                    apply_job_query.additional_queries_table(job_id,user_id,current_ctc,expected_ctc,total_experience,notice_period)
-                if apply_job_result:
-                    send_email(user_email)
-                    send_email(company_email)
-                    return message.response('Success', 'applyJob')
+        if user_id is not None:
+            session = create_session()
+            check_val = message.check(job_id,user_id)
+            user_email = email
+            company_email = apply_job_query.company_email(job_id)
+            if check_val:
+                existing_resume_key = update_user_account_query.get_resume_path(session,user_id)
+                if resume_file is not None:
+                    resume_key = update_user_account_query.upload_resume_file(resume_file, resume_name, user_id, existing_resume_key)
                 else:
-                    return message.response('Error', 'applyJobError')
+                    resume_key = resume_path  
+                resume_id = apply_job_query.get_resume_id(resume_key,user_id)
+                user_job_apply=job_details_query.check_user_id(user_id,job_id)
+                print(user_job_apply,'user_job_apply')
+                if user_job_apply == False:
+                    apply_job_result = apply_job_query.apply_job_table(job_id,user_id,resume_id)
+                    print(apply_job_result,'apply_job_result')
+                    if additional_queries == "Yes":
+                        apply_job_query.additional_queries_table(job_id,user_id,current_ctc,expected_ctc,total_experience,notice_period)
+                    if apply_job_result:
+                        send_email(user_email)
+                        send_email(company_email)
+                        return message.response('Success', 'applyJob')
+                    else:
+                        return message.response('Error', 'applyJobError')
+                else:
+                    return message.response('Error','userApplyJobError')
             else:
-                return message.response('Error','userApplyJobError')
+                return message.response('Error','InputError')
         else:
-            return message.response('Error','InputError')
+            return message.response('Error', 'tokenError')
     except Exception as e:
         print(f"The Error is: {str(e)}")
         return message.tryExceptError(str(e))
@@ -108,12 +113,12 @@ def view_apply_jobs(request):
                 return message.response1('Error', 'searchJobError', data={}) 
             global job_response
             job_response
+            if job_result is not None:
+                return message.response1('Success', 'searchJob', all_results)
+            else:
+                return message.response1('Error', 'searchJobError', data={})  
         else:
             return message.response('Error','InputError')
-        if job_result is not None:
-            return message.response1('Success', 'searchJob', all_results)
-        else:
-            return message.response1('Error', 'searchJobError', data={})  
     except Exception as e:
         print(f"The Error is: {str(e)}")
         return message.tryExceptError(str(e))

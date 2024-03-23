@@ -71,7 +71,7 @@ class employer_register(View): # View class provides a creating views by definin
                 company_website_link = request.POST.get('company_website_link')
                 employee_id,registered_by,email = decode_token(token)
                 print(employee_id, registered_by,email)
-                if employee_id:
+                if employee_id is not None:
                     if email:
                         s3 = boto3.client('s3', aws_access_key_id='AKIAZI2LB2XIRFQPYDJ4', aws_secret_access_key='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', region_name='eu-north-1')
                         company_logo_path = f'company_logo/{employee_id}_{company_logo_name}'
@@ -89,8 +89,6 @@ class employer_register(View): # View class provides a creating views by definin
                             company_details_data = message.company_details(company_logo,company_name,company_industry, company_description, no_of_employees,company_website_link)
                             print(company_details_data)
                             if company_details_data:
-                                # address_id = create_account_employeer_query.get_id(employee_id,registered_by)
-                                # address_id = 1
                                 company_details_result = create_account_employeer_query.company_details(employee_id,company_name,
                                     company_industry,company_description, no_of_employees,company_website_link,contact_person_name,contact_person_position,company_logo_path)
                                 print('Company_details_result ->', company_details_result)
@@ -143,7 +141,7 @@ class employer_register(View): # View class provides a creating views by definin
                     else:
                         return message.response('Error','emailSentError')
                 else:
-                    return message.response('Error','loginWithOTPError')
+                    return message.response('Error', 'tokenError')
             else:
                 return message.response('Error','Error')
         except Exception as e:

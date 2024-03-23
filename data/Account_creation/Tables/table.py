@@ -161,14 +161,6 @@ class JobPost(Base):
     employee_type = relationship('EmployeeTypes')
     job_role = relationship('JobRole')
 
-class Location(Base):
-    __tablename__ = 'location'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    location = Column(String(255))
-    created_at = Column(TIMESTAMP, server_default=func.now())
-    updated_at = Column(TIMESTAMP, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
-
 class EmployeeTypes(Base):
     __tablename__ = 'employees_types'
 
@@ -215,7 +207,7 @@ class Qualification(Base):
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(TIMESTAMP, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
 
-class QualificationMapping(Base):
+class QualificationMapping(Base):  
     __tablename__ = 'qualification_mapping'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -228,6 +220,14 @@ class QualificationMapping(Base):
     employee = relationship('Signup')
     qualification = relationship('Qualification')
     job = relationship('JobPost')
+
+class Location(Base):
+    __tablename__ = 'location'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    location = Column(String(255))
+    created_at = Column(TIMESTAMP, server_default=func.now())
+    updated_at = Column(TIMESTAMP, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
 
 class LocationMapping(Base):
     __tablename__ = 'location_mapping'

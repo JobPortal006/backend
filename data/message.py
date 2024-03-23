@@ -39,11 +39,15 @@ def response(val,key):
             'accountCreation':'Account Created Successfully',
             'postJob':'Successfully post a job',
             'searchJob':'Job find successfully',
+            'getSearchJob':'Get job result successfully',
             'updatePostJob':'Successfully Update',
             'deletePostJob':'Job deleted successfully',
             'updateData':'Data Updated Successfully',
             'applyJob':'Job Applied Successfully',
-            'token':'Token is not expired'
+            'token':'Token is not expired',
+            'getJobDetails':'Job find successfully',
+            'userApplyJob':False,
+            'userApplyJobResult':True
         },
         'Error':{
             'emailError': 'Email is already exists. Please use a different email address.',
@@ -66,7 +70,10 @@ def response(val,key):
             'updateJobError':'Job not updated successguly',
             'userApplyJobError':'You already applied for this job',
             'applyJobError':'Job apply failed',
-            'tokenError':'Token is expired'
+            'tokenError':'Token is expired',
+            'ValuesCheckError':'Input Should not be empty',
+            'EmptyRequestBody':'Empty Request Body',
+            'userJobViewError':'User not applied for this job'
         }
     }
     if val == 'Success':

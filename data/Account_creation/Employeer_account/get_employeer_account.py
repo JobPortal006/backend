@@ -15,54 +15,57 @@ def get_employeer_details(request):
         token = data.get('token')
         employee_id,registered_by,email = decode_token(token)
         print(employee_id, registered_by,email,'get_employeer_account')
-        session = message.create_session()
-        employeer_details = {}
-        
-        # Retrieve Signup details
-        signup_details = session.query(Signup).filter_by(id=employee_id).first()
-        if signup_details:
-            employeer_details['Signup'] = {
-                'email': signup_details.email,
-                'mobile_number': signup_details.mobile_number
-            }
-
-        # Retrieve Address details
-        address_details = session.query(Address).filter_by(user_id=employee_id).all()
-        if address_details is not None:
-            employeer_details['company_address'] = []  # Use a list to store multiple addresses
-            for i, address in enumerate(address_details):
-                address_data = {
-                    'address_type': address.address_type,
-                    'city': address.city,
-                    'country': address.country,
-                    'pincode': address.pincode,
-                    'state': address.state,
-                    'street': address.street,
-                }
-                employeer_details['company_address'].append(address_data)
-
-            # Retrieve CompanyDetails
-            company_details = session.query(CompanyDetails).filter_by(employee_id=employee_id).first()
-            if company_details:
-                
-                employeer_details['company_details'] = {
-                    'company_name': company_details.company_name,
-                    'company_industry': company_details.company_industry,
-                    'company_description': company_details.company_description,
-                    'no_of_employees': company_details.no_of_employees,
-                    'company_website_link': company_details.company_website_link,
-                    'contact_person_name': company_details.contact_person_name,
-                    'contact_person_position': company_details.contact_person_position,
-                    'company_logo_path':company_details.company_logo_path
+        if employee_id is not None:
+            session = message.create_session()
+            employeer_details = {}
+            
+            # Retrieve Signup details
+            signup_details = session.query(Signup).filter_by(id=employee_id).first()
+            if signup_details:
+                employeer_details['Signup'] = {
+                    'email': signup_details.email,
+                    'mobile_number': signup_details.mobile_number
                 }
 
-            session.close()
-            return JsonResponse(employeer_details)
+            # Retrieve Address details
+            address_details = session.query(Address).filter_by(user_id=employee_id).all()
+            if address_details is not None:
+                employeer_details['company_address'] = []  # Use a list to store multiple addresses
+                for i, address in enumerate(address_details):
+                    address_data = {
+                        'address_type': address.address_type,
+                        'city': address.city,
+                        'country': address.country,
+                        'pincode': address.pincode,
+                        'state': address.state,
+                        'street': address.street,
+                    }
+                    employeer_details['company_address'].append(address_data)
+
+                # Retrieve CompanyDetails
+                company_details = session.query(CompanyDetails).filter_by(employee_id=employee_id).first()
+                if company_details:
+                    
+                    employeer_details['company_details'] = {
+                        'company_name': company_details.company_name,
+                        'company_industry': company_details.company_industry,
+                        'company_description': company_details.company_description,
+                        'no_of_employees': company_details.no_of_employees,
+                        'company_website_link': company_details.company_website_link,
+                        'contact_person_name': company_details.contact_person_name,
+                        'contact_person_position': company_details.contact_person_position,
+                        'company_logo_path':company_details.company_logo_path
+                    }
+
+                session.close()
+                return JsonResponse(employeer_details)
+            else:
+                return message.response1('Error', 'searchJobError', data={})
         else:
-            return message.response1('Error', 'searchJobError', data={})
+            return message.response('Error', 'tokenError')
     except Exception as e:
         print(str(e))
-        return JsonResponse({"error": "Failed"})
+        return message.tryExceptError(str(e))
 
 def get_company_logo_from_s3(s3_key):
     if not s3_key:

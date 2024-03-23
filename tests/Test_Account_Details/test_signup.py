@@ -30,10 +30,8 @@ def test_create_user_success(data):
         session.add(signup_entry)
         session.commit()
         inserted_signup = session.query(Signup).filter_by(email=data['email']).first()
-
         # Check if data is inserted into the Signup table
         assert session.query(Signup).filter_by(id=inserted_signup.id).first() is not None
- 
         assert inserted_signup is not None
         assert inserted_signup.signup_by == data['signup_by']
         assert inserted_signup.mobile_number == data['mobile_number']

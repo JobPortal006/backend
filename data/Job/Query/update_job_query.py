@@ -36,8 +36,7 @@ def jobPost_updateQuery( job_title, job_description, qualification, experience, 
 def update_maping_tables(values,postJob_id,table_name,field_name,mapping_table,mapping_id):
     try:
         con = connection.cursor()
-        for i in values:
-            var = i
+        for var in values:
             con.execute(f"select id from {table_name} where {field_name} = %s",[var])   
             result = con.fetchone()   
             
@@ -64,7 +63,6 @@ def update_maping_tables(values,postJob_id,table_name,field_name,mapping_table,m
         con.execute(f"select {mapping_id} from {mapping_table} where job_id = %s", [postJob_id])
         id_mapping = con.fetchall()
 
-        print("Loop 1")
         for row in id_mapping:
             qualifications_id = row[0]
             b1 = False
