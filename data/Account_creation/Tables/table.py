@@ -127,7 +127,6 @@ class CompanyDetails(Base):
     no_of_employees = Column(Integer)
     company_industry = Column(String(100))
     company_description = Column(String(100))
-    address_id = Column(Integer, ForeignKey('address.id'))
     company_logo_path = Column(String(100))
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
@@ -136,7 +135,6 @@ class CompanyDetails(Base):
     company_website_link = Column(String(100), nullable=False)
 
     employee = relationship("Signup")
-    address = relationship("Address")
 
 class JobPost(Base):
     __tablename__ = 'job_post'

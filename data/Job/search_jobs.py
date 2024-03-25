@@ -1,6 +1,5 @@
 from django.views.decorators.csrf import csrf_exempt
-from django.db import OperationalError, DatabaseError, connection
-from time import sleep
+from django.db import OperationalError, DatabaseError
 import json
 from data import message
 from data.Job.Query import search_jobs_query

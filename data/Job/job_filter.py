@@ -101,11 +101,20 @@ def job_filter(request):
     else:
         return message.response('Error', 'Error')
 
-@csrf_exempt   
+@csrf_exempt
 def filter_result(request):
-    data = json.loads(request.body)
-    print(data)
-    if data:
-        return JsonResponse(data, safe=False)
-    else:
-        return message.response('Error', 'searchJobError')
+    try:
+        if request.method == 'POST':  # Ensure it's a POST request
+            data = json.loads(request.body)
+            print(data)
+            if data:
+                return JsonResponse(data, safe=False)
+            else:
+                return JsonResponse({'error': 'No data provided'}, status=400)
+        else:
+            return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
+    except json.JSONDecodeError as e:
+        return JsonResponse({'error': 'Invalid JSON format: {}'.format(str(e))}, status=400)
+    except Exception as e:
+        # Log the exception or handle it as required
+        return JsonResponse({'error': str(e)}, status=500)
