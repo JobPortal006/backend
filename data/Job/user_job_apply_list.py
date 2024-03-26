@@ -2,12 +2,14 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db import connection
 from data import message
+from data.Job.post_job import retry_database_operation
 from data.Job.Query import user_job_apply_list_query 
 from data.Account_creation.User_account import get_user_account
 from data.Account_creation.Query import create_account_user_query
 con = connection.cursor()
 
 @csrf_exempt
+@retry_database_operation
 def user_job_apply_list(request):
   try:
     data = json.loads(request.body)
@@ -38,6 +40,7 @@ def user_job_apply_list(request):
     return message.tryExceptError(str(e))
   
 @csrf_exempt
+@retry_database_operation
 def user_profile_list(request):
   try:
     data = json.loads(request.body)
