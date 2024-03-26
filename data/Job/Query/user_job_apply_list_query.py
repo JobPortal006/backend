@@ -1,5 +1,4 @@
 from django.db import connection
-from django.http import JsonResponse
 from data import message
 
 def applyJob_datas(job_id):

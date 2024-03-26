@@ -1,23 +1,12 @@
-from sqlalchemy.orm import sessionmaker
 from django.db import connection
-from sqlalchemy import create_engine, and_
-from sqlalchemy.orm import declarative_base
-import os
+from data import message
 from data.Account_creation.Tables.table import SkillSets, Location, JobPost, CompanyDetails, EmployeeTypes, JobRole, SkillSetMapping, LocationMapping
 con = connection.cursor()
-Base = declarative_base()
-
-# Use the appropriate database connection string
-# engine = create_engine('mysql://root:mysqllocal@localhost:3306/jobportal')
-engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/jobportal')
-
-Base.metadata.create_all(engine)
 
 def execute_query(conditions):
     try:
         print('Condition--------->',conditions)
-        Session = sessionmaker(bind=engine)
-        session = Session()
+        session = message.create_session()
         # Joining tables
         query = session.query(
             JobPost.id,

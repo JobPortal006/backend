@@ -1,24 +1,16 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from django.http import JsonResponse
 from data.Account_creation.Tables.table import Signup, ResumeDetails, JobPost
-from sqlalchemy.orm import declarative_base
 from django.views.decorators.csrf import csrf_exempt
 from data.Job import json_response
 from django.db import connection
-import json
+from data import message
 
-Base = declarative_base()
 con = connection.cursor()
+session = message.create_session()
+
 @csrf_exempt
 def get_user_details(user_id, job_id):
     try:
-        engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/jobportal')
-        Base.metadata.create_all(engine)
-
-        Session = sessionmaker(bind=engine)
-        session = Session()
-
         user = session.query(Signup).filter_by(id=user_id).first()
         resume = session.query(ResumeDetails).filter_by(user_id=user_id).first()
 
@@ -46,11 +38,6 @@ def get_user_details(user_id, job_id):
 
 def insert_apply_job(user_id,job_id,company_id,resume_id):
     try:
-        engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/jobportal')
-        Base.metadata.create_all(engine)
-
-        Session = sessionmaker(bind=engine)
-        session = Session()
         sql = "INSERT INTO signup(email,mobile_number,password,signup_by) VALUES(%s,%s,%s,%s)"
         value = (user_id,job_id,company_id,resume_id)
         con.execute(sql,value)
@@ -78,13 +65,11 @@ def get_resume_id(resume,user_id):
 def apply_job_table(job_id, user_id, resume_id):
     try:
         con = connection.cursor()
-
         # Check if the entry already exists
         check_sql = "SELECT * FROM apply_job WHERE job_id = %s AND user_id = %s"
         check_values = (job_id, user_id)
         con.execute(check_sql, check_values)
         existing_entry = con.fetchone()
-
         if existing_entry:
             return False
         else:
@@ -108,7 +93,6 @@ def additional_queries_table(job_id,user_id,total_experience,current_ctc,expecte
     except Exception as e:
             return JsonResponse(str(e),safe=False)
     
-
 # Send a job details data in JSON format 
 # Data is send in response as (Data/Month/Year)
 def view_apply_jobs(user_id, processed_job_ids):
@@ -124,7 +108,6 @@ def view_apply_jobs(user_id, processed_job_ids):
                         continue
                     processed_job_ids.add(job_id)
                     result = json_response.response(results, job_id, cursor, processed_job_ids)
-                    # print(result)
                 return result 
             else:
                 print("No results found")

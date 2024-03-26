@@ -6,19 +6,12 @@ from data.message import create_session
 from data.Account_creation.User_account import get_user_account
 from data.token import decode_token
 from data import message
-from data.Account_creation.Tables.table import Address, CollegeDetails, JobPreferences, SkillSets, Location
+from data.Account_creation.Tables.table import Address, CollegeDetails, JobPreferences
 from data.Job.Query import post_job_insert_query 
 
 @csrf_exempt
 def update_user_details(request):
     try:
-        # data = json.loads(request.body)
-        # print(data)
-        # user_details = data.get('data', {}).get('userDetails', {})
-        # address_data = data.get('data', {}).get('address', {})
-        # education_data = data.get('data', {}).get('education_details', {})
-        # job_preference_data = data.get('data', {}).get('jobPreference', {})
-        # professional_details_data = data.get('data', {}).get('professionalDetails', {})
         token = request.POST.get('token')
         user_id,registered_by,email = decode_token(token)
         print(user_id, registered_by,email) 
@@ -95,7 +88,6 @@ def update_user_details(request):
             pg_college_name = pg_college__data.get("pg_college_name")
             pg_college_percentage = pg_college__data.get("pg_college_percentage")
             pg_college_start_year = pg_college__data.get("pg_college_start_year")
-            # pg_college_education_type = diploma_college_data.get("pg_college_education_type")
 
             diploma_college_name = diploma_college_data.get("diploma_college_name")
             diploma_college_start_year = diploma_college_data.get("diploma_college_start_year")
@@ -103,7 +95,6 @@ def update_user_details(request):
             diploma_college_percentage = diploma_college_data.get("diploma_college_percentage")
             diploma_college_department = diploma_college_data.get("diploma_college_department")
             diploma_college_degree = diploma_college_data.get("diploma_college_degree")
-            # diploma_college_education_type = diploma_college_data.get("diploma_college_education_type")
             # Extracting job preference details
             department = job_preference_data.get('department')
             industry = job_preference_data.get('industry')
@@ -149,11 +140,11 @@ def update_user_details(request):
                                         diploma_college_department)
                 session.query(JobPreferences).filter_by(user_id=user_id).delete()
                 # Update JobPreferences table
-                # skill_ids = []
-                # for skill in key_skills:
-                #     skill_id = post_job_insert_query.skill_set(skill) # Insert the skill_set in skill_sets table
-                #     skill_ids.append(str(skill_id))  # Append the skill_id to the list and convert it to a string
-                # key_skills = ",".join(skill_ids)
+                skill_ids = []
+                for skill in key_skills:
+                    skill_id = post_job_insert_query.skill_set(skill) # Insert the skill_set in skill_sets table
+                    skill_ids.append(str(skill_id))  # Append the skill_id to the list and convert it to a string
+                key_skills = ",".join(skill_ids)
                 location_ids = []
                 for location in prefered_locations:
                     location_id = post_job_insert_query.location(location)# Insert the location in locations table
@@ -169,30 +160,20 @@ def update_user_details(request):
                     employment_status = "Fresher"
                 else:
                     employment_status = "Experienced"
-                    # professional_details_data = json.loads(request.POST.get('professionalDetails', '{}'))
                     companies = professional_details_data.get('companies', [])
-                    # number_of_companies = professional_details_data.get('numberOfCompanies', 0)
-
                     # Update ProfessionalDetails table
                     update_user_account_query.update_professional_details(session, user_id, companies)
 
                 existing_resume_key = update_user_account_query.get_resume_path(session,user_id)
                 if resume_file is not None:
                     resume_key = update_user_account_query.upload_resume_file(resume_file, resume_name, user_id, existing_resume_key)
-                    # print(company_logo_key+" "+ "if condition ---->2")
-
                 else:
-                    # resume_key = update_user_account_query.upload_resume_path(resume_path,existing_resume_key) 
                     resume_key = resume_path  
         
                 update_user_account_query.update_resume_details(session, user_id, employment_status, resume_key)
-                
-
                 session.commit()
             updated_data = get_user_account.user_details(user_id)
             session.close()
-
-            # return JsonResponse({"message": "Data updated successfully"})
             return JsonResponse({"message": "Data updated successfully", "data": updated_data})
         else:
             return message.response('Error', 'tokenError')

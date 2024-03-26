@@ -57,6 +57,7 @@ urlpatterns = [
     # All job details
     path('job_details/',all_job_details.job_details),
     path('get_job_details/',all_job_details.get_job_details),
+    
     # Get single job details
     path('get_job_details_by_id/',get_job_details.get_job_details_by_id),
     

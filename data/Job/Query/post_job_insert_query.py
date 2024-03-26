@@ -7,16 +7,12 @@ def jobPost_insertQuery(employee_id, company_id, job_title, job_description, exp
         # Print SQL query and parameters for debugging
         jobPost_sql = "INSERT INTO job_post (employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, additional_queries) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         jobPost_values = (employee_id, company_id, job_title, job_description, experience, salary_range, no_of_vacancies, employee_type_id, job_role_id, additional_queries)
-        
         con.execute(jobPost_sql, jobPost_values)
-        
         # Fetch the last inserted ID
         con.execute("COMMIT")
         con.execute("SELECT LAST_INSERT_ID()")
         job_id = con.fetchone()[0]  # Fetch the first column of the first row
-        
         print("Job ID", job_id)
-        
         return True, job_id
     except Exception as e:
         print(f"Error during post a job: {e}")

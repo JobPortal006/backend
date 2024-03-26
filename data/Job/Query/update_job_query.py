@@ -51,14 +51,11 @@ def update_maping_tables(values,postJob_id,table_name,field_name,mapping_table,m
             else:
                 con.execute(f"insert into {table_name} ({field_name}) values(%s)",[var])
                 id = con.lastrowid
-                    
                 sql_3 = f"insert into {mapping_table} ({mapping_id},job_id) values(%s,%s)"
                 value_3 = (id,postJob_id)
                 con.execute(sql_3,value_3)
-                    
         con.execute(f"select {mapping_id} from {mapping_table} where job_id = %s", [postJob_id])
         id_mapping = con.fetchall()
-
         for row in id_mapping:
             qualifications_id = row[0]
             b1 = False
@@ -68,57 +65,13 @@ def update_maping_tables(values,postJob_id,table_name,field_name,mapping_table,m
                 if qualifications_id == deleting_id[0]:
                     b1 = True
                     break 
-                 
             if not b1:
                 con.execute(f"DELETE FROM {mapping_table} WHERE {mapping_id} = %s", [qualifications_id])
-
         # Commit the changes to the d  database
         con.commit()
         con.close()
-        return True    
-                        
+        return True            
     except Exception as e:
         con.close()
         return message.tryExceptError(str(e))
    
-def execute_join_jobPost(f1, list1):
-    try:
-        print(f1, 'condition------')
-        # Using parameterized query to avoid SQL injection
-        query = """
-            SELECT 
-                j.id,
-                j.job_title,
-                j.job_description,
-                j.qualification,
-                c.company_name,
-                et.employee_type,
-                l.location,
-                j.experience,
-                j.salary_range,
-                j.no_of_vacancies,
-                c.company_logo,
-                jr.job_role,
-                j.created_at,
-                ss.skill_set
-            FROM job_post j
-            JOIN location l ON j.location_id = l.id
-            JOIN employees_types et ON j.employee_type_id = et.id
-            JOIN job_role jr ON j.job_role_id = jr.id
-            JOIN skill_set_mapping ssm ON j.id = ssm.job_id
-            JOIN skill_sets ss ON ssm.skill_id = ss.id
-            JOIN company_details c ON j.company_id = c.id
-            WHERE {}
-        """.format(f1)
-        with connection.cursor() as cursor:
-            print('query ')
-            cursor.execute(query, tuple(list1))
-            rows = cursor.fetchall()
-            print(rows, "query result")
-            if not rows:
-                print("EMPTY")
-            return rows
-    except Exception as e:
-        return message.tryExceptError(str(e))
-
-

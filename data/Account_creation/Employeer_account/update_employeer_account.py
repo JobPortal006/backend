@@ -13,20 +13,6 @@ def update_employee_details(request):
         contact_person_position = request.POST.get('contact_person_position')
         email = request.POST.get('email')
         mobile_number = request.POST.get('mobile_number')
-
-        # street_permanent = request.POST.get('street')
-        # city_permanent = request.POST.get('city')
-        # state_permanent = request.POST.get('state')     
-        # country_permanent = request.POST.get('country')
-        # pincode_permanent = request.POST.get('pincode')
-        # address_type_permanent = request.POST.get('address_type')
-        # print("address_type:", address_type_permanent)
-        # print("city:", city_permanent)
-        # print("country:", country_permanent)
-        # print("pincode:", pincode_permanent)
-        # print("state:", state_permanent)
-        # print("street:", street_permanent)
-
         # Correct way to handle file upload for company logo
         company_logo_file = request.FILES.get("company_logo_path")
         if company_logo_file is None:

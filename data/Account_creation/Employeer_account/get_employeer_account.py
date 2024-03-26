@@ -18,7 +18,6 @@ def get_employeer_details(request):
         if employee_id is not None:
             session = message.create_session()
             employeer_details = {}
-            
             # Retrieve Signup details
             signup_details = session.query(Signup).filter_by(id=employee_id).first()
             if signup_details:
@@ -45,7 +44,6 @@ def get_employeer_details(request):
                 # Retrieve CompanyDetails
                 company_details = session.query(CompanyDetails).filter_by(employee_id=employee_id).first()
                 if company_details:
-                    
                     employeer_details['company_details'] = {
                         'company_name': company_details.company_name,
                         'company_industry': company_details.company_industry,
@@ -56,7 +54,6 @@ def get_employeer_details(request):
                         'contact_person_position': company_details.contact_person_position,
                         'company_logo_path':company_details.company_logo_path
                     }
-
                 session.close()
                 return JsonResponse(employeer_details)
             else:

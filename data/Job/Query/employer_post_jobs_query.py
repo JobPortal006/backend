@@ -16,7 +16,6 @@ def employer_post_jobs(employee_id, processed_job_ids):
                         continue
                     processed_job_ids.add(job_id)
                     result = json_response.response(results, job_id, cursor, processed_job_ids)
-                    # print(result)
                 return result
             else:
                 print("No results found")

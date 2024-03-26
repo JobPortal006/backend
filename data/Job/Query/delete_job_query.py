@@ -1,5 +1,4 @@
 from django.db import connection
-from django.http import JsonResponse
 from data import message
 
 def delete_postJob(job_id):
@@ -74,9 +73,6 @@ def delete_postJob(job_id):
          count = con.fetchone()[0]
          if count == 0:
             con.execute("DELETE FROM job_role WHERE id = %s", (job_role_id,))
-
-         # Note: The skill_id variable is not needed here as it was used in the loop earlier.
-
       con.close()
       return result
    except Exception as e:

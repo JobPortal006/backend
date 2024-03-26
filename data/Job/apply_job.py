@@ -19,7 +19,6 @@ def fetch_apply_job(request):
     try:
         data = json.loads(request.body)
         post_data = data.get('postdata', {})
-        # user_id = post_data.get('user_id')
         token = post_data.get('token')
         print(token)
         user_id,registered_by,email = decode_token(token)
@@ -27,7 +26,6 @@ def fetch_apply_job(request):
         if user_id is not None:
             job_id = post_data.get('job_id')
             print(user_id,job_id)
-
             result = apply_job_query.get_user_details(user_id,job_id)
             if result is not None:
                 return JsonResponse(result)  # Return the dictionary directly as JsonResponse
@@ -49,8 +47,7 @@ def apply_jobs(request):
         current_ctc = request.POST.get('current_ctc')
         expected_ctc = request.POST.get('expected_ctc')
         total_experience = request.POST.get('total_experience')
-        notice_period = request.POST.get('notice_period')
-    
+        notice_period = request.POST.get('notice_period')  
         resume_file = request.FILES.get('resume_path')
         if resume_file is not None:
             resume_name = resume_file.name

@@ -20,17 +20,7 @@ from data.Job.Query import post_job_insert_query
 class user_register(View): # View class provides a creating views by defining methods for different HTTP methods (e.g., get, post).
     def post(self, request, *args, **kwargs):
         try:
-            if request.method == 'POST':       
-                # Extract user details   
-                # data = json.loads(request.body)
-                # print(data)
-                # if data != None:
-                # user_details = data.get('userDetails', {})
-                # address_data = data.get('address', {})
-                # education_data = data.get('education', {})
-                # job_preference_data = data.get('jobPreference', {})
-                # professional_details_data = data.get('professionalDetails', {})
-                # else:
+            if request.method == 'POST':
                 token = request.POST.get('token')
                 user_id,registered_by,email = decode_token(token)
                 print(user_id, registered_by,email) 
@@ -48,17 +38,12 @@ class user_register(View): # View class provides a creating views by defining me
                 last_name = user_details.get('last_name')
                 gender = user_details.get('gender')
                 date_of_birth = user_details.get('date_of_birth')
-                # email = user_details.get('email')
                 profile_picture = request.FILES.get('profilePicture')
                 profile_picture_name=profile_picture.name
                 profile_picture = profile_picture.read()
-                # print(profile_picture,"profile_picture 1-----------")
-                # profile_picture = user_details.get('profile_picture')
                 resume = request.FILES.get("resume")
                 resume_name=resume.name
                 resume = resume.read()
-                # resume = data.get('resume')
-                # print(resume,'resume 2---------------')
                 current_address = address_data.get('current', {})
                 street_current = current_address.get('street')
                 city_current = current_address.get('city')
@@ -108,7 +93,6 @@ class user_register(View): # View class provides a creating views by defining me
                 industry = job_preference_data.get('industry')
                 key_skills = job_preference_data.get('key_skills')
                 prefered_locations = job_preference_data.get('prefered_locations')
-                print(prefered_locations,'p-------')
                 if user_id is not None:
                     userid_check = create_account_user_query.userid_check(user_id)
                     print(userid_check)
@@ -154,11 +138,11 @@ class user_register(View): # View class provides a creating views by defining me
                             diploma_college_name, diploma_college_start_year, diploma_college_end_year,
                             diploma_college_percentage, diploma_college_department, diploma_college_degree)
                         print('Education_details ->', education_details_result)
-                        # skill_ids = []
-                        # for skill in key_skills: 
-                        #     skill_id = post_job_insert_query.skill_set(skill)  # Insert the skill_set in skill_sets table
-                        #     skill_ids.append(str(skill_id))  # Append the skill_id to the list and convert it to a string
-                        # key_skills = ",".join(skill_ids)
+                        skill_ids = []
+                        for skill in key_skills: 
+                            skill_id = post_job_insert_query.skill_set(skill)  # Insert the skill_set in skill_sets table
+                            skill_ids.append(str(skill_id))  # Append the skill_id to the list and convert it to a string
+                        key_skills = ",".join(skill_ids)
                         location_ids = []
                         for location_name in prefered_locations:
                             location_id = post_job_insert_query.location(location_name)
@@ -168,7 +152,6 @@ class user_register(View): # View class provides a creating views by defining me
                         user_id, key_skills, department, industry, prefered_locations)
                         print('Job_preference ->', job_preference_result)
                         employment_status = professional_details_data
-                        print(employment_status,'employment_status-------')
                         if professional_details_data is None:
                             professional_details_data = json.loads(request.POST.get('professionalDetails', '{}'))
                             isExperienced = professional_details_data.get('isExperienced')
@@ -193,7 +176,6 @@ class user_register(View): # View class provides a creating views by defining me
                                 years_of_experience = company.get('years_of_experience')
                                 job_role = company.get('job_role')
                                 skills = company.get('skills')
-                                # print(company_name,years_of_experience,job_role,skills)
                                 professional_details_result = create_account_user_query.professional_details(
                                     user_id, company_name, years_of_experience, job_role, skills)
                                 print('Professional_details ->', professional_details_result)

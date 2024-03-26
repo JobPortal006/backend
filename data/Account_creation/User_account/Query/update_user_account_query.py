@@ -14,15 +14,6 @@ def update_personal_details(session, user_id, date_of_birth, first_name, gender,
 
 
 def update_address(session, user_id,registered_by ,address_type, city, country, pincode, state, street):
-    # address_obj = session.query(Address).filter_by(user_id=user_id, address_type=address_type).first()
-    # if address_obj:
-    #     address_obj.city = city
-    #     address_obj.country = country
-    #     address_obj.pincode = pincode
-    #     address_obj.state = state
-    #     address_obj.street = street
-    #     address_obj.registered_by = registered_by
-    # else:
     new_address = Address(user_id=user_id,registered_by=registered_by, address_type=address_type, city=city, country=country, pincode=pincode,
                             state=state, street=street)
     session.add(new_address)
@@ -62,12 +53,6 @@ def update_education_details(session, user_id, sslc_end_year, sslc_percentage, s
 
 
 def update_job_preferences(session, user_id, department, industry, key_skills, preferred_locations):
-    # job_preferences = session.query(JobPreferences).filter_by(user_id=user_id).first()
-    # if job_preferences:
-    #     job_preferences.department = department
-    #     job_preferences.industry = industry
-    #     job_preferences.key_skills = key_skills
-    #     job_preferences.preferred_locations = preferred_locations
     new_job_preferences = JobPreferences(user_id=user_id,department = department,industry = industry,key_skills = key_skills,preferred_locations = preferred_locations)
     session.add(new_job_preferences)
     session.commit()
@@ -102,21 +87,7 @@ def get_profile_picture_path(session,user_id):
         return profile_picture_key
     else:
         return None
-
-def upload_profile_picture_file(profile_picture, profile_picture_name, user_id,existing_profile_picture_key):
-    s3 = boto3.client('s3', aws_access_key_id='AKIAZI2LB2XIRFQPYDJ4', aws_secret_access_key='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', region_name='eu-north-1')
-    new_logo_key = f'profile_picture/{user_id}_{profile_picture_name}'
-
-    # Check if the new logo key is different from the existing one
-    if existing_profile_picture_key != new_logo_key:
-        s3.upload_fileobj(io.BytesIO(profile_picture), 'backendcompanylogo', new_logo_key)
-    return new_logo_key
-
-def upload_profile_picture_path(company_logo,existing_logo_key):
-    print('path-----------')
-    new_logo_key = company_logo 
-    return new_logo_key
-
+    
 def get_resume_path(session,user_id):
     resume_details = session.query(ResumeDetails).filter_by(user_id=user_id).first()
     resume_key=resume_details.resume_path 
@@ -125,6 +96,14 @@ def get_resume_path(session,user_id):
     else:
         return None
 
+def upload_profile_picture_file(profile_picture, profile_picture_name, user_id,existing_profile_picture_key):
+    s3 = boto3.client('s3', aws_access_key_id='AKIAZI2LB2XIRFQPYDJ4', aws_secret_access_key='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', region_name='eu-north-1')
+    new_logo_key = f'profile_picture/{user_id}_{profile_picture_name}'
+    # Check if the new logo key is different from the existing one
+    if existing_profile_picture_key != new_logo_key:
+        s3.upload_fileobj(io.BytesIO(profile_picture), 'backendcompanylogo', new_logo_key)
+    return new_logo_key
+
 def upload_resume_file(resume, resume_name, user_id,existing_resume_key):
     s3 = boto3.client('s3', aws_access_key_id='AKIAZI2LB2XIRFQPYDJ4', aws_secret_access_key='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', region_name='eu-north-1')
     new_logo_key = f'resume/{user_id}_{resume_name}'
@@ -132,6 +111,4 @@ def upload_resume_file(resume, resume_name, user_id,existing_resume_key):
         s3.upload_fileobj(io.BytesIO(resume), 'backendcompanylogo', new_logo_key)
     return new_logo_key
 
-def upload_resume_path(resume_path,existing_logo_key):
-    new_logo_key = resume_path 
-    return new_logo_key
+

@@ -1,15 +1,9 @@
 from django.views.decorators.csrf import csrf_exempt
 import json
-from django.contrib.auth.models import User
-from rest_framework.authtoken.models import Token
 from django.db import connection
 from data.Account_creation.Query import login_query
 from data import message
 from data.Account_creation.Query import create_account_user_query
-from django.http import JsonResponse
-# import jwt
-import datetime
-import secrets
 from data.token import create_token
 
 con = connection.cursor()
@@ -36,7 +30,6 @@ def login(request):
         response_data = {
           'response': success_message,  
           'token': token,  # Include the token in the response
-          # 'candidate_id': user_id,
           'registered_by': registered_by
         }
         return message.handleSuccess(response_data)
@@ -67,11 +60,9 @@ def loginWithOTP(request):
         response_data = {
           'response': success_message,  
           'token': token,  # Include the token in the response
-          # 'candidate_id': user_id,
           'registered_by': registered_by
         }
         return message.handleSuccess(response_data)
-        # return message.response('Success','loginWithOTP')
       else:
         return message.response('Error','loginWithOTPError')
     else:

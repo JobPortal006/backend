@@ -47,9 +47,6 @@ def get_company_logo_path(session,employee_id):
         return None
 
 def update_company_logo_file(company_logo, company_logo_name, employee_id, existing_logo_key):
-    print('file--------')
-    print(company_logo_name)
-    # existing_logo_key='39_testing.png'
     s3 = boto3.client('s3', aws_access_key_id='AKIAZI2LB2XIRFQPYDJ4', aws_secret_access_key='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', region_name='eu-north-1')
     # if existing_logo_key is not None:
     # try:
@@ -63,46 +60,3 @@ def update_company_logo_file(company_logo, company_logo_name, employee_id, exist
     if existing_logo_key != new_logo_key:
         s3.upload_fileobj(io.BytesIO(company_logo), 'backendcompanylogo', new_logo_key)
     return new_logo_key
-    
-# def update_company_logo_file( company_logo_name, employee_id, existing_logo_key):
-#     print(' working fine------->2')
-#     s3 = boto3.client('s3',aws_access_key_id='AKIAZI2LB2XIRFQPYDJ4', aws_secret_access_key='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', region_name='eu-north-1')
-#     print(' working fine------->3')
-
-#     new_logo_path = f'{employee_id}_{company_logo_name}'
-#     # new_logo_path= '39_Screenshot+(1).png'
-#     print(new_logo_path+""+' working fine------->4')
-#     try:
-#         if not os.path.isfile(new_logo_path):
-#             print('try block workig ------>5')
-#         print(' working fine------->6')
-#         with open(new_logo_path,'rb') as new_image_file:
-#             print(' working fine------->7')
-#             s3.upload_fileobj(new_image_file,'backendcompanylogo' , existing_logo_key )
-#     except FileNotFoundError:
-#         print(f'error the file {new_logo_path} not found')
-#     except Exception as e:
-#         print(f'an error occureed: {str(e)}')
-
-
-# def update_company_logo_file(company_logo, company_logo_name, employee_id, existing_logo_key):
-#     print('file--------')
-#     print(company_logo_name)
-#     s3 = boto3.client('s3', aws_access_key_id='AKIAZI2LB2XIRFQPYDJ4', aws_secret_access_key='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', region_name='eu-north-1')
-#     if existing_logo_key is not None:
-#         try:
-#             s3.delete_object(Bucket='backendcompanylogo', Key=existing_logo_key)
-#             print(f"Existing object with key '{existing_logo_key}' deleted from S3.")
-#         except Exception as e:
-#             print(f"Error deleting existing object: {e}")
-#     if company_logo_name is None:
-#         company_logo_contents = company_logo.read()
-#         new_logo_key = company_logo.name
-#     else:
-#         new_logo_key = f'company_logo/{employee_id}_{company_logo_name}'
-#         company_logo_contents = company_logo.read()
-#     print(new_logo_key, 'newlogokey----------')
-#     if existing_logo_key != new_logo_key:
-#         print(existing_logo_key, 'existing_logo_key-----------')
-#         s3.upload_fileobj(io.BytesIO(company_logo_contents), 'backendcompanylogo', new_logo_key)
-#     return new_logo_key
