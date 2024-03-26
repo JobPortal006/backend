@@ -1,8 +1,4 @@
 from django.db import connection
-from django.http import JsonResponse
-import base64
-from datetime import datetime
-from humanize import naturaldelta
 from data import message
 
 con = connection.cursor()

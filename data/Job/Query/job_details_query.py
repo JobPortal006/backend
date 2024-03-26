@@ -25,6 +25,6 @@ def check_user_id(user_id, job_id):
     con.execute(check_sql, (user_id, job_id))
     user = con.fetchone()
     if user is not None:
-        return True  # User has already applied for this job
+        return True 
     else:
-        return False   # User has not applied for this job yet
+        return False 

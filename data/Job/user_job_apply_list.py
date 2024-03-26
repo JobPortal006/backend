@@ -18,7 +18,6 @@ def user_job_apply_list(request):
     user_ids = user_job_apply_list_query.applyJob_datas(job_id)
     if not user_ids:  # If the list is empty
       return message.response1('Error', 'userJobViewError', data={})
-    
     response_data = []
     for user_id in user_ids:
       user_details = get_user_account.user_details(user_id)
@@ -31,11 +30,10 @@ def user_job_apply_list(request):
           'notice_period': notice_period
         }
       response_data.append(user_details)
-    
     if response_data:  # Checking if response_data is not empty
-        return message.response1('Success', 'getJobDetails', response_data)
+      return message.response1('Success', 'getJobDetails', response_data)
     else:
-        return message.response1('Error', 'searchJobError', data={})
+      return message.response1('Error', 'searchJobError', data={})
   except Exception as e:
     return message.tryExceptError(str(e))
   

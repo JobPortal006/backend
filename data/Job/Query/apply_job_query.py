@@ -98,11 +98,11 @@ def apply_job_table(job_id, user_id, resume_id):
     finally:
         con.close()
     
-def additional_queries_table(job_id,user_id,current_ctc,expected_ctc,total_experience,notice_period):
+def additional_queries_table(job_id,user_id,total_experience,current_ctc,expected_ctc,notice_period):
     try:
         con = connection.cursor()    
         sql ="insert into additional_queries (job_id,user_id,total_experience,current_ctc,expected_ctc,notice_period) values(%s,%s,%s,%s,%s,%s)"
-        values = (job_id,user_id,current_ctc,expected_ctc,total_experience,notice_period)
+        values = (job_id,user_id,total_experience,current_ctc,expected_ctc,notice_period)
         con.execute(sql,values)
         return True
     except Exception as e:

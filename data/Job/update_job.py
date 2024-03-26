@@ -2,7 +2,6 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db import connection
 from data import message
-from django.http import JsonResponse
 from data.Job.Query import update_job_query,search_jobs_query
 from sqlalchemy import and_
 from data.Account_creation.Tables.table import JobPost
@@ -32,10 +31,6 @@ def update_jobs(request):
             set_data_id = set()
             valuesCheck = message.check(job_id,job_title,job_description,employee_type,job_role,location,qualification,experience,salary_range,no_of_vacancies,company_name)
             if valuesCheck:
-                employee_id =  update_job_query.getId_companyDetails(job_id)
-            else:
-                return JsonResponse("Invalid Datas ",safe=False)
-            if job_id:
                 table_name= "location"
                 field_name ="location"
                 mappind_table="location_mapping"
@@ -64,7 +59,8 @@ def update_jobs(request):
                     return message.response1('Success', 'getJobDetails', json_data)
                 else:
                     return message.response('Success','updateData')
-            # return JsonResponse("Updated Successfully",safe=False)
+            else:
+                return message.response("Error","InputError")
         except Exception as e:
             return message.tryExceptError(str(e))
     else:

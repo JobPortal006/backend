@@ -1,11 +1,10 @@
 from django.db import connection
 from datetime import datetime
 from humanize import naturaldelta
-import base64
 import json
 
 def job_response_details(results,set_data_id):
-    jobs = []
+    data = []
     with connection.cursor() as cursor:
         for row in results:  # Corrected variable name from 'results' to 'row'
             job_id = row[0]
@@ -24,8 +23,6 @@ def job_response_details(results,set_data_id):
             cursor.nextset()
             cursor.callproc('GetLocation', [job_id])
             location = cursor.fetchall()
-            # company_logo = row[9]
-            # company_logo = base64.b64encode(company_logo).decode('utf-8')
             created_at = row[10]
             created_at_humanized = naturaldelta(datetime.utcnow() - created_at)
             job = {
@@ -39,16 +36,16 @@ def job_response_details(results,set_data_id):
                 'experience': row[5],
                 'salary_range': row[6],
                 'no_of_vacancies': row[7],
-                # 'company_logo': company_logo,
                 'company_logo_path':row[8],
                 'job_role': row[9],
                 'skills': [skill[0] for skill in skills],
                 'created_at': created_at_humanized
             }
-            jobs.append(job)
+            data.append(job)
         pass
-    jobs = sorted(jobs, key=lambda x: x['created_at'])
-    return jobs
+    # data = sorted(data, key=lambda x: x['created_at'])
+    data = sorted(data, key=lambda x: x['id'], reverse=True)
+    return data
 
 # Send the response here
 def response(results, job_id, cursor, processed_job_ids):
@@ -63,27 +60,21 @@ def response(results, job_id, cursor, processed_job_ids):
         job_post_id, job_title, job_description, experience, salary_range, no_of_vacancies, created_at, \
             company_name, industry_type, company_description, no_of_employees, company_website_link, company_logo_path, \
             employee_type, job_role = row
-
         # Calculate humanized creation date
         created_at_humanized = naturaldelta(datetime.utcnow() - created_at)
-
         # Fetch skills for the current row
         cursor.nextset()
         cursor.callproc('GetSkillSet', [job_id])
         skills = cursor.fetchall()
-
         # Move to the next result set
         cursor.nextset()
-
         # Call the stored procedure to get qualifications
         cursor.callproc('GetQualification', [job_id])
         qualifications = cursor.fetchall()
-
         # Call the stored procedure to get location
         cursor.nextset()
         cursor.callproc('GetLocation', [job_id])
         locations = cursor.fetchall()   
-
         # Get company id
         cursor.nextset()
         cursor.execute("SELECT company_details.id FROM company_details join job_post on company_details.id = job_post.company_id WHERE job_post.id = %s", [job_id])
@@ -113,10 +104,8 @@ def response(results, job_id, cursor, processed_job_ids):
             "address": []
         }
         data.append(job_data)
-
         # Fetch address data
         street, city, state, country, pincode = "", "", "", "", ""
-        
         for location in locations:
             city = location[0]  # Assuming city is the first column in location table
             cursor.execute("SELECT street, city, state, country, pincode FROM address WHERE city = %s", [city])

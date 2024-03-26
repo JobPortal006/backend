@@ -75,7 +75,7 @@ def apply_jobs(request):
                     apply_job_result = apply_job_query.apply_job_table(job_id,user_id,resume_id)
                     print(apply_job_result,'apply_job_result')
                     if additional_queries == "Yes":
-                        apply_job_query.additional_queries_table(job_id,user_id,current_ctc,expected_ctc,total_experience,notice_period)
+                        apply_job_query.additional_queries_table(job_id,user_id,total_experience,current_ctc,expected_ctc,notice_period)
                     if apply_job_result:
                         send_email(user_email)
                         send_email(company_email)

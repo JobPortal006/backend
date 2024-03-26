@@ -16,10 +16,10 @@ def get_user_details(request):
     try:
         user_details_data = None
         data = json.loads(request.body)
-        user_id = data.get('user_id')
-        # token = data.get('token')
-        # user_id,registered_by,email = decode_token(token)
-        # print(user_id, registered_by,email) 
+        # user_id = data.get('user_id')
+        token = data.get('token')
+        user_id,registered_by,email = decode_token(token)
+        print(user_id, registered_by,email) 
         if user_id is not None:
             session = message.create_session()
             user_details_data=user_details(user_id)
@@ -147,21 +147,21 @@ def user_details(user_id):
             #     if skill_details:
             #         skill_details_list.append(str(skill_details.skill_set))
             # # key_skills = ",".join(skill_details_list)
-            # prefered_locations_list = []
-            # prefered_locations = job_preferences.preferred_locations
-            # location_ids = prefered_locations.split(",")
-            # for location_id in location_ids:
-            #     location_details = session.query(Location).filter_by(id=location_id).first()
-            #     if location_details:
-            #         prefered_locations_list.append(str(location_details.location))
-            # # prefered_locations = ",".join(prefered_locations_list)
+            prefered_locations_list = []
+            prefered_locations = job_preferences.preferred_locations
+            location_ids = prefered_locations.split(",")
+            for location_id in location_ids:
+                location_details = session.query(Location).filter_by(id=location_id).first()
+                if location_details:
+                    prefered_locations_list.append(str(location_details.location))
+            prefered_locations = ",".join(prefered_locations_list)
             user_details['jobPreference'] = {
                 'department': job_preferences.department,
                 'industry': job_preferences.industry,
                 'key_skills': job_preferences.key_skills,
-                'prefered_locations': job_preferences.preferred_locations,
+                # 'prefered_locations': job_preferences.preferred_locations,
                 # 'key_skills': skill_details_list,
-                # 'prefered_locations': prefered_locations_list
+                'prefered_locations': prefered_locations_list
             }
         professional_details = session.query(ProfessionalDetails).filter_by(user_id=user_id).all()
         user_details['professionalDetails'] = {

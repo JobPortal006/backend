@@ -49,13 +49,7 @@ def job_filter(request):
                 # job_details_by_employeeType.employee_call_fun = None
                 print("Employe ----------------------------")
 
-                # if company_result == '':
-                #     jobs = search_result
-                #     if jobs == '':
-                #         jobs = job_employee_type_result()
-                #         print(jobs,'filter job_employee_type_result--------')
             condition = ""
-            print(" -=-=-=- ",jobs)
             def where_condition(data,location_value, dyanamic_value, condition):
                 key_value = None
                 for key, value in data.items():

@@ -10,7 +10,6 @@ from data import message
 import io
 import boto3
 from data.token import decode_token
-from data.Account_creation.Tables.table import SkillSets,Location
 from data.Job.Query import post_job_insert_query 
 
 # Insert the data into required tables
@@ -109,6 +108,7 @@ class user_register(View): # View class provides a creating views by defining me
                 industry = job_preference_data.get('industry')
                 key_skills = job_preference_data.get('key_skills')
                 prefered_locations = job_preference_data.get('prefered_locations')
+                print(prefered_locations,'p-------')
                 if user_id is not None:
                     userid_check = create_account_user_query.userid_check(user_id)
                     print(userid_check)
@@ -155,18 +155,15 @@ class user_register(View): # View class provides a creating views by defining me
                             diploma_college_percentage, diploma_college_department, diploma_college_degree)
                         print('Education_details ->', education_details_result)
                         # skill_ids = []
-                        # session = message.create_session()
                         # for skill in key_skills: 
-                        #     skill_details = session.query(SkillSets).filter_by(id=skill).first()
-                        #     skill_id = post_job_insert_query.skill_set(skill_details.skill_set)  # Insert the skill_set in skill_sets table
+                        #     skill_id = post_job_insert_query.skill_set(skill)  # Insert the skill_set in skill_sets table
                         #     skill_ids.append(str(skill_id))  # Append the skill_id to the list and convert it to a string
-                        # location_ids = []
-                        # for location in prefered_locations:
-                        #     location_details = session.query(Location).filter_by(id=location).first()
-                        #     location_id = post_job_insert_query.location(location_details.location) # Insert the location in locations table
-                        #     location_ids.append(str(location_id))  # Append the location_id to the list and convert it to a string
                         # key_skills = ",".join(skill_ids)
-                        # prefered_locations = ",".join(location_ids)
+                        location_ids = []
+                        for location_name in prefered_locations:
+                            location_id = post_job_insert_query.location(location_name)
+                            location_ids.append(str(location_id))
+                        prefered_locations = ",".join(location_ids)
                         job_preference_result = create_account_user_query.job_preference_details(
                         user_id, key_skills, department, industry, prefered_locations)
                         print('Job_preference ->', job_preference_result)

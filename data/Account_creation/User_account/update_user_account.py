@@ -151,16 +151,14 @@ def update_user_details(request):
                 # Update JobPreferences table
                 # skill_ids = []
                 # for skill in key_skills:
-                #     skill_details = session.query(SkillSets).filter_by(id=skill).first()
-                #     skill_id = post_job_insert_query.skill_set(skill_details.skill_set) # Insert the skill_set in skill_sets table
+                #     skill_id = post_job_insert_query.skill_set(skill) # Insert the skill_set in skill_sets table
                 #     skill_ids.append(str(skill_id))  # Append the skill_id to the list and convert it to a string
-                # location_ids = []
-                # for location in prefered_locations:
-                #     location_details = session.query(Location).filter_by(id=location).first()
-                #     location_id = post_job_insert_query.location(location_details.location)# Insert the location in locations table
-                #     location_ids.append(str(location_id))  # Append the location_id to the list and convert it to a string
                 # key_skills = ",".join(skill_ids)
-                # prefered_locations = ",".join(location_ids)
+                location_ids = []
+                for location in prefered_locations:
+                    location_id = post_job_insert_query.location(location)# Insert the location in locations table
+                    location_ids.append(str(location_id))  # Append the location_id to the list and convert it to a string
+                prefered_locations = ",".join(location_ids)
                 update_user_account_query.update_job_preferences(session, user_id, department, industry, key_skills, prefered_locations)
                 
                 # Delete existing professional details for the user
