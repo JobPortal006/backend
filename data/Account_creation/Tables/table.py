@@ -266,7 +266,7 @@ class AdditionalQueries(Base):
     expected_ctc = Column(String(255))
     notice_period = Column(String(255))
 
-    job_post = relationship('JobPost', back_populates='additional_queries')
+    # job_post = relationship('JobPost', back_populates='additional_queries')
     signup = relationship('Signup')
 
 class SavedJob(Base):
