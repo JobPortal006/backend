@@ -47,7 +47,8 @@ def response(val,key):
             'token':'Token is not expired',
             'getJobDetails':'Job find successfully',
             'userApplyJob':False,
-            'userApplyJobResult':True
+            'userApplyJobResult':True,
+            'savedJob':"Job Saved Successfully"
         },
         'Error':{
             'emailError': 'Email is already exists. Please use a different email address.',
@@ -73,7 +74,8 @@ def response(val,key):
             'tokenError':'Token is expired',
             'ValuesCheckError':'Input Should not be empty',
             'EmptyRequestBody':'Empty Request Body',
-            'userJobViewError':'User not applied for this job'
+            'userJobViewError':'User not applied for this job',
+            'savedJobError':"Job not Saved"
         }
     }
     if val == 'Success':

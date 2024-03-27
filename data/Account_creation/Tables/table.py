@@ -266,8 +266,20 @@ class AdditionalQueries(Base):
     expected_ctc = Column(String(255))
     notice_period = Column(String(255))
 
-    # job_post = relationship('JobPost', back_populates='additional_queries')
+    job_post = relationship('JobPost', back_populates='additional_queries')
     signup = relationship('Signup')
+
+class SavedJob(Base):
+    __tablename__ = 'saved_job'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey('signup.id'))
+    job_id = Column(Integer, ForeignKey('job_post.id'))
+    created_at = Column(TIMESTAMP, server_default=func.now())
+    updated_at = Column(TIMESTAMP, server_default=func.now(), server_onupdate='CURRENT_TIMESTAMP')
+    
+    signup = relationship('Signup')
+    job_post = relationship('JobPost')
     
 
 engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/jobportal')
