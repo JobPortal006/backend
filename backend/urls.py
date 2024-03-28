@@ -82,7 +82,8 @@ urlpatterns = [
     path('user_job_apply_list/',user_job_apply_list.user_job_apply_list),
     path('user_profile_list/',user_job_apply_list.user_profile_list),
     path('saved_job/',save_job.save_job),
-    path('delete_saved_job/',save_job.delete_save_job)
+    path('delete_saved_job/',save_job.delete_save_job),
+    path('get_all_saved_jobs/',save_job.get_all_saved_jobs),
 ]
   
 if settings.DEBUG:

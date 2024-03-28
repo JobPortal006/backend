@@ -48,7 +48,8 @@ def response(val,key):
             'getJobDetails':'Job find successfully',
             'userApplyJob':False,
             'userApplyJobResult':True,
-            'savedJob':"Job Saved Successfully"
+            'savedJob':"Job Saved Successfully",
+            'savedUnJob':"Job UnSaved Successfully"
         },
         'Error':{
             'emailError': 'Email is already exists. Please use a different email address.',
@@ -75,7 +76,8 @@ def response(val,key):
             'ValuesCheckError':'Input Should not be empty',
             'EmptyRequestBody':'Empty Request Body',
             'userJobViewError':'User not applied for this job',
-            'savedJobError':"Job not Saved"
+            'savedJobError':"Job not Saved",
+            'alreadySavedJobError':'Record already exists'
         }
     }
     if val == 'Success':
