@@ -1,8 +1,9 @@
-from sqlalchemy import create_engine, Column, Integer, String, Enum, Date, DECIMAL, Text, TIMESTAMP, DateTime, ForeignKey, LargeBinary 
+from sqlalchemy import create_engine, Column, Integer, String, Enum, Date, DECIMAL, Text, TIMESTAMP, DateTime, ForeignKey, text 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from sqlalchemy.orm import declarative_base 
+from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
 
@@ -280,7 +281,107 @@ class SavedJob(Base):
     
     signup = relationship('Signup')
     job_post = relationship('JobPost')
-    
 
 engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/jobportal')
-Base.metadata.create_all(engine)        
+Base.metadata.create_all(engine) 
+
+# Define the raw SQL string containing stored procedure definitions
+sql_create_procedures = """
+DROP PROCEDURE IF EXISTS GetLocation;
+DROP PROCEDURE IF EXISTS GetSkillSet;
+DROP PROCEDURE IF EXISTS GetQualification;
+DROP PROCEDURE IF EXISTS GetJobsDetailsById;
+DROP PROCEDURE IF EXISTS GetJobsDetailsByEmployeeId;
+DROP PROCEDURE IF EXISTS GetApplyJobDetails;
+CREATE PROCEDURE GetLocation(IN jobId INT)
+BEGIN
+    SELECT l.location 
+    FROM location l
+    JOIN location_mapping lm ON l.id = lm.location_id 
+    WHERE lm.job_id = jobId;
+END;
+
+CREATE PROCEDURE GetSkillSet(IN jobId INT)
+BEGIN
+    SELECT ss.skill_set
+    FROM skill_sets ss
+    JOIN skill_set_mapping ssm ON ss.id = ssm.skill_id
+    WHERE ssm.job_id = jobId;
+END;
+
+CREATE PROCEDURE GetQualification(IN jobId INT)
+BEGIN
+    SELECT q.qualification 
+    FROM qualification q 
+    JOIN qualification_mapping qm ON q.id = qm.qualification_id 
+    WHERE qm.job_id = jobId;
+END;
+
+CREATE PROCEDURE GetJobsDetailsById(IN jobId INT)
+BEGIN
+    SELECT 
+        jp.id AS job_post_id, jp.job_title, jp.job_description,
+        jp.experience, jp.salary_range, jp.no_of_vacancies, jp.created_at,
+        c.company_name, c.company_industry, c.company_description, c.no_of_employees,
+        c.company_website_link, c.company_logo_path, et.employee_type, jr.job_role
+    FROM 
+        job_post jp
+    LEFT JOIN 
+        employees_types et ON jp.employee_type_id = et.id
+    LEFT JOIN 
+        job_role jr ON jp.job_role_id = jr.id
+    LEFT JOIN 
+        company_details c ON jp.company_id = c.id
+    WHERE 
+        jp.id = jobId;
+END;
+
+CREATE PROCEDURE GetJobsDetailsByEmployeeId(IN employeeId INT)
+BEGIN
+    SELECT 
+        jp.id AS job_post_id, jp.job_title, jp.job_description,
+        jp.experience, jp.salary_range, jp.no_of_vacancies, jp.created_at,
+        c.company_name, c.company_industry, c.company_description, c.no_of_employees,
+        c.company_website_link, c.company_logo_path, et.employee_type, jr.job_role
+    FROM 
+        job_post jp
+    LEFT JOIN 
+        employees_types et ON jp.employee_type_id = et.id
+    LEFT JOIN 
+        job_role jr ON jp.job_role_id = jr.id
+    LEFT JOIN 
+        company_details c ON jp.company_id = c.id
+    WHERE 
+        jp.employee_id = employeeId;
+END;
+
+CREATE PROCEDURE GetApplyJobDetails(
+    IN userId INT
+)
+BEGIN
+    SELECT 
+    jp.id AS job_post_id,jp.job_title, jp.job_description,
+    jp.experience, jp.salary_range, jp.no_of_vacancies,jp.created_at,
+    c.company_name,c.company_industry,c.company_description, c.no_of_employees,c.company_website_link,c.company_logo_path,et.employee_type,jr.job_role
+FROM job_post jp
+LEFT JOIN employees_types et ON jp.employee_type_id = et.id
+LEFT JOIN job_role jr ON jp.job_role_id = jr.id
+LEFT JOIN company_details c ON jp.company_id = c.id
+LEFT JOIN apply_job aj ON aj.job_id = jp.id
+WHERE aj.user_id = userId;
+END;
+"""
+
+# Create a session
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# Execute the raw SQL to create the stored procedure
+session.execute(text(sql_create_procedures))
+
+# Commit the changes
+session.commit()
+
+# Close the session
+session.close()
+       

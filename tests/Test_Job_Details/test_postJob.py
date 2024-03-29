@@ -1,9 +1,9 @@
 import pytest
 import requests
 from data.message import create_session
-import json
+import json,jwt
 from data.Account_creation.Tables.table import (
-    JobPost, Location, EmployeeTypes, JobRole, SkillSets, SkillSetMapping, Signup,CompanyDetails
+    JobPost, Location, EmployeeTypes, JobRole, SkillSets, SkillSetMapping, Signup,CompanyDetails, QualificationMapping, LocationMapping
 )
 from backend.settings import base_url
 
@@ -45,6 +45,8 @@ def test_create_job_post(data):
     if response_data['statusCode'] == 200:
         # Fetch the employee_id after the signup is inserted
         token = data['token']
+        secret_key = "12345"
+        decoded_token = jwt.decode(token, secret_key, algorithms=['HS256'])
         # employee_id,registered_by,email = decode_token(token)
         inserted_signup = session.query(Signup).filter_by(email=data['email']).first()
         employee_id = inserted_signup.id
@@ -99,6 +101,48 @@ def test_create_job_post(data):
 
         # Check if data is inserted into the SkillSetMapping table
         assert session.query(SkillSetMapping).filter_by(id=skill_set_mapping_entry.id).first() is not None
+
+        # Insert data into the SkillSets table and get IDs
+        qualification_ids = []
+        for qualification in data['qualification']:
+            qualification_id = get_or_create_and_get_id(session, QualificationMapping, 'qualification', qualification)
+            qualification_ids.append(qualification_id)
+
+        # Insert data into the qualificationSetMapping table
+        for qualification_id in qualification_ids:
+            qualification_mapping_data = {
+                "employee_id": employee_id,
+                "qualification_id": qualification_id,
+                "job_id": job_post_entry.id
+            }
+
+            qualification_mapping_entry = QualificationMapping(**qualification_mapping_data)
+            session.add(qualification_mapping_entry)
+            session.commit()
+
+        # Check if data is inserted into the SkillSetMapping table
+        assert session.query(QualificationMapping).filter_by(id=qualification_mapping_entry.id).first() is not None
+
+        # Insert data into the SkillSets table and get IDs
+        location_ids = []
+        for location in data['location']:
+            location_id = get_or_create_and_get_id(session, LocationMapping, 'location', location)
+            location_ids.append(location_id)
+
+        # Insert data into the locationSetMapping table
+        for location_id in location_ids:
+            location_mapping_data = {
+                "employee_id": employee_id,
+                "location_id": location_id,
+                "job_id": job_post_entry.id
+            }
+
+            location_mapping_entry = LocationMapping(**location_mapping_data)
+            session.add(location_mapping_entry)
+            session.commit()
+
+        # Check if data is inserted into the SkillSetMapping table
+        assert session.query(LocationMapping).filter_by(id=location_mapping_entry.id).first() is not None
 
         assert 'message' in response_data
         assert response_data['message'] == message
