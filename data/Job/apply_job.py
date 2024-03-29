@@ -11,6 +11,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from data.token import decode_token
 from data.Job.Query import job_details_query
+from data.Job.post_job import retry_database_operation
 
 con = connection.cursor()
 
@@ -93,6 +94,7 @@ job_response = ""
 
 # Get all job_post data using user_id and send response through API
 @csrf_exempt
+@retry_database_operation
 def view_apply_jobs(request):
     try:
         data = json.loads(request.body)
