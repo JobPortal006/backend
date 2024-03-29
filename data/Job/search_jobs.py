@@ -130,6 +130,7 @@ def search_job(request):
             # conditions = or_(SkillSets.skill_set == skill_result,JobPost.job_title == job_title,
             #     Location.location == location,JobPost.experience == experience)
             # result = search_jobs_query.execute_query(conditions)
+                
         jobs=json_response.job_response_details(result,set_data_id)
         job_response = jobs
         if jobs:
@@ -139,20 +140,6 @@ def search_job(request):
     except Exception as e:
     # except (OperationalError, DatabaseError) as e:
         return message.tryExceptError(str(e))
-
-# @csrf_exempt
-# @retry_database_operation
-# def get_view_jobs(request):
-#     try:
-#         url_response = job_response
-#         if url_response:
-#             return message.response1('Success', 'getJobDetails', url_response)
-#         else:
-#             return message.response1('Error', 'searchJobError', data={})
-#     except (OperationalError, DatabaseError) as e:
-#         print(f"Database connection error: {e}")
-#         # Retry database operation
-#         # retry_database_operation(connection.close)
     
 def skill_location(skill_result,location):
     conditions = and_(SkillSets.skill_set == skill_result,Location.location == location)
