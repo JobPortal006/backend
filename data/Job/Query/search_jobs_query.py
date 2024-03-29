@@ -1,6 +1,6 @@
 from django.db import connection
 from data import message
-from data.Account_creation.Tables.table import SkillSets, Location, JobPost, CompanyDetails, EmployeeTypes, JobRole, SkillSetMapping, LocationMapping
+from data.Tables.table import SkillSets, Location, JobPost, CompanyDetails, EmployeeTypes, JobRole, SkillSetMapping, LocationMapping
 con = connection.cursor()
 
 def execute_query(conditions):

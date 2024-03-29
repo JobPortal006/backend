@@ -6,7 +6,7 @@ from data.message import create_session
 from data.Account_creation.User_account import get_user_account
 from data.token import decode_token
 from data import message
-from data.Account_creation.Tables.table import Address, CollegeDetails, JobPreferences
+from data.Tables.table import Address, CollegeDetails, JobPreferences
 from data.Job.Query import post_job_insert_query 
 
 @csrf_exempt

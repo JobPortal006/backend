@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from data.Account_creation.Tables.table import Signup, ResumeDetails, JobPost
+from data.Tables.table import Signup, ResumeDetails, JobPost
 from django.views.decorators.csrf import csrf_exempt
 from data.Job import json_response
 from django.db import connection

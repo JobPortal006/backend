@@ -6,7 +6,7 @@ from data.Job.Query import search_jobs_query
 from data.Job import json_response
 from sqlalchemy import and_, or_
 from data.Job.post_job import retry_database_operation
-from data.Account_creation.Tables.table import SkillSets, Location, JobPost
+from data.Tables.table import SkillSets, Location, JobPost
 from data.Job import job_details_by_companyName
 from data.Job import job_details_by_employeeType
 # job_response = ""

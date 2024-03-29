@@ -3,7 +3,7 @@ from data import message
 from sqlalchemy import and_, or_
 from data.Job.Query import search_jobs_query
 from data.Job import json_response
-from data.Account_creation.Tables.table import SkillSetMapping, LocationMapping, JobPost
+from data.Tables.table import SkillSetMapping, LocationMapping, JobPost
 
 con = connection.cursor()
 

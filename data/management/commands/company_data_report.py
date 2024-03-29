@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 import pandas as pd
 from io import BytesIO
-from data.Account_creation.Tables.table import Signup, CompanyDetails, Address
+from data.Tables.table import Signup, CompanyDetails, Address
 from django.core.mail import EmailMessage
 from data.message import create_session
 

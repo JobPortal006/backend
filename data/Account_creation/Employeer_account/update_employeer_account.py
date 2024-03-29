@@ -3,7 +3,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from data.Account_creation.Employeer_account.Query import update_employeer_account_query
 from data import message
-from data.Account_creation.Tables.table import Address
+from data.Tables.table import Address
 from data.token import decode_token
 @csrf_exempt
 def update_employee_details(request):

@@ -5,7 +5,7 @@ from data import message
 from data.Job.post_job import retry_database_operation
 from data.token import decode_token
 from data.Job.Query import job_details_query
-from data.Account_creation.Tables.table import SavedJob
+from data.Tables.table import SavedJob
 
 con = connection.cursor()
 session = message.create_session()

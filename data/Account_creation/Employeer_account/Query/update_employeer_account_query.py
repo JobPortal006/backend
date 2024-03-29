@@ -1,4 +1,4 @@
-from data.Account_creation.Tables.table import Signup, CompanyDetails, Address
+from data.Tables.table import Signup, CompanyDetails, Address
 import io
 import boto3
 

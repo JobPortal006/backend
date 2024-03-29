@@ -5,7 +5,7 @@ from data.Job.Query import search_jobs_query
 from data.Job import json_response
 from sqlalchemy import and_
 from data.Job import search_jobs
-from data.Account_creation.Tables.table import CompanyDetails
+from data.Tables.table import CompanyDetails
 from data.Job import job_details_by_employeeType
 
 # job_response = ""

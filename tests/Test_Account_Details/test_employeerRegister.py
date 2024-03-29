@@ -1,7 +1,7 @@
 import pytest
 import requests
 import json
-from data.Account_creation.Tables.table import Signup, Address, CompanyDetails
+from data.Tables.table import Signup, Address, CompanyDetails
 from backend.settings import base_url
 from data.message import create_session
 

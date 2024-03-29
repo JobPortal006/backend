@@ -3,7 +3,7 @@ import pandas as pd
 from io import BytesIO
 from data.message import create_session
 from django.core.mail import EmailMessage
-from data.Account_creation.Tables.table import Signup, PersonalDetails, Address, EducationDetails, CollegeDetails, ProfessionalDetails, JobPreferences, ResumeDetails
+from data.Tables.table import Signup, PersonalDetails, Address, EducationDetails, CollegeDetails, ProfessionalDetails, JobPreferences, ResumeDetails
 
 class Command(BaseCommand):
     def handle(self, *args, **options):

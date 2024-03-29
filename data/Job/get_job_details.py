@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from data.Job.Query import search_jobs_query
 from data.Job import json_response
 from sqlalchemy import and_
-from data.Account_creation.Tables.table import JobPost
+from data.Tables.table import JobPost
 
 con = connection.cursor()
 @csrf_exempt

@@ -2,7 +2,7 @@ import pytest
 import requests
 from data.message import create_session
 import json,jwt
-from data.Account_creation.Tables.table import (
+from data.Tables.table import (
     JobPost, Location, EmployeeTypes, JobRole, SkillSets, SkillSetMapping, Signup,CompanyDetails, QualificationMapping, LocationMapping
 )
 from backend.settings import base_url

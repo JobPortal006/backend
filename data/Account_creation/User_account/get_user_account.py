@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from data.Account_creation.Tables.table import Signup,PersonalDetails,ProfessionalDetails,Address,CollegeDetails,EducationDetails,JobPreferences,ResumeDetails,SkillSets,Location
+from data.Tables.table import Signup,PersonalDetails,ProfessionalDetails,Address,CollegeDetails,EducationDetails,JobPreferences,ResumeDetails,SkillSets,Location
 import json
 from data import message
 from data.token import decode_token
