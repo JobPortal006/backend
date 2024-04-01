@@ -12,26 +12,24 @@ session = message.create_session()
 def get_user_details(user_id, job_id):
     try:
         user = session.query(Signup).filter_by(id=user_id).first()
-        if user is None:
-            return None
 
         resume = session.query(ResumeDetails).filter_by(user_id=user_id).first()
         job_post = session.query(JobPost).filter_by(id=job_id).first()
-        if resume is None and job_post is None:
+        if resume is None:
             return None
-
-        additional_queries = job_post.additional_queries if job_post.additional_queries else "No"
-        response_data = {
-            'user_id': user.id,
-            'email': user.email,
-            'mobile_number': user.mobile_number,
-            'resume_path': resume.resume_path,
-            'additional_queries': additional_queries
-        }
-        return response_data
+        else:
+            additional_queries = job_post.additional_queries if job_post.additional_queries else "No"
+            response_data = {
+                'user_id': user.id,
+                'email': user.email,
+                'mobile_number': user.mobile_number,
+                'resume_path': resume.resume_path,
+                'additional_queries': additional_queries
+            }
+            return response_data
     except Exception as e:
         print(f"Error: {e}")
-        return {'status': 'Error', 'message': str(e)}
+        return message.tryExceptError(str(e)) 
 
 def insert_apply_job(user_id,job_id,company_id,resume_id):
     try:
@@ -40,7 +38,7 @@ def insert_apply_job(user_id,job_id,company_id,resume_id):
         con.execute(sql,value)
     except Exception as e:
         print(f"Error: {e}")
-        return {'status': 'Error', 'message': str(e)}
+        return message.tryExceptError(str(e)) 
     
 # Get the employee_type_id using job_role value
 # If employee_type input is not present in the table, insert the employee_type value into resume table 
@@ -88,7 +86,7 @@ def additional_queries_table(job_id,user_id,total_experience,current_ctc,expecte
         con.execute(sql,values)
         return True
     except Exception as e:
-            return JsonResponse(str(e),safe=False)
+        return JsonResponse(str(e),safe=False)
     
 # Send a job details data in JSON format 
 # Data is send in response as (Data/Month/Year)
