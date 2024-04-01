@@ -35,9 +35,9 @@ def search_job(request):
         location = data.get('location')
         skills = data.get('skill')
         experience = data.get('experience')
-        token = data.get('token')
-        user_id, registered_by, email = decode_token(token)
-        print(user_id, registered_by, email)
+        # token = data.get('token')
+        # user_id, registered_by, email = decode_token(token)
+        # print(user_id, registered_by, email)
         set_data_id = set()
         skill_results = []
         job_titles = []
@@ -133,7 +133,8 @@ def search_job(request):
             # conditions = or_(SkillSets.skill_set == skill_result,JobPost.job_title == job_title,
             #     Location.location == location,JobPost.experience == experience)
             # result = search_jobs_query.execute_query(conditions)
-        jobs=json_response.job_response_details(result,set_data_id,user_id)
+        # jobs=json_response.job_response_details(result,set_data_id,user_id)
+        jobs=json_response.job_response_details(result,set_data_id)
         job_response = jobs
         if jobs:
            return message.response1('Success', 'getJobDetails', jobs)
