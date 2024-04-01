@@ -1,6 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.db import OperationalError, DatabaseError
 import json
+from data.token import decode_token
 from data import message
 from data.Job.Query import search_jobs_query
 from data.Job import json_response
@@ -9,7 +10,6 @@ from data.Job.post_job import retry_database_operation
 from data.Tables.table import SkillSets, Location, JobPost
 from data.Job import job_details_by_companyName
 from data.Job import job_details_by_employeeType
-# job_response = ""
 
 # def retry_database_operation(operation, max_retries=3, sleep_duration=2):
 #     for attempt in range(1, max_retries + 1):
@@ -35,6 +35,9 @@ def search_job(request):
         location = data.get('location')
         skills = data.get('skill')
         experience = data.get('experience')
+        token = data.get('token')
+        user_id, registered_by, email = decode_token(token)
+        print(user_id, registered_by, email)
         set_data_id = set()
         skill_results = []
         job_titles = []

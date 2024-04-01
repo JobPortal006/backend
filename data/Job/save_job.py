@@ -23,8 +23,8 @@ def save_job(request):
     existing_record = session.query(SavedJob).filter_by(user_id=user_id, job_id=job_id).first()
     
     if existing_record:
-        # If the record already exists, return an error
-        return message.response('Error', 'alreadySavedJobError')
+      # If the record already exists, return an error
+      return message.response('Error', 'alreadySavedJobError')
     else:
       save_job_instance = SavedJob(user_id=user_id, job_id=job_id)
       session.add(save_job_instance)

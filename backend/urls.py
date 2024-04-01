@@ -5,7 +5,7 @@ from data.Account_creation.Employeer_account import employeer_account, get_emplo
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from data.Job import all_job_details, post_job, search_jobs,employer_post_jobs,job_details_by_companyName,job_details_by_employeeType,update_job,delete_job,job_filter,apply_job,get_job_details,user_job_apply_list,save_job
+from data.Job import full_job_details, post_job, search_jobs,employer_post_jobs,job_details_by_companyName,job_details_by_employeeType,update_job,delete_job,job_filter,apply_job,get_job_details,user_job_apply_list,save_job
 from data.Job import jobs_data
 from data import token
 
@@ -55,8 +55,8 @@ urlpatterns = [
     path('filter_result/',job_filter.filter_result),
 
     # All job details
-    path('job_details/',all_job_details.job_details),
-    path('get_job_details/',all_job_details.get_job_details),
+    path('job_details/',full_job_details.job_details),
+    path('get_job_details/',full_job_details.get_job_details),
     
     # Get single job details
     path('get_job_details_by_id/',get_job_details.get_job_details_by_id),
