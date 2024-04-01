@@ -12,26 +12,26 @@ session = message.create_session()
 def get_user_details(user_id, job_id):
     try:
         user = session.query(Signup).filter_by(id=user_id).first()
-        resume = session.query(ResumeDetails).filter_by(user_id=user_id).first()
+        if user is None:
+            return {'status': 'Error', 'message': f'No user found with id {user_id}'}
 
-        if resume is not None:
-            job_post = session.query(JobPost).filter_by(id=job_id).first()
-            if job_post is not None:
-                additional_queries = job_post.additional_queries
-                if additional_queries is None:
-                    additional_queries = "No"
-                response_data = {
-                    'user_id': user.id,
-                    'email': user.email,
-                    'mobile_number': user.mobile_number,
-                    'resume_path': resume.resume_path,
-                    'additional_queries': additional_queries
-                }
-                return response_data
-            else:
-                return {'status': 'Error', 'message': f'No job post found with id {job_id}'}
-        else:
-            return None
+        resume = session.query(ResumeDetails).filter_by(user_id=user_id).first()
+        if resume is None:
+            return {'status': 'Error', 'message': f'No resume found for user with id {user_id}'}
+
+        job_post = session.query(JobPost).filter_by(id=job_id).first()
+        if job_post is None:
+            return {'status': 'Error', 'message': f'No job post found with id {job_id}'}
+
+        additional_queries = job_post.additional_queries if job_post.additional_queries else "No"
+        response_data = {
+            'user_id': user.id,
+            'email': user.email,
+            'mobile_number': user.mobile_number,
+            'resume_path': resume.resume_path,
+            'additional_queries': additional_queries
+        }
+        return response_data
     except Exception as e:
         print(f"Error: {e}")
         return {'status': 'Error', 'message': str(e)}

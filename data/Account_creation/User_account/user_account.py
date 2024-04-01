@@ -44,21 +44,21 @@ class user_register(View): # View class provides a creating views by defining me
                 resume = request.FILES.get("resume")
                 resume_name=resume.name
                 resume = resume.read()
-                current_address = address_data.get('current', {})
-                street_current = current_address.get('street')
-                city_current = current_address.get('city')
-                state_current = current_address.get('state')
-                country_current = current_address.get('country')
-                pincode_current = current_address.get('pincode')
-                address_type_current = current_address.get('address_type')
+                # current_address = address_data.get('current', {})
+                # street_current = current_address.get('street')
+                # city_current = current_address.get('city')
+                # state_current = current_address.get('state')
+                # country_current = current_address.get('country')
+                # pincode_current = current_address.get('pincode')
+                # address_type_current = current_address.get('address_type')
 
-                permanent_address = address_data.get('permanent', {})
-                street_permanent = permanent_address.get('street')
-                city_permanent = permanent_address.get('city') 
-                state_permanent = permanent_address.get('state')
-                country_permanent = permanent_address.get('country')
-                pincode_permanent = permanent_address.get('pincode')
-                address_type_permanent = permanent_address.get('address_type')
+                # permanent_address = address_data.get('permanent', {})
+                # street_permanent = permanent_address.get('street')
+                # city_permanent = permanent_address.get('city') 
+                # state_permanent = permanent_address.get('state')
+                # country_permanent = permanent_address.get('country')
+                # pincode_permanent = permanent_address.get('pincode')
+                # address_type_permanent = permanent_address.get('address_type')
 
                 sslc_school_name = education_data.get('sslc_school_name')
                 sslc_start_year = education_data.get('sslc_start_year')
@@ -93,6 +93,7 @@ class user_register(View): # View class provides a creating views by defining me
                 industry = job_preference_data.get('industry')
                 key_skills = job_preference_data.get('key_skills')
                 prefered_locations = job_preference_data.get('prefered_locations')
+                # Check if either current or permanent address has non-empty street field
                 if user_id is not None:
                     userid_check = create_account_user_query.userid_check(user_id)
                     print(userid_check)
@@ -101,15 +102,15 @@ class user_register(View): # View class provides a creating views by defining me
                         # Check user details data is empty or not
                         personal_details_data = message.personal_details(first_name, last_name,date_of_birth, gender) 
                         # Check permanent address details data is empty or not
-                        address_details_permanent_data= message.address_details_permanent(
-                                street_permanent, city_permanent, state_permanent, country_permanent,
-                                pincode_permanent, address_type_permanent)
+                        # address_details_permanent_data= message.address_details_permanent(
+                        #         street_permanent, city_permanent, state_permanent, country_permanent,
+                        #         pincode_permanent, address_type_permanent)
                         # Check educational details data is empty or not
                         educational_details_data = message.educational_details(sslc_school_name, sslc_start_year, sslc_end_year, sslc_percentage, hsc_school_name,
                             hsc_start_year, hsc_end_year, hsc_percentage, college_name, college_start_year, college_end_year,college_percentage, department, degree)
                         # Check job preference details data is empty or not
                         job_preference_data = message.job_preference_details(key_skills, department, industry, prefered_locations)
-                        print(personal_details_data,address_details_permanent_data,educational_details_data,job_preference_data)
+                        print(personal_details_data,educational_details_data,job_preference_data)
                         #check input value is none or not
                         # if personal_details_data and address_details_permanent_data and educational_details_data and job_preference_data:
                         s3 = boto3.client('s3', aws_access_key_id='AKIAZI2LB2XIRFQPYDJ4', aws_secret_access_key='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', region_name='eu-north-1')
@@ -119,16 +120,19 @@ class user_register(View): # View class provides a creating views by defining me
                         personal_details_result = create_account_user_query.personal_details(
                             user_id, first_name, last_name, date_of_birth, gender,profile_picture_key)
                         print('Personal_details ->', personal_details_result)
-
-                        address_details_current_result = create_account_user_query.address_details(
-                        user_id, registered_by, street_current, city_current, state_current, country_current,
-                        pincode_current, address_type_current)
-                        print('Address_details_current ->', address_details_current_result)
-
-                        address_details_permanent_result = create_account_user_query.address_details(
-                            user_id, registered_by, street_permanent, city_permanent, state_permanent, country_permanent,
-                            pincode_permanent, address_type_permanent)
-                        print('Address_details_permanent ->', address_details_permanent_result)
+                       
+                        for address_type, address_details in address_data.items():
+                            if address_type in ['current', 'permanent']:
+                                street = address_details.get('street')
+                                city = address_details.get('city')
+                                state = address_details.get('state')
+                                country = address_details.get('country')
+                                pincode = address_details.get('pincode')
+                                address_type = address_details.get('address_type')
+                                if street != '':
+                                    address_details_result = create_account_user_query.address_details(
+                                        user_id, registered_by, street, city, state, country, pincode, address_type)
+                                    print(f'{address_type} Address details:', address_details_result)
 
                         education_details_result = create_account_user_query.education_details(
                             user_id, sslc_school_name, sslc_start_year, sslc_end_year, sslc_percentage, hsc_school_name,
