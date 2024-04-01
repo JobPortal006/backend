@@ -133,7 +133,7 @@ def search_job(request):
             # conditions = or_(SkillSets.skill_set == skill_result,JobPost.job_title == job_title,
             #     Location.location == location,JobPost.experience == experience)
             # result = search_jobs_query.execute_query(conditions)
-        jobs=json_response.job_response_details(result,set_data_id)
+        jobs=json_response.job_response_details(result,set_data_id,user_id)
         job_response = jobs
         if jobs:
            return message.response1('Success', 'getJobDetails', jobs)

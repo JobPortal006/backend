@@ -1,9 +1,13 @@
 from django.db import connection
 from datetime import datetime
 from humanize import naturaldelta
+from data.Tables.table import SavedJob
+from data import message
 import json
 
-def job_response_details(results,set_data_id):
+session = message.create_session()
+
+def job_response_details(results,set_data_id,user_id):
     data = []
     with connection.cursor() as cursor:
         for row in results:  # Corrected variable name from 'results' to 'row'
@@ -25,6 +29,13 @@ def job_response_details(results,set_data_id):
             location = cursor.fetchall()
             created_at = row[10]
             created_at_humanized = naturaldelta(datetime.utcnow() - created_at)
+            if user_id is not None:
+                existing_record = session.query(SavedJob).filter_by(user_id=user_id, job_id=job_id).first()
+                print(existing_record)
+            if existing_record:
+                savedValue = "Unsaved"
+            else:
+                savedValue = "Saved"
             job = {
                 'id': row[0],
                 'job_title': row[1],
@@ -39,7 +50,8 @@ def job_response_details(results,set_data_id):
                 'company_logo_path':row[8],
                 'job_role': row[9],
                 'skills': [skill[0] for skill in skills],
-                'created_at': created_at_humanized
+                'created_at': created_at_humanized,
+                'saved':savedValue
             }
             data.append(job)
         pass

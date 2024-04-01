@@ -5,6 +5,7 @@ from data.Job.Query import search_jobs_query
 from data.Job import json_response
 from sqlalchemy import and_
 from data.Tables.table import EmployeeTypes
+from data.token import decode_token
 
 from data.Job import search_jobs
 from data.Job import job_details_by_companyName 
@@ -19,6 +20,9 @@ def job_details_by_employeeType(request):
     try:
         data = json.loads(request.body)
         employee_type = data.get('employee_type')
+        token = data.get('token')
+        user_id, registered_by, email = decode_token(token)
+        print(user_id, registered_by, email)
         global employee_call_fun 
         employee_call_fun = 'employee'
         job_details_by_companyName.company_fun_call = None
@@ -31,7 +35,7 @@ def job_details_by_employeeType(request):
             conditions = and_(EmployeeTypes.employee_type == employee_type)
             result = search_jobs_query.execute_query(conditions)
         # jobs=search_jobs.job_response_details(result,set_data_id)
-        jobs=json_response.job_response_details(result,set_data_id)
+        jobs=json_response.job_response_details(result,set_data_id,user_id)
         global job_response
         job_response = jobs
         if jobs:

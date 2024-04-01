@@ -13,15 +13,12 @@ def get_user_details(user_id, job_id):
     try:
         user = session.query(Signup).filter_by(id=user_id).first()
         if user is None:
-            return {'status': 'Error', 'message': f'No user found with id {user_id}'}
+            return None
 
         resume = session.query(ResumeDetails).filter_by(user_id=user_id).first()
-        if resume is None:
-            return {'status': 'Error', 'message': f'No resume found for user with id {user_id}'}
-
         job_post = session.query(JobPost).filter_by(id=job_id).first()
-        if job_post is None:
-            return {'status': 'Error', 'message': f'No job post found with id {job_id}'}
+        if resume is None and job_post is None:
+            return None
 
         additional_queries = job_post.additional_queries if job_post.additional_queries else "No"
         response_data = {
