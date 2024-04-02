@@ -53,7 +53,7 @@ def response(val,key):
         },
         'Error':{
             'emailError': 'Email is already exists. Please use a different email address.',
-            'mobileError': 'Mobilenumber is already exists. Please use a different email address.',
+            'mobileError': 'Mobilenumber is already exists. Please use a different mobile number.',
             'loginError': 'Invalid email or password',
             'loginWithOTPError': 'Mobile Number is not registered',
             'emailSentError': 'Email is not registered',
@@ -77,7 +77,8 @@ def response(val,key):
             'EmptyRequestBody':'Empty Request Body',
             'userJobViewError':'User not applied for this job',
             'savedJobError':"Job not Saved",
-            'alreadySavedJobError':'Record already exists'
+            'alreadySavedJobError':'Record already exists',
+            'invalidJSON':'Invalid JSON format in request body'
         }
     }
     if val == 'Success':

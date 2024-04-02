@@ -190,7 +190,8 @@ class user_register(View): # View class provides a creating views by defining me
                         from_email = 'brochill547@gmail.com'
                         recipient_list = [email]
                         send_mail(subject, message_plain, from_email, recipient_list, html_message=message_html)
-                        return message.response('Success','accountCreation')
+                        if professional_details_result:
+                            return message.response('Success','accountCreation')
                     else:
                         return message.response('Error','UserIdError')
                 else:

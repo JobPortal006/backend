@@ -11,27 +11,39 @@ private_key = RSA.generate(2048)
 public_key = private_key.publickey()
 
 job_response = ""
+
 @csrf_exempt
 def get_user_details(request):
     try:
         user_details_data = None
         data = json.loads(request.body)
-        # user_id = data.get('user_id')
+        
+        # if not data:  # Check if data is empty
+        #     return JsonResponse({'error': 'Empty request body'}, status=400)
+        
         token = data.get('token')
-        user_id,registered_by,email = decode_token(token)
-        print(user_id, registered_by,email) 
+        # if not token:  # Check if token is not provided
+        #     return JsonResponse({'error': 'Token is missing'}, status=400)
+        
+        user_id, registered_by, email = decode_token(token)
+        print(user_id, registered_by, email)
+        
         if user_id is not None:
             session = message.create_session()
-            user_details_data=user_details(user_id)
+            user_details_data = user_details(user_id)
             global job_response
             job_response = user_details_data
-            session.close()   
+            print(user_details_data, 'user----------------')
+            session.close()
+            
             if user_details_data is not None:
                 return message.response1('Success', 'getJobDetails', user_details_data)
             else:
                 return message.response1('Error', 'searchJobError', data={})
         else:
             return message.response('Error', 'tokenError')
+    except json.JSONDecodeError:
+        return message.response('Error', 'invalidJSON')
     except Exception as e:
         print(f"The Error is: {str(e)}")
         return message.tryExceptError(str(e))
@@ -40,7 +52,7 @@ def get_user_details(request):
 def get_user_details_view(request):
     try:
         url_response=job_response
-        # print(url_response)
+        print(url_response,'---------')
         if url_response is not None and url_response != '':
             # return message.response1('Success', 'getJobDetails', url_response)
             return JsonResponse(url_response)
@@ -50,7 +62,7 @@ def get_user_details_view(request):
         print(f"The Error is: {str(e)}")
         return message.tryExceptError(str(e))
     
-def user_details(user_id):
+def user_details(user_id):  
     session = message.create_session()
     user_details = {}
     signup_details = session.query(Signup).filter_by(id=user_id).first()
@@ -60,14 +72,14 @@ def user_details(user_id):
         user_details['Signup'] = { 
             'email': signup_details.email,
             'mobile_number': signup_details.mobile_number,
-            'encrypted_email': encrypted_email
+            # 'encrypted_email': encrypted_email
         }
     personal_details = session.query(PersonalDetails).filter_by(user_id=user_id).first()
     if personal_details is not None:
         user_details['userDetails'] = {
             'date_of_birth': personal_details.date_of_birth.strftime('%Y-%m-%d'),
             'first_name': personal_details.first_name,
-            'gender': personal_details.gender,
+            'gender': personal_details.gender, 
             'last_name': personal_details.last_name,
             'profile_picture_path': personal_details.profile_picture_path
         }
@@ -122,7 +134,7 @@ def user_details(user_id):
                 'pg_college_start_year': pg_college_details.start_year,  
                 'pg_college_education_type': pg_college_details.education_type
             })
-
+      
         diploma_college_details = session.query(CollegeDetails).filter_by(user_id=user_id, education_type='Diploma').first()
         if diploma_college_details:
             user_details['Diploma_college_details'].update({
