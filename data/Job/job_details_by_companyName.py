@@ -20,9 +20,9 @@ def job_details_by_companyName(request):
     try:
         data = json.loads(request.body)
         company_name = data.get('company_name')
-        # token = data.get('token')
-        # user_id, registered_by, email = decode_token(token)
-        # print(user_id, registered_by, email)
+        token = data.get('token')
+        user_id, registered_by, email = decode_token(token)
+        print(user_id, registered_by, email)
         # company_call_fun
         global company_fun_call
         company_fun_call = 'company'
@@ -34,8 +34,8 @@ def job_details_by_companyName(request):
         if company_name is not None:
             conditions = and_(CompanyDetails.company_name == company_name)
             result = search_jobs_query.execute_query(conditions)
-        # jobs=json_response.job_response_details(result,set_data_id,user_id)
-        jobs=json_response.job_response_details(result,set_data_id)
+        jobs=json_response.job_response_details(result,set_data_id,user_id)
+        # jobs=json_response.job_response_details(result,set_data_id)
         global job_response
         job_response = jobs
         if jobs: 

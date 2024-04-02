@@ -38,6 +38,7 @@ def get_user_details(request):
             
             if user_details_data is not None:
                 return message.response1('Success', 'getJobDetails', user_details_data)
+                # return JsonResponse({"message": "Data updated successfully", "data": user_details_data})
             else:
                 return message.response1('Error', 'searchJobError', data={})
         else:

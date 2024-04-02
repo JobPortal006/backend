@@ -23,6 +23,7 @@ def signup(request):
             email = data.get('email')
             mobile_number = data.get('mobile_number')
             password = data.get('password')  
+            print(password,'p--------')
             signup_by = data.get('signup_by') 
             print(email,mobile_number,signup_by)
             data_check = message.data_check(email,mobile_number,password,signup_by) 
