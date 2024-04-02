@@ -37,7 +37,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'brochill547@gmail.com'
 EMAIL_HOST_PASSWORD = 'irvf jinb zccd aqra'
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.44','http://13.235.101.60:3000/Password/','https://jobportal.emeetify.com/Password','https://jobportal.emeetify.com','13.51.66.252','13.235.164.229']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.44','http://13.235.101.60:3000/Password/','https://jobportal.emeetify.com/Password','https://jobportal.emeetify.com','jobportal.emeetify.com','13.51.66.252','13.235.164.229']
 
 base_url = 'http://192.168.1.44:8000/'
 
