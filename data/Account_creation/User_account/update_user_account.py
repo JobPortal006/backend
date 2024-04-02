@@ -12,6 +12,8 @@ from data.Job.Query import post_job_insert_query
 @csrf_exempt
 def update_user_details(request):
     try:
+        data = json.loads(request.body)
+        print(data)
         token = request.POST.get('token')
         user_id,registered_by,email = decode_token(token)
         print(user_id, registered_by,email) 
