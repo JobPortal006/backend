@@ -18,7 +18,8 @@ def get_job_details_by_id(request):
         set_data_id = set()
         conditions = and_(JobPost.id == job_id)
         result = search_jobs_query.execute_query(conditions)
-        json_data = json_response.job_response_details(result,set_data_id)
+        user_id=''
+        json_data = json_response.job_response_details(result,set_data_id,user_id)
         select_val = json_data
         return JsonResponse(json_data, safe=False)
     except Exception as e:

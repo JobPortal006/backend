@@ -31,7 +31,7 @@ def job_response_details(results,set_data_id,user_id):
             created_at = row[10]
             created_at_humanized = naturaldelta(datetime.utcnow() - created_at)
             savedValue = ''
-            if user_id is not None:
+            if user_id is not None and user_id !='':
                 cursor.execute("SELECT * FROM saved_job WHERE user_id = %s AND job_id = %s", (user_id, job_id))
                 existing_record = cursor.fetchone()
                 # print(existing_record, 'existing_record')

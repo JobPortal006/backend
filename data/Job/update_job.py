@@ -54,9 +54,8 @@ def update_jobs(request):
                 set_data_id = set()
                 conditions = and_(JobPost.id == job_id)
                 result = search_jobs_query.execute_query(conditions)
-                # user_id = None
-                # json_data = json_response.job_response_details(result,set_data_id,user_id)
-                json_data = json_response.job_response_details(result,set_data_id)
+                user_id = ''
+                json_data = json_response.job_response_details(result,set_data_id,user_id)
                 if json_data:
                     return message.response1('Success', 'getJobDetails', json_data)
                 else:
