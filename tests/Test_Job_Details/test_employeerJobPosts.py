@@ -6,9 +6,9 @@ from backend.settings import base_url
 @pytest.mark.django_db
 def test_employeer_job_posts():
     headers = {'Content-Type': 'application/json'} 
-    api_url = base_url + 'employer_post_jobs/'
+    api_url = base_url + 'employeer_post_jobs/'
     data = {
-        "employee_id":1
+        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJlbWFpbCI6InJhZ3Vsa3RyMDA3QGdtYWlsLmNvbSIsInJlZ2lzdGVyZWRfYnkiOiJSZWNydWl0ZXIiLCJleHAiOjE3MTA1NjQ2ODV9.TOCwe5qSSyJxSWclTydc3Px487PDFW1OfQlFFqrtfDg"
     }
     response = requests.post(api_url, data=json.dumps(data), headers=headers)
     assert response.status_code == 200

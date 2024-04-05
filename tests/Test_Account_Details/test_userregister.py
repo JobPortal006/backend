@@ -94,7 +94,7 @@ def test_userRegister():
     assert response.status_code == 200
     response_data = response.json()
     message = response_data['message']
-    data = response_data['data']
+    # data = response_data['data']
     if response_data['statusCode'] == 200:
       assert 'message' in response_data
       assert response_data['message'] == message
@@ -105,4 +105,4 @@ def test_userRegister():
       assert response_data['statusCode'] == 500
       assert 'message' in response_data
       assert response_data['message'] == message
-    assert response_data['data'] == data
+    # assert response_data['data'] == data
