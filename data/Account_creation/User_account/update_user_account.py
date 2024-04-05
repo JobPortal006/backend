@@ -12,9 +12,8 @@ from data.Job.Query import post_job_insert_query
 @csrf_exempt
 def update_user_details(request):
     try:
-        data = json.loads(request.body)
-        print(data)
         token = request.POST.get('token')
+        print(token)
         user_id,registered_by,email = decode_token(token)
         print(user_id, registered_by,email) 
         if user_id is not None:
@@ -46,11 +45,13 @@ def update_user_details(request):
             else:
                 profile_picture_path = user_details.get('profile_picture_path')
             resume_file = request.FILES.get('resume')
+            # print(resume_file,'rf-----')
             if resume_file is not None:
                 resume_name = resume_file.name
                 resume_file = resume_file.read()
             else:
                 resume_path = request.POST.get('resume') 
+                # print(resume_path,'rp------')
             current_address = address_data.get('current', {})
             street_current = current_address.get('street')
             city_current = current_address.get('city')

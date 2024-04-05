@@ -1,6 +1,7 @@
 from django.db import connection
 import bcrypt
 from datetime import datetime
+from data import message
 
 con = connection.cursor()
 
@@ -30,6 +31,8 @@ def login(email, password):
             return False
     except Exception as e:
         print(f"Error during login: {e}")
+        if e == (2013, 'Lost connection to server during query'):
+            message.serverReload()
         return False
 
 # Check mobile is already registered in table or not

@@ -21,9 +21,12 @@ def serverErrorResponse():
     return  JsonResponse({"status":False,"statusCode":500,"message":"Internal Server Error"})
 
 def tryExceptError(message):
+    # serverReload()
+    return  JsonResponse({f"status":False,"statusCode":500,"message":message})
+
+def serverReload():
     manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'manage.py')
     os.utime(manage_py_path, None)
-    return  JsonResponse({f"status":False,"statusCode":500,"message":message})
 
 def Login():
     return "Login Successfully"

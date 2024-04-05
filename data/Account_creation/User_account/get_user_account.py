@@ -17,14 +17,7 @@ def get_user_details(request):
     try:
         user_details_data = None
         data = json.loads(request.body)
-        
-        # if not data:  # Check if data is empty
-        #     return JsonResponse({'error': 'Empty request body'}, status=400)
-        
         token = data.get('token')
-        # if not token:  # Check if token is not provided
-        #     return JsonResponse({'error': 'Token is missing'}, status=400)
-        
         user_id, registered_by, email = decode_token(token)
         print(user_id, registered_by, email)
         
@@ -33,7 +26,6 @@ def get_user_details(request):
             user_details_data = user_details(user_id)
             global job_response
             job_response = user_details_data
-            print(user_details_data, 'user----------------')
             session.close()
             
             if user_details_data is not None:
@@ -53,7 +45,6 @@ def get_user_details(request):
 def get_user_details_view(request):
     try:
         url_response=job_response
-        print(url_response,'---------')
         if url_response is not None and url_response != '':
             # return message.response1('Success', 'getJobDetails', url_response)
             return JsonResponse(url_response)
