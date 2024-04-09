@@ -23,25 +23,28 @@ def job_details_by_companyName(request):
         token = data.get('token')
         user_id, registered_by, email = decode_token(token)
         print(user_id, registered_by, email)
+        if user_id is not None:
         # company_call_fun
-        global company_fun_call
-        company_fun_call = 'company'
-        search_jobs.search_fun_call = None
-        job_details_by_employeeType.employee_call_fun = None
-        print(company_name)
-        set_data_id = set()
-        jobs = []
-        if company_name is not None:
-            conditions = and_(CompanyDetails.company_name == company_name)
-            result = search_jobs_query.execute_query(conditions)
-        jobs=json_response.job_response_details(result,set_data_id,user_id)
-        # jobs=json_response.job_response_details(result,set_data_id)
-        global job_response
-        job_response = jobs
-        if jobs: 
-           return message.response1('Success', 'getJobDetails', jobs)
+            global company_fun_call
+            company_fun_call = 'company'
+            search_jobs.search_fun_call = None
+            job_details_by_employeeType.employee_call_fun = None
+            print(company_name)
+            set_data_id = set()
+            jobs = []
+            if company_name is not None:
+                conditions = and_(CompanyDetails.company_name == company_name)
+                result = search_jobs_query.execute_query(conditions)
+            jobs=json_response.job_response_details(result,set_data_id,user_id)
+            # jobs=json_response.job_response_details(result,set_data_id)
+            global job_response
+            job_response = jobs
+            if jobs: 
+                return message.response1('Success', 'getJobDetails', jobs)
+            else:
+                return message.response1('Error','searchJobError',data={})
         else:
-            return message.response1('Error','searchJobError',data={})
+            return message.response('Error', 'tokenError')
     except Exception as e:
         print(str(e))
         return message.tryExceptError(str(e))
