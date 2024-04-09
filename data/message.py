@@ -52,7 +52,8 @@ def response(val,key):
             'userApplyJob':False,
             'userApplyJobResult':True,
             'savedJob':"Job Saved Successfully",
-            'savedUnJob':"Job UnSaved Successfully"
+            'savedUnJob':"Job UnSaved Successfully",
+            'jobNotification':"JOb notification sent successfully"
         },
         'Error':{
             'emailError': 'Email is already exists. Please use a different email address.',

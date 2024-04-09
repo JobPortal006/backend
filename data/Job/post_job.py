@@ -6,9 +6,8 @@ from functools import wraps
 from time import sleep
 from data import message
 from data.token import decode_token
-from data.Job.Query import post_job_insert_query,job_notification_query
+from data.Job.Query import post_job_insert_query
 from django.core.management import call_command
-from django.http import JsonResponse
 
 con = connection.cursor()
 
@@ -103,20 +102,3 @@ def post_jobs(request):
     except Exception as e:
         print(f"The Error is: {str(e)}")
         return message.tryExceptError(str(e))   
-
-@csrf_exempt
-def job_notification(request):
-    try:
-       data = json.loads(request.body)
-       token = data.get('token')
-       user_id,registered_by,email = decode_token(token)
-       print(user_id, registered_by,email)
-       skill_id,location_id =  job_notification_query.get_ids(user_id)
-       skill_ids = skill_id.split(",") if skill_id else []
-       location_ids = location_id.split(",") if location_id else []
-       # Fetch jobs based on user's skills and preferred locations
-       matching_jobs = job_notification_query.get_matching_jobs(skill_ids, location_ids)
-        
-       return JsonResponse({'matching_jobs': matching_jobs})
-    except Exception as e:
-        print(str(e))
