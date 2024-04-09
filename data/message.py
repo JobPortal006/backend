@@ -21,7 +21,7 @@ def serverErrorResponse():
     return  JsonResponse({"status":False,"statusCode":500,"message":"Internal Server Error"})
 
 def tryExceptError(message):
-    # serverReload()
+    serverReload()
     return  JsonResponse({f"status":False,"statusCode":500,"message":message})
 
 def serverReload():
