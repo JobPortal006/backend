@@ -34,7 +34,5 @@ jobs:
           ssh -i ${{ secrets.EC2_SSH_KEY }} ubuntu@${{ secrets.EC2_HOST }} 'bash -s' << 'EOF'
             cd /backend
             # Stop any existing Gunicorn processes
-            pkill gunicorn
-            # Start Gunicorn with appropriate settings
-            gunicorn -b 0.0.0.0:8000 backend.wsgi:application
+            python manage.py runserver 0.0.0.0:0000
           EOF
