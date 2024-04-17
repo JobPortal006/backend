@@ -1,0 +1,42 @@
+name: Deploy Django Project
+
+on:
+  push:
+    branches:
+      - master  # Change this to your master branch name
+  pull_request:
+    branches:
+      - master  # Change this to your master branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8  # Adjust the Python version as per your requirement
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+      
+      - name: Install dependencies
+        run: |
+          cd /backend
+          pip install -r requirements.txt
+          pip install mysqlclient
+      
+      - name: Deploy code to EC2
+        run: |
+          # Replace <YOUR_EC2_PUBLIC_IP> with your EC2 instance public IP
+          # Replace <YOUR_SSH_KEY> with your SSH key path
+          ssh -i ${{ secrets.EC2_SSH_KEY }} ubuntu@${{ secrets.EC2_HOST }} 'bash -s' << 'EOF'
+            cd /backend
+            # Assuming you have set up Gunicorn and Nginx, replace the below command with appropriate ones for your setup
+            sudo systemctl restart gunicorn
+            sudo systemctl restart nginx
+          EOF
