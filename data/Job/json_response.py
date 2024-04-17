@@ -26,7 +26,7 @@ def job_response_details(results,set_data_id,user_id):
             cursor.callproc('GetQualification', [job_id])
             qualification = cursor.fetchall()
             cursor.nextset()
-            cursor.callproc('GetLocation', [job_id])
+            cursor.callproc('GetLocation', [job_id]) 
             location = cursor.fetchall()
             created_at = row[10]
             created_at_humanized = naturaldelta(datetime.utcnow() - created_at)
@@ -68,9 +68,9 @@ def response(results, job_id, cursor, processed_job_ids):
     for row in results:
         job_id = row[0]
         # Check if job_id is already processed, skip if it is
-        # if job_id in processed_job_ids:
-        #     continue
-        # processed_job_ids.add(job_id)
+        if job_id in processed_job_ids:
+            continue
+        processed_job_ids.add(job_id)
         print(f"Job ID: {job_id}")
         job_post_id, job_title, job_description, experience, salary_range, no_of_vacancies, created_at, \
             company_name, industry_type, company_description, no_of_employees, company_website_link, company_logo_path, \

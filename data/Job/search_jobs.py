@@ -38,111 +38,115 @@ def search_job(request):
         token = data.get('token')
         user_id, registered_by, email = decode_token(token)
         print(user_id, registered_by, email)
-        if user_id is not None:
-            set_data_id = set()
-            skill_results = []
-            job_titles = []
-            # Assuming `skill_check` expects a single string parameter, you may need to pass one skill at a time
-            for skill in skills:
-                skill_result = search_jobs_query.skill_check(skill)
-                job_title = search_jobs_query.job_title(skill)
-                if skill_result is not None:
-                    skill_results.append(str(skill_result))
-                if job_title is not None:
-                    job_titles.append(str(job_title))
-            skill_result = ', '.join(skill_results)
-            job_title = ', '.join(job_titles)
-            print("Skill Results:", skill_result)
-            print("Job Titles:", job_title)
-            search_fun_call = 'search'
-            job_details_by_companyName.company_fun_call  = None
-            job_details_by_employeeType.employee_call_fun = None
+        # if user_id is not None:
+        set_data_id = set()
+        skill_results = []
+        job_titles = []
+        # Assuming `skill_check` expects a single string parameter, you may need to pass one skill at a time
+        for skill in skills:
+            skill_result = search_jobs_query.skill_check(skill)
+            job_title = search_jobs_query.job_title(skill)
+            if skill_result is not None:
+                skill_results.append(str(skill_result))
+            if job_title is not None:
+                job_titles.append(str(job_title))
+        skill_result = ', '.join(skill_results)
+        job_title = ', '.join(job_titles)
+        print("Skill Results:", skill_result)
+        print("Job Titles:", job_title)
+        search_fun_call = 'search'
+        job_details_by_companyName.company_fun_call  = None
+        job_details_by_employeeType.employee_call_fun = None
 
-            # Combine conditions using and_ and or_
-            # check skill_result in Database  
-            if skill_result and not job_title and not experience and not location:
-                conditions = (SkillSets.skill_set == skill_result)
-                result = search_jobs_query.execute_query(conditions)
+        # Combine conditions using and_ and or_
+        # check skill_result in Database  
+        if skill_result and not job_title and not experience and not location:
+            conditions = (SkillSets.skill_set == skill_result)
+            result = search_jobs_query.execute_query(conditions)
 
-            # check job_title in Database
-            elif not skill_result and job_title and not experience and not location:
-                conditions = (JobPost.job_title == job_title)
-                result = search_jobs_query.execute_query(conditions)
+        # check job_title in Database
+        elif not skill_result and job_title and not experience and not location:
+            conditions = (JobPost.job_title == job_title)
+            result = search_jobs_query.execute_query(conditions)
 
-            # check experience in Database
-            elif not skill_result and not job_title and experience and not location:
-                conditions = ( JobPost.experience == experience)
-                result = search_jobs_query.execute_query(conditions)
+        # check experience in Database
+        elif not skill_result and not job_title and experience and not location:
+            conditions = ( JobPost.experience == experience)
+            result = search_jobs_query.execute_query(conditions)
 
-            # check location in Database
-            elif not skill_result and not job_title and not experience and location:
-                conditions = (Location.location == location)
-                result = search_jobs_query.execute_query(conditions)
+        # check location in Database
+        elif not skill_result and not job_title and not experience and location:
+            conditions = (Location.location == location)
+            result = search_jobs_query.execute_query(conditions)
 
-            # check job_title, location and experience in Database
-            elif job_title and location and experience and not skill_result:
-                conditions = and_(JobPost.job_title == job_title, Location.location == location,JobPost.experience == experience)
-                result = search_jobs_query.execute_query(conditions) 
-                if not result:  # Check if result is an empty list
-                    job_title_location_result = job_title_location(job_title,location) # Print the result after calling job_title_location
-                    location_experience_result = location_experience(location, experience) # Print the result after calling location_experience
-                    result = job_title_location_result + location_experience_result # Combine results from both functions
-                # conditions = or_(JobPost.job_title == job_title,Location.location == location,JobPost.experience == experience)
-                # result = search_jobs_query.execute_query(conditions)
-                    
-            # check skill_result, location and experience in Database
-            elif skill_result and location and experience and not job_title:
-                conditions = and_(SkillSets.skill_set == skill_result,Location.location == location,JobPost.experience == experience)
-                result = search_jobs_query.execute_query(conditions) 
-                print(result,'Initial Result')  # Print the initial result
-                if not result:  # Check if result is an empty list
-                    skill_location_result = skill_location(skill_result, location) # Print the result after calling skill_location
-                    location_experience_result = location_experience(location, experience) # Print the result after calling location_experience
-                    result = skill_location_result + location_experience_result # Combine results from both functions
-                # conditions = or_(SkillSets.skill_set == skill_result,Location.location == location,JobPost.experience == experience)
-                # result = search_jobs_query.execute_query(conditions)
-                    
-            # check skill_result and location in Database
-            elif skill_result and location and not experience and not job_title:
-                result = skill_location(skill_result,location)
-                # conditions = or_(SkillSets.skill_set == skill_result,Location.location == location)
-                # result = search_jobs_query.execute_query(conditions)
-
-            # check job_title and location in Database
-            elif job_title and location and not skill_result and not experience:
-                conditions = and_(JobPost.job_title == job_title,Location.location == location)
-                result = search_jobs_query.execute_query(conditions)
-                # conditions = or_(JobPost.job_title == job_title,Location.location == location)
-                # result = search_jobs_query.execute_query(conditions)
-
-            # check location and experience in Database
-            elif location and experience and not skill_result and not job_title:
-                result = location_experience(location,experience)
-                # conditions = or_( Location.location == location,JobPost.experience == experience)
-                # result = search_jobs_query.execute_query(conditions)
+        # check job_title, location and experience in Database
+        elif job_title and location and experience and not skill_result:
+            conditions = and_(JobPost.job_title == job_title, Location.location == location,JobPost.experience == experience)
+            result = search_jobs_query.execute_query(conditions) 
+            if not result:  # Check if result is an empty list
+                job_title_location_result = job_title_location(job_title,location) # Print the result after calling job_title_location
+                location_experience_result = location_experience(location, experience) # Print the result after calling location_experience
+                result = job_title_location_result + location_experience_result # Combine results from both functions
+            # conditions = or_(JobPost.job_title == job_title,Location.location == location,JobPost.experience == experience)
+            # result = search_jobs_query.execute_query(conditions)
                 
-            # check skill_result, job_title, location and experience in Database
-            else:
-                conditions = and_(SkillSets.skill_set == skill_result,JobPost.job_title == job_title,
-                    Location.location == location,JobPost.experience == experience)
-                result = search_jobs_query.execute_query(conditions)
-                if not result:  # Check if result is an empty list
-                    skill_location_result = skill_location(skill_result, location) # Print the result after calling skill_location
-                    job_title_location_result = job_title_location(job_title,location) # Print the result after calling job_title_location
-                    location_experience_result = location_experience(location, experience) # Print the result after calling location_experience
-                    result = skill_location_result + job_title_location_result + location_experience_result # Combine results from both functions
-                # conditions = or_(SkillSets.skill_set == skill_result,JobPost.job_title == job_title,
-                #     Location.location == location,JobPost.experience == experience)
-                # result = search_jobs_query.execute_query(conditions)
-            jobs=json_response.job_response_details(result,set_data_id,user_id)
-            # jobs=json_response.job_response_details(result,set_data_id)
-            job_response = jobs
-            if jobs:
-                return message.response1('Success', 'getJobDetails', jobs)
-            else:
-                return message.response('Error', 'searchJobError')
+        # check skill_result, location and experience in Database
+        elif skill_result and location and experience and not job_title:
+            conditions = and_(SkillSets.skill_set == skill_result,Location.location == location,JobPost.experience == experience)
+            result = search_jobs_query.execute_query(conditions) 
+            print(result,'Initial Result')  # Print the initial result
+            if not result:  # Check if result is an empty list
+                skill_location_result = skill_location(skill_result, location) # Print the result after calling skill_location
+                location_experience_result = location_experience(location, experience) # Print the result after calling location_experience
+                result = skill_location_result + location_experience_result # Combine results from both functions
+            # conditions = or_(SkillSets.skill_set == skill_result,Location.location == location,JobPost.experience == experience)
+            # result = search_jobs_query.execute_query(conditions)
+                
+        # check skill_result and location in Database
+        elif skill_result and location and not experience and not job_title:
+            result = skill_location(skill_result,location)
+            # conditions = or_(SkillSets.skill_set == skill_result,Location.location == location)
+            # result = search_jobs_query.execute_query(conditions)
+
+        # check job_title and location in Database
+        elif job_title and location and not skill_result and not experience:
+            conditions = and_(JobPost.job_title == job_title,Location.location == location)
+            result = search_jobs_query.execute_query(conditions)
+            # conditions = or_(JobPost.job_title == job_title,Location.location == location)
+            # result = search_jobs_query.execute_query(conditions)
+
+        # check location and experience in Database
+        elif location and experience and not skill_result and not job_title:
+            result = location_experience(location,experience)
+            # conditions = or_( Location.location == location,JobPost.experience == experience)
+            # result = search_jobs_query.execute_query(conditions)
+            
+        # check skill_result, job_title, location and experience in Database
         else:
-            return message.response('Error', 'tokenError')
+            conditions = and_(SkillSets.skill_set == skill_result,JobPost.job_title == job_title,
+                Location.location == location,JobPost.experience == experience)
+            result = search_jobs_query.execute_query(conditions)
+            if not result:  # Check if result is an empty list
+                skill_location_result = skill_location(skill_result, location) # Print the result after calling skill_location
+                job_title_location_result = job_title_location(job_title,location) # Print the result after calling job_title_location
+                location_experience_result = location_experience(location, experience) # Print the result after calling location_experience
+                result = skill_location_result + job_title_location_result + location_experience_result # Combine results from both functions
+            # conditions = or_(SkillSets.skill_set == skill_result,JobPost.job_title == job_title,
+            #     Location.location == location,JobPost.experience == experience)
+            # result = search_jobs_query.execute_query(conditions)
+        if user_id is not None:
+            user_id = user_id
+        else:
+            user_id=''
+        jobs=json_response.job_response_details(result,set_data_id,user_id)
+        # jobs=json_response.job_response_details(result,set_data_id)
+        job_response = jobs
+        if jobs:
+            return message.response1('Success', 'getJobDetails', jobs)
+        else:
+            return message.response('Error', 'searchJobError')
+        # else:
+        #     return message.response('Error', 'tokenError')
     except Exception as e:
     # except (OperationalError, DatabaseError) as e:
         return message.tryExceptError(str(e))

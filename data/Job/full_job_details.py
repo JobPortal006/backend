@@ -18,32 +18,34 @@ def job_details(request):
         token = data.get('token')
         user_id,registered_by,email = decode_token(token)
         print(user_id, registered_by,email)
-        if user_id is not None:
-            valuesCheck = message.check(job_id)
-            all_results = []  
-            if valuesCheck:
-                processed_job_ids = set() # Using set() method store all job_id here, it will not repeat the duplicate job_id
-                job_result=job_details_query.job_result(job_id,processed_job_ids) # Get the job data here
+        # if user_id is not None:
+        valuesCheck = message.check(job_id)
+        all_results = []  
+        if valuesCheck:
+            processed_job_ids = set() # Using set() method store all job_id here, it will not repeat the duplicate job_id
+            job_result=job_details_query.job_result(job_id,processed_job_ids) # Get the job data here
+            user_job_apply = False
+            if user_id is not None:
                 user_job_apply=job_details_query.check_user_id(user_id, job_id)
-                print(user_job_apply,'user_job_apply')
-                if job_result is not None:# Check if search_result is not None before converting to a dictionary
-                    job_result_dict = json.loads(job_result) # Convert search_result to a Python dictionary
-                    all_results.append(job_result_dict) # Append results for each skill to the list
-                else:
-                    return message.response1('Error', 'searchJobError', data={})
-                global job_response,user_job_apply_result
-                job_response=all_results
-                user_job_apply_result=user_job_apply
-                if user_job_apply:
-                    return message.response1('Success', 'userApplyJob', all_results)
-                elif job_result is not None:
-                    return message.response1('Success', 'userApplyJobResult', all_results)
-                else:
-                    return message.response1('Error', 'searchJobError', data={})
+            print(user_job_apply,'user_job_apply')
+            if job_result is not None:# Check if search_result is not None before converting to a dictionary
+                job_result_dict = json.loads(job_result) # Convert search_result to a Python dictionary
+                all_results.append(job_result_dict) # Append results for each skill to the list
             else:
-                return message.response('Error','InputError')  
+                return message.response1('Error', 'searchJobError', data={})
+            global job_response,user_job_apply_result
+            job_response=all_results
+            user_job_apply_result=user_job_apply
+            if user_job_apply and user_id is not None:
+                return message.response1('Success', 'userApplyJob', all_results)
+            elif job_result is not None:
+                return message.response1('Success', 'userApplyJobResult', all_results)
+            else:
+                return message.response1('Error', 'searchJobError', data={})
         else:
-            return message.response('Error','tokenError')
+            return message.response('Error','InputError')  
+        # else:
+        #     return message.response('Error','tokenError')
     except Exception as e:
         print(f"The Error is: {str(e)}")
         return message.tryExceptError(str(e))

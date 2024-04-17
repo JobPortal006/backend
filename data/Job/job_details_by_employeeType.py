@@ -23,28 +23,30 @@ def job_details_by_employeeType(request):
         token = data.get('token')
         user_id, registered_by, email = decode_token(token)
         print(user_id, registered_by, email)
-        if user_id is not None:
-            global employee_call_fun 
-            employee_call_fun = 'employee'
-            job_details_by_companyName.company_fun_call = None
-            search_jobs.search_fun_call = None
+        global employee_call_fun 
+        employee_call_fun = 'employee'
+        job_details_by_companyName.company_fun_call = None
+        search_jobs.search_fun_call = None
 
-            print(employee_type)
-            set_data_id = set()
-            jobs = []
-            if employee_type is not None:
-                conditions = and_(EmployeeTypes.employee_type == employee_type)
-                result = search_jobs_query.execute_query(conditions)
-            # jobs=search_jobs.job_response_details(result,set_data_id)
-            jobs=json_response.job_response_details(result,set_data_id,user_id)
-            global job_response
-            job_response = jobs
-            if jobs:
-                return message.response1('Success','searchJob',jobs)
-            else:
-                return message.response1('Error','searchJobError',data={})
+        print(employee_type)
+        set_data_id = set()
+        jobs = []
+        if employee_type is not None:
+            conditions = and_(EmployeeTypes.employee_type == employee_type)
+            result = search_jobs_query.execute_query(conditions)
+        if user_id is not None:
+            user_id = user_id
         else:
-            return message.response('Error', 'tokenError')
+            user_id=''
+        jobs=json_response.job_response_details(result,set_data_id,user_id)
+        global job_response
+        job_response = jobs
+        if jobs:
+            return message.response1('Success','searchJob',jobs)
+        else:
+            return message.response1('Error','searchJobError',data={})
+        # else:
+        #     return message.response('Error', 'tokenError')
     except Exception as e:
         print(str(e))
         return message.tryExceptError(str(e))

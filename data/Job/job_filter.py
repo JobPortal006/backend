@@ -20,23 +20,16 @@ def job_filter(request):
             job_role_value = data.get('job_role')
             salary_range_value = data.get('salary_range')
             
-            print(search_jobs.search_fun_call," 1 ---------") 
-            print(job_details_by_companyName.company_fun_call ," 2----------------")
-            print(job_details_by_employeeType.employee_call_fun , "  3 n   -------------------------")
 
             if search_jobs.search_fun_call == 'search':
                 jobs = search_jobs.job_response
-                print(jobs,'filter job_search_result-------')
                 search_jobs.search_fun_call = None
                 # job_details_by_companyName.company_fun_call  = None
                 # job_details_by_employeeType.employee_call_fun = None
                 # job_details_by_employeeType.employee_call_fun = None 
-                print("--------> dd",search_jobs.search_fun_call)
                 # if jobs == '':
             if job_details_by_companyName.company_fun_call == 'company': 
-                print('1---------------')
                 jobs = job_details_by_companyName.job_response
-                print(jobs,'filter job_company_name_result-------')
                 job_details_by_companyName.company_fun_call = None
                 # search_jobs.search_fun_call = None
                 # job_details_by_employeeType.employee_call_fun = None
@@ -47,7 +40,6 @@ def job_filter(request):
                 job_details_by_companyName.company_fun_call = None
                 # search_jobs.search_fun_call = None
                 # job_details_by_employeeType.employee_call_fun = None
-                print("Employe ----------------------------")
 
             condition = ""
             def where_condition(data,location_value, dyanamic_value, condition):
