@@ -1,5 +1,4 @@
 from django.views.decorators.csrf import csrf_exempt
-from django.db import connection
 import json
 from django.core.mail import send_mail
 from django.template.loader import render_to_string

@@ -1,5 +1,5 @@
 from django.urls import path
-from data.Account_creation import signup,login,forget_password
+from data.Account_creation import signup,login,forget_password,account_creation_check
 from data.Account_creation.User_account import get_user_account,update_user_account,user_account
 from data.Account_creation.Employeer_account import employeer_account, get_employeer_account,update_employeer_account
 from django.conf import settings
@@ -14,7 +14,7 @@ urlpatterns = [
     # Login
     path('signup/', signup.signup,name='signup'),
     path('login/',login.login,name='login'),
-    path('google_email_checks/',login.user_email_checks),
+    path('google_email_checks/',login.google_email_checks),
     path('loginWithOTP/',login.loginWithOTP,name='loginWithOTP'),
     path('forgetpassword/',forget_password.forgetpassword,name='forgetpassword'),
     path('updatepassword/',forget_password.updatepassword,name='updatepassword'),
@@ -31,6 +31,10 @@ urlpatterns = [
     path('get_employeer_details/', get_employeer_account.get_employeer_details),
     path('update_employeer_details/', update_employeer_account.update_employee_details),
     path('delete_image/',update_employeer_account.delete_image),
+
+    # Navbar
+    path('user_account_creation_check/',account_creation_check.user_account_creation_check),
+    path('employeer_account_creation_check/',account_creation_check.employeer_account_creation_check),
 
     # Single data 
     path('address_location/',jobs_data.address_location),

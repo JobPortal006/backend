@@ -39,7 +39,7 @@ def login(request):
       return message.response('Error','Error')
   except Exception as e:
     print(f"Exception: {str(e)}")
-    return message.serverErrorResponse()
+    return message.tryExceptError(str(e))
 
 # Check mobile number is already registered or not in signup table 
 @csrf_exempt
@@ -71,7 +71,7 @@ def loginWithOTP(request):
     return message.tryExceptError(str(e))
     
 @csrf_exempt 
-def user_email_checks(request):
+def google_email_checks(request):
   try:
     data = json.loads(request.body)
     email = data.get('email')
@@ -86,7 +86,7 @@ def user_email_checks(request):
         'token': token,
         'registered_by': registered_by
       }
-      return message.handleSuccess(response_data)
+      return message.handleSuccess(response_data)  
     else:
       return message.response('Error','emailSentError')
   except Exception as e:

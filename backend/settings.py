@@ -37,9 +37,9 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'brochill547@gmail.com'
 EMAIL_HOST_PASSWORD = 'irvf jinb zccd aqra'
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.44','http://13.235.101.60:3000/Password/','https://talenti.emeetify.com/Password','talenti.emeetify.com','13.51.66.252','13.111.17.12']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.37','192.168.161.140','https://talenti.emeetify.com/Password','talenti.emeetify.com','13.51.66.252','13.111.17.12']
 
-base_url = 'http://192.168.1.44:8000/'
+base_url = 'http://192.168.1.45:8000/'
 
 # Application definition
 

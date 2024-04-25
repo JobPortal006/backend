@@ -31,7 +31,7 @@ def login(email, password):
             return False
     except Exception as e:
         print(f"Error during login: {e}")
-        if e == (2013, 'Lost connection to server during query'):
+        if str(e) == "(2006, 'Server has gone away')":
             message.serverReload()
         return False
 

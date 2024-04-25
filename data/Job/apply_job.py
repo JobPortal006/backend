@@ -99,6 +99,7 @@ def view_apply_jobs(request):
     try:
         data = json.loads(request.body)
         token = data.get('token')
+        print(token,'token--------')
         user_id,registered_by,email = decode_token(token)
         print(user_id, registered_by,email)
         all_results = []  
@@ -117,7 +118,7 @@ def view_apply_jobs(request):
             else:
                 return message.response1('Error', 'searchJobError', data={})  
         else:
-            return message.response('Error','InputError')
+            return message.response('Error','tokenError')
     except Exception as e:
         print(f"The Error is: {str(e)}")
         return message.tryExceptError(str(e))

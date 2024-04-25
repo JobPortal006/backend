@@ -21,7 +21,7 @@ def serverErrorResponse():
     return  JsonResponse({"status":False,"statusCode":500,"message":"Internal Server Error"})
 
 def tryExceptError(message):
-    serverReload()
+    # serverReload()
     return  JsonResponse({f"status":False,"statusCode":500,"message":message})
 
 def serverReload():
@@ -53,7 +53,8 @@ def response(val,key):
             'userApplyJobResult':True,
             'savedJob':"Job Saved Successfully",
             'savedUnJob':"Job UnSaved Successfully",
-            'jobNotification':"JOb notification sent successfully"
+            'jobNotification':"JOb notification sent successfully",
+            'accountCreationCheck':'You have not registered'
         },
         'Error':{
             'emailError': 'Email is already exists. Please use a different email address.',
