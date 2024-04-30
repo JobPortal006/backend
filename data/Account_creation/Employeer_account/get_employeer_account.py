@@ -20,15 +20,17 @@ def get_employeer_details(request):
             employeer_details = {}
             # Retrieve Signup details
             signup_details = session.query(Signup).filter_by(id=employee_id).first()
-            if signup_details:
-                employeer_details['Signup'] = {
-                    'email': signup_details.email,
-                    'mobile_number': signup_details.mobile_number
-                }
 
             # Retrieve Address details
             address_details = session.query(Address).filter_by(user_id=employee_id).all()
-            if address_details is not None:
+            # Retrieve CompanyDetails
+            company_details = session.query(CompanyDetails).filter_by(employee_id=employee_id).first()
+            if address_details is not None and signup_details is not None and company_details is not None:
+
+                employeer_details['Signup'] = {
+                    'email': signup_details.email,
+                    'mobile_number': signup_details.mobile_number
+                } 
                 employeer_details['company_address'] = []  # Use a list to store multiple addresses
                 for i, address in enumerate(address_details):
                     address_data = {
@@ -40,9 +42,6 @@ def get_employeer_details(request):
                         'street': address.street,
                     }
                     employeer_details['company_address'].append(address_data)
-
-                # Retrieve CompanyDetails
-                company_details = session.query(CompanyDetails).filter_by(employee_id=employee_id).first()
                 if company_details:
                     employeer_details['company_details'] = {
                         'company_name': company_details.company_name,

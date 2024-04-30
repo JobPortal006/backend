@@ -33,6 +33,10 @@ def login(email, password):
         print(f"Error during login: {e}")
         if str(e) == "(2006, 'Server has gone away')":
             message.serverReload()
+        if str(e) == "(2013, 'Lost connection to server during query')":
+            message.serverReload()
+        if str(e) == "Invalid salt":
+            message.serverReload()
         return False
 
 # Check mobile is already registered in table or not
