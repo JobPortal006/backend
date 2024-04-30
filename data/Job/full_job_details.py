@@ -45,7 +45,7 @@ def job_details(request):
         else:
             return message.response('Error','InputError')  
         # else:
-        #     return message.response('Error','tokenError')
+        #     return message.tokenError('Error','tokenError')
     except Exception as e:
         print(f"The Error is: {str(e)}")
         return message.tryExceptError(str(e))

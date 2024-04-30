@@ -30,7 +30,7 @@ def get_user_details(request):
             
             if user_details_data is not None:
                 return message.response1('Success', 'getJobDetails', user_details_data)
-                # return JsonResponse({"message": "Data updated successfully", "data": user_details_data})
+                # return JsonResponse(user_details_data)
             else:
                 return message.response1('Error', 'searchJobError', data={})
         else:
@@ -44,6 +44,8 @@ def get_user_details(request):
 @csrf_exempt
 def get_user_details_view(request):
     try:
+        # url_response= ""
+        # if job_response is not None and job_response != '':
         url_response=job_response
         if url_response is not None and url_response != '':
             # return message.response1('Success', 'getJobDetails', url_response)

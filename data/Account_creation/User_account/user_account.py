@@ -194,7 +194,7 @@ class user_register(View): # View class provides a creating views by defining me
                     else:
                         return message.response('Error','UserIdError')
                 else:
-                    return message.response('Error','tokenError')
+                    return message.tokenError('Error','tokenError')
             else:
                 return message.response('Error','Error')
         except Exception as e:

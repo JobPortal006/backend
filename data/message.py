@@ -14,6 +14,10 @@ def handleSuccess1(success,data):
 def errorResponse(error):
     return  JsonResponse({"status":False,"statusCode":404,"message":error})
 
+#dynamic error response
+def tokenResponse(error):
+    return  JsonResponse({"status":False,"statusCode":400,"message":error})
+
 #server error response
 def serverErrorResponse():
     # manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'manage.py')
@@ -30,6 +34,20 @@ def serverReload():
 
 def Login():
     return "Login Successfully"
+
+def tokenError(val,key):
+    key_value_mapping = {
+        'Success':{
+            'tokenSuccess': 'Token encoded Successfully'
+        },
+        'Error':{
+            'tokenError':'Token is expired',
+        }
+        }
+    if val == 'Success':
+        return handleSuccess(key_value_mapping[val][key])
+    else:
+        return tokenResponse(key_value_mapping[val][key])
  
 def response(val,key):
     key_value_mapping = {

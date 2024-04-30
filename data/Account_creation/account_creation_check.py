@@ -13,16 +13,21 @@ def user_account_creation_check(request):
   try: 
     if request.method == 'POST':
       data = json.loads(request.body)
-      token = data.get('token')
-      # if token:
-      user_id, registered_by, email = decode_token(token)
-      print(user_id, registered_by, email)  
-      userid_check = create_account_user_query.userid_check(user_id)
-      print(userid_check)
-      if userid_check:
-        return message.response('Success','accountCreationCheck')
+      token = data.get('result_token')
+      if token is not None:
+        user_id, registered_by, email = decode_token(token)
+        print(user_id, registered_by, email)  
+        if user_id is not None:
+          userid_check = create_account_user_query.userid_check(user_id)
+          print(userid_check)
+          if userid_check:
+            return message.response('Success','accountCreationCheck')
+          else:
+            return message.response('Error','UserIdError')
+        else:
+          return message.tokenError('Error','tokenError')
       else:
-        return message.response('Error','UserIdError')
+        return message.response('Error','InputError')
     else:
       return message.response('Error','Error')
   except Exception as e:
@@ -30,19 +35,22 @@ def user_account_creation_check(request):
   
 @csrf_exempt
 @retry_database_operation
-def employeer_account_creation_check(request):
+def employeer_account_creation_check(request): 
   try: 
     if request.method == 'POST':
       data = json.loads(request.body)
-      token = data.get('token')
+      token = data.get('result_token')
       employee_id, registered_by, email = decode_token(token)
       print(employee_id, registered_by, email) 
-      userid_check = create_account_employeer_query.userid_check(employee_id)
-      print(userid_check)
-      if userid_check:
-        return message.response('Success','accountCreationCheck')
+      if employee_id is not None:
+        userid_check = create_account_employeer_query.userid_check(employee_id)
+        print(userid_check)
+        if userid_check:
+          return message.response('Success','accountCreationCheck')
+        else:
+          return message.response('Error','UserIdError')
       else:
-        return message.response('Error','UserIdError')
+        return message.tokenError('Error','tokenError')
     else:
       return message.response('Error','Error')
   except Exception as e:
