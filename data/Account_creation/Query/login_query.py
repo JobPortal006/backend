@@ -37,6 +37,8 @@ def login(email, password):
             message.serverReload()
         if str(e) == "Invalid salt":
             message.serverReload()
+        if str(e) == "(2013, 'Lost connection to MySQL server during query')":
+            message.serverReload()
         return False
 
 # Check mobile is already registered in table or not

@@ -26,6 +26,14 @@ def serverErrorResponse():
 
 def tryExceptError(message):
     # serverReload()
+    if message == "(2006, 'Server has gone away')":
+        message.serverReload()
+    if message == "(2013, 'Lost connection to server during query')":
+        message.serverReload()
+    if message == "Invalid salt":
+        message.serverReload()
+    if message == "(2013, 'Lost connection to MySQL server during query')":
+        message.serverReload()
     return  JsonResponse({f"status":False,"statusCode":500,"message":message})
 
 def serverReload():
