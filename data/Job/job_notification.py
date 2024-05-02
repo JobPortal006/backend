@@ -56,7 +56,7 @@ def get_job_notifications(request):
       for job_id in job_ids_list:
         if job_id in set_data_id:
           continue
-        set_data_id.add(job_id)
+        # set_data_id.add(job_id)
         job_result = job_details_query.job_result(job_id, set_data_id)
         job_result_dict = json.loads(job_result)  # Convert search_result to a Python dictionary
         response_data.append(job_result_dict)  # Append the job data inside the loop
