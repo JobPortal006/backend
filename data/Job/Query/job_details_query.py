@@ -3,7 +3,7 @@ from data.Job import json_response
 con=connection.cursor()
 # Send a job details data in JSON format 
 # Data is send in response as (Data/Month/Year)
-def job_result(job_id, processed_job_ids):
+def job_result(job_id,user_id, processed_job_ids):
     try:
         with connection.cursor() as cursor:
             cursor.callproc('GetJobsDetailsById', [job_id])
@@ -11,7 +11,7 @@ def job_result(job_id, processed_job_ids):
             if results:
                 for row in results:
                     job_id = row[0]
-                    result = json_response.response(results, job_id, cursor, processed_job_ids)  # Corrected variable name
+                    result = json_response.response(results, user_id,job_id, cursor, processed_job_ids)  # Corrected variable name
                 return result
             else:
                 print("No results found")

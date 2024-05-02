@@ -23,7 +23,7 @@ def job_details(request):
         all_results = []  
         if valuesCheck:
             processed_job_ids = set() # Using set() method store all job_id here, it will not repeat the duplicate job_id
-            job_result=job_details_query.job_result(job_id,processed_job_ids) # Get the job data here
+            job_result=job_details_query.job_result(job_id,user_id,processed_job_ids) # Get the job data here
             user_job_apply = False
             if user_id is not None:
                 user_job_apply=job_details_query.check_user_id(user_id, job_id)

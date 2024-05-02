@@ -63,7 +63,7 @@ def job_response_details(results,set_data_id,user_id):
     return data
 
 # Send the response here
-def response(results, job_id, cursor, processed_job_ids):
+def response(results, user_id,job_id, cursor, processed_job_ids):
     data = []
     for row in results:
         job_id = row[0]
@@ -95,6 +95,16 @@ def response(results, job_id, cursor, processed_job_ids):
         cursor.execute("SELECT company_details.id FROM company_details join job_post on company_details.id = job_post.company_id WHERE job_post.id = %s", [job_id])
         company_id = cursor.fetchone()[0]  # Fetching first column of the result tuple
 
+        savedValue = ''
+        if user_id is not None and user_id !='':
+            cursor.execute("SELECT * FROM saved_job WHERE user_id = %s AND job_id = %s", (user_id, job_id))
+            existing_record = cursor.fetchone()
+            # print(existing_record, 'existing_record')
+            if existing_record:
+                savedValue = "Saved"
+            else:
+                savedValue = "UnSaved"
+
         job_data = {
             "job_post_id": job_post_id,
             "job_title": job_title,
@@ -116,6 +126,7 @@ def response(results, job_id, cursor, processed_job_ids):
             "location": [location[0] for location in locations],  # Assuming first column is used for location name
             "employee_type": employee_type,
             "job_role": job_role,
+            'saved':savedValue,
             "address": []
         }
         data.append(job_data)
