@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from data.Job import search_jobs
 from data.Job import job_details_by_companyName 
 from data.Job import job_details_by_employeeType
+job_response = ""
 jobs = ""
 @csrf_exempt
 def job_filter(request):
@@ -87,20 +88,34 @@ def job_filter(request):
     else:
         return message.response('Error', 'Error')
 
+# @csrf_exempt
+# def filter_result(request):
+#     try:
+#         if request.method == 'POST':  # Ensure it's a POST request
+#             data = json.loads(request.body)
+#             print(data)
+#             if data:
+#                 return JsonResponse(data, safe=False)
+#             else:
+#                 return JsonResponse({'error': 'No data provided'}, status=400)
+#         else:
+#             return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
+#     except json.JSONDecodeError as e:
+#         return JsonResponse({'error': 'Invalid JSON format: {}'.format(str(e))}, status=400)
+#     except Exception as e:
+#         # Log the exception or handle it as required
+#         return JsonResponse({'error': str(e)}, status=500)
+    
+
 @csrf_exempt
 def filter_result(request):
     try:
-        if request.method == 'POST':  # Ensure it's a POST request
-            data = json.loads(request.body)
-            print(data)
-            if data:
-                return JsonResponse(data, safe=False)
-            else:
-                return JsonResponse({'error': 'No data provided'}, status=400)
+        print(url_response,'----------')
+        url_response = job_response
+        if url_response:
+            return message.response1('Success', 'getJobDetails', url_response)
         else:
-            return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
-    except json.JSONDecodeError as e:
-        return JsonResponse({'error': 'Invalid JSON format: {}'.format(str(e))}, status=400)
+            return message.response1('Error', 'searchJobError', data={})
     except Exception as e:
-        # Log the exception or handle it as required
-        return JsonResponse({'error': str(e)}, status=500)
+        print(f"The Error is: {str(e)}")
+        return message.tryExceptError(str(e))
