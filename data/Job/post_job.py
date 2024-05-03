@@ -88,6 +88,7 @@ def post_jobs(request):
                             location_id = post_job_insert_query.location(location) # Insert the location in locations table
                             post_job_insert_query.location_insert(employee_id, location_id, job_id) # Map the location_id in location_mapping table
                         if resul_postJob:
+                            
                             return message.response1('Success', 'postJob', employee_id)
                         else:
                             return message.response('Error', 'postJobError')
