@@ -18,7 +18,7 @@ def employer_post_jobs(employee_id, processed_job_ids):
                 #     if job_id in processed_job_ids:
                 #         continue
                 #     processed_job_ids.add(job_id)
-                result = json_response.response(results, job_id, cursor, processed_job_ids)
+                result = json_response.response(results,employee_id, job_id, cursor, processed_job_ids)
                 return result
             else:
                 print("No results found")
