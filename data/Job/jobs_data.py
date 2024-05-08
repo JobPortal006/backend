@@ -93,16 +93,19 @@ def company_name(cursor, request):
   rows = cursor.fetchall()
   companies_list = []
   for row in rows:
-    company = {
-      'id': row[0],
-      'company_name': row[1],
-      'company_logo_path': row[2],
-      'company_industry': row[3],
-      'company_description': row[4]
-    }
-    companies_list.append(company)
-  json_data = json.loads(companies_list)
-  print(json_data)
+      company = {
+          'id': row[0],
+          'company_name': row[1],
+          'company_logo_path': row[2],
+          'company_industry': row[3],
+          'company_description': row[4]
+      }
+      companies_list.append(company)
+    
+  # Convert the list of dictionaries to JSON formatted string
+  json_result = json.dumps(companies_list)
+  json_data = json.loads(json_result)
+  # Return JSON response
   return JsonResponse(json_data, safe=False)
 
 # Function to retrieve location data
