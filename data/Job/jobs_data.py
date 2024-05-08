@@ -89,11 +89,19 @@ def employment_type(cursor,request):
 @retry_database_operation
 def company_name(cursor, request):
   # cursor.execute("SELECT DISTINCT cd.id,cd.company_name FROM company_details cd JOIN job_post jp ON cd.id = jp.company_id")
-  cursor.execute("SELECT DISTINCT id,company_name FROM company_details")
+  cursor.execute("SELECT DISTINCT id,company_name,company_logo_path,company_industry,company_description FROM company_details")
   rows = cursor.fetchall()
-  locations_list = [{'company_name': row[1]} for row in rows]
-  json_result = json.dumps(locations_list)
-  json_data = json.loads(json_result)
+  companies_list = []
+  for row in rows:
+    company = {
+      'id': row[0],
+      'company_name': row[1],
+      'company_logo_path': row[2],
+      'company_industry': row[3],
+      'company_description': row[4]
+    }
+    companies_list.append(company)
+  json_data = json.loads(companies_list)
   print(json_data)
   return JsonResponse(json_data, safe=False)
 
