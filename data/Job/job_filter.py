@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from data.Job import search_jobs
 from data.Job import job_details_by_companyName 
 from data.Job import job_details_by_employeeType
-job_response = ""
+# job_response = ""
 jobs = ""
 @csrf_exempt
 def job_filter(request):
@@ -77,16 +77,37 @@ def job_filter(request):
                 conditions = condition.split(" and ")
                 new_val = " or ".join(conditions)
                 job_result = [job for job in jobs if eval(new_val)]
-            global job_response
+            global job_response,filter_result
             job_response=job_result
-            jobs = job_response
+            # jobs = job_response
+            print(job_result,'job_result-------')
+            filter_result =other_function()
             if not job_result:
                 return message.response('Error', 'searchJobError')
             return message.response1('Success', 'getJobDetails', job_result)
         except Exception as e:
             return message.tryExceptError(str(e))
     else:
-        return message.response('Error', 'Error')
+        return message.response('Error', 'Error') 
+
+def other_function():
+    job_result=filter_result
+    return job_result
+
+@csrf_exempt
+def filter_result(request):
+    try:
+        url_response = job_response
+        # url_response=other_function()
+        print(url_response,'----------')
+        if url_response:
+            return message.response1('Success', 'getJobDetails', url_response)
+        else:
+            return message.response1('Error', 'searchJobError', data={})
+    except Exception as e:
+        print(f"The Error is: {str(e)}")
+        return message.tryExceptError(str(e))
+    
 
 # @csrf_exempt
 # def filter_result(request):
@@ -105,17 +126,4 @@ def job_filter(request):
 #     except Exception as e:
 #         # Log the exception or handle it as required
 #         return JsonResponse({'error': str(e)}, status=500)
-    
-
-@csrf_exempt
-def filter_result(request):
-    try:
-        print(url_response,'----------')
-        url_response = job_response
-        if url_response:
-            return message.response1('Success', 'getJobDetails', url_response)
-        else:
-            return message.response1('Error', 'searchJobError', data={})
-    except Exception as e:
-        print(f"The Error is: {str(e)}")
-        return message.tryExceptError(str(e))
+   
