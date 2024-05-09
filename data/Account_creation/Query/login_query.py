@@ -27,7 +27,7 @@ def login(email, password):
                 return True
             else: 
                 return False
-        else:
+        else: 
             return False
     except Exception as e:
         print(f"Error during login: {e}")

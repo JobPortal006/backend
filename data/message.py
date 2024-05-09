@@ -34,6 +34,8 @@ def tryExceptError(message):
         serverReload()
     if message == "(2013, 'Lost connection to MySQL server during query')":
         serverReload()
+    if message == "(2006, '')":
+        serverReload()  
     return  JsonResponse({f"status":False,"statusCode":500,"message":message})
 
 def serverReload():
