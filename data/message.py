@@ -25,18 +25,21 @@ def serverErrorResponse():
     return  JsonResponse({"status":False,"statusCode":500,"message":"Internal Server Error"})
 
 def tryExceptError(message):
-    # serverReload()
-    if message == "(2006, 'Server has gone away')":
+    # List of error messages that trigger server reload
+    reload_messages = [
+        "(2006, 'Server has gone away')",
+        "(2013, 'Lost connection to server during query')",
+        "Invalid salt",
+        "(2013, 'Lost connection to MySQL server during query')",
+        "(2006, '')",
+        "(2014, 'Commands out of sync; you can't run this command now')"
+    ]
+    # Check if the message triggers server reload
+    if message in reload_messages:
         serverReload()
-    if message == "(2013, 'Lost connection to server during query')":
-        serverReload()
-    if message == "Invalid salt":
-        serverReload()
-    if message == "(2013, 'Lost connection to MySQL server during query')":
-        serverReload()
-    if message == "(2006, '')":
-        serverReload()  
-    return  JsonResponse({f"status":False,"statusCode":500,"message":message})
+    # Always return a JSON response
+    return JsonResponse({"status": False, "statusCode": 500, "message": message})
+
 
 def serverReload():
     manage_py_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'manage.py')

@@ -18,7 +18,7 @@ def login(request):
       data = json.loads(request.body)
       email = data.get('email')
       password = data.get('password')
-      print(email)
+      print('Login with email--------->',email)
       # Use your login_query function to validate credentials
       user = login_query.login(email, password)
       if user:
@@ -26,7 +26,7 @@ def login(request):
         success_message = message.Login()
         # Get user_id using email in signup table
         user_id, registered_by , email= create_account_user_query.email_check(email)
-        print(user_id, registered_by, email)
+        print("Login User Details with email---------->",user_id, registered_by, email)
         response_data = {
           'response': success_message,  
           'token': token,  # Include the token in the response
@@ -38,7 +38,7 @@ def login(request):
     else:
       return message.response('Error','Error')
   except Exception as e:
-    print(f"Exception: {str(e)}")
+    print(f"Login Exception : {str(e)}")
     return message.tryExceptError(str(e))
 
 # Check mobile number is already registered or not in signup table 
@@ -48,7 +48,7 @@ def loginWithOTP(request):
     if request.method == 'POST':
       data = json.loads(request.body)
       mobile_number = data.get('mobile_number')
-      print(mobile_number)
+      print('Login with mobile number--------->',mobile_number)
       val = login_query.loginWithOTP(mobile_number)
       user_id, registered_by, email = create_account_user_query.mobile_number(mobile_number)
       if val:
@@ -56,7 +56,7 @@ def loginWithOTP(request):
         success_message = message.Login()
         # Get user_id using email in signup table
         user_id, registered_by , email= create_account_user_query.email_check(email)
-        print(user_id, registered_by, email)
+        print("Login User Details with mobile number---------->",user_id, registered_by, email)
         response_data = {
           'response': success_message,  
           'token': token,  # Include the token in the response
@@ -75,7 +75,7 @@ def google_email_checks(request):
   try:
     data = json.loads(request.body)
     email = data.get('email')
-    print(email)
+    print('Login with google email--------->',email)
     email_check= login_query.email_check(email)
     if email_check:
       token = create_token(email)
