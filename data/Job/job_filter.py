@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from data.Job import search_jobs
 from data.Job import job_details_by_companyName 
 from data.Job import job_details_by_employeeType
-# job_response = ""
+job_response = ""
 jobs = ""
 @csrf_exempt
 def job_filter(request):
