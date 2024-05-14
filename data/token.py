@@ -12,7 +12,7 @@ def decode_token(token):
     try:
         # Token Decode
         decoded_token = jwt.decode(token, secret_key, algorithms=['HS256'])
-        print(decoded_token, "Original values")
+        # print(decoded_token, "Original values")
         user_id = decoded_token.get('user_id')
         registered_by = decoded_token.get('registered_by')
         email = decoded_token.get('email')
