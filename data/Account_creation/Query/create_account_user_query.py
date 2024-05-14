@@ -126,19 +126,30 @@ def resume_details(user_id,employment_status,resume_key):
         connection.rollback()
         return False
     
+# def userid_check(user_id):
+#     check_sql_personal = "SELECT * FROM personal_details WHERE user_id = %s"
+#     check_sql_job_preferences = "SELECT * FROM job_preferences WHERE user_id = %s"
+#     check_sql_professional_details = "SELECT * FROM professional_details WHERE user_id = %s"
+#     check_sql_resume_details = "SELECT * FROM resume_details WHERE user_id = %s"
+
+#     query_personal = con.execute(check_sql_personal, [user_id])
+#     query_job_preferences = con.execute(check_sql_job_preferences, [user_id])
+#     query_professional_details = con.execute(check_sql_professional_details, [user_id])
+#     query_resume_details = con.execute(check_sql_resume_details, [user_id])
+#     print(query_personal,query_job_preferences,query_professional_details,query_resume_details,'Check user is already registered or not')
+#     if query_personal == 0 and query_job_preferences == 0 and query_professional_details ==0 and query_resume_details == 0:
+#         return True
+#     else:
+#         return False
+  
+
 def userid_check(user_id):
-    check_sql_personal = "SELECT * FROM personal_details WHERE user_id = %s"
-    check_sql_job_preferences = "SELECT * FROM job_preferences WHERE user_id = %s"
-    check_sql_professional_details = "SELECT * FROM professional_details WHERE user_id = %s"
-    check_sql_resume_details = "SELECT * FROM resume_details WHERE user_id = %s"
+    check_sql_personal = "SELECT personal_details.user_id,job_preferences.user_id FROM personal_details JOIN job_preferences ON personal_details.user_id = job_preferences.user_id JOIN professional_details ON professional_details.user_id = personal_details.user_id JOIN resume_details ON resume_details.user_id = personal_details.user_id WHERE personal_details.user_id = %s;"
 
     query_personal = con.execute(check_sql_personal, [user_id])
-    query_job_preferences = con.execute(check_sql_job_preferences, [user_id])
-    query_professional_details = con.execute(check_sql_professional_details, [user_id])
-    query_resume_details = con.execute(check_sql_resume_details, [user_id])
-    print(query_personal,query_job_preferences,query_professional_details,query_resume_details,'Check user is already registered or not')
-    if query_personal == 0 and query_job_preferences == 0 and query_professional_details ==0 and query_resume_details == 0:
+
+    print(query_personal,'Check user is already registered or not')
+    if query_personal == 0:
         return True
     else:
         return False
-  
