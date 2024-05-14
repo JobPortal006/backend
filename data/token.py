@@ -27,11 +27,15 @@ def decode_token(token):
 def create_token(email):
   user_id, registered_by , email= create_account_user_query.email_check(email)
   if user_id is not None:
+    exp_time = datetime.datetime.utcnow() + datetime.timedelta(days=1)
+
+    # Convert the datetime object to a UNIX timestamp
+    exp_timestamp = int(exp_time.timestamp())
     payload = {
       'user_id': user_id,
       'email':email,
       'registered_by':registered_by,
-      'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)  # Token time set
+      'exp': exp_timestamp
     }
     token = jwt.encode(payload, secret_key, algorithm='HS256')
     return token  

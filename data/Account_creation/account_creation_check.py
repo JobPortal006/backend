@@ -16,10 +16,10 @@ def user_account_creation_check(request):
       token = data.get('result_token')
       if token is not None:
         user_id, registered_by, email = decode_token(token)
-        print(user_id, registered_by, email)  
+        print(user_id, registered_by, email,'user_account_creation_check-->')  
         if user_id is not None:
           userid_check = create_account_user_query.userid_check(user_id)
-          print(userid_check)
+          print(userid_check,'user_account_creation_check-->userid_check')
           if userid_check:
             return message.response('Success','accountCreationCheck')
           else:
