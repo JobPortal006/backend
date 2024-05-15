@@ -8,6 +8,7 @@ from data import message
 from data.token import decode_token
 from data.Job.Query import post_job_insert_query
 from django.core.management import call_command
+from data.Job.job_notification import job_notification
 
 con = connection.cursor()
 
@@ -88,7 +89,7 @@ def post_jobs(request):
                             location_id = post_job_insert_query.location(location) # Insert the location in locations table
                             post_job_insert_query.location_insert(employee_id, location_id, job_id) # Map the location_id in location_mapping table
                         if resul_postJob:
-                            
+                            job_notification(job_id,skill_set,location_list)
                             return message.response1('Success', 'postJob', employee_id)
                         else:
                             return message.response('Error', 'postJobError')

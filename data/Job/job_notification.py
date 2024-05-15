@@ -6,12 +6,13 @@ from data.Job.Query import job_notification_query,job_details_query
 from data.Tables.table import JobNotification
 
 @csrf_exempt
-def job_notification(request):
+# def job_notification(request):
+def job_notification(job_id,skills,locations):
   try:
-    data = json.loads(request.body)
-    job_id = data.get('job_id')
-    skills = data.get('skills')
-    locations = data.get('locations')
+    # data = json.loads(request.body)
+    # job_id = data.get('job_id')
+    # skills = data.get('skills')
+    # locations = data.get('locations')
     
     table_name = 'skill_sets' 
     column_name ='skill_set'
