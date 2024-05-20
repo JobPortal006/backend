@@ -144,7 +144,7 @@ def resume_details(user_id,employment_status,resume_key):
   
 
 def userid_check(user_id):
-    check_sql_personal = "SELECT personal_details.user_id,job_preferences.user_id FROM personal_details JOIN job_preferences ON personal_details.user_id = job_preferences.user_id JOIN professional_details ON professional_details.user_id = personal_details.user_id JOIN resume_details ON resume_details.user_id = personal_details.user_id WHERE personal_details.user_id = %s;"
+    check_sql_personal = "SELECT personal_details.user_id,job_preferences.user_id FROM personal_details JOIN job_preferences ON personal_details.user_id = job_preferences.user_id JOIN resume_details ON resume_details.user_id = personal_details.user_id WHERE personal_details.user_id = %s;"
 
     query_personal = con.execute(check_sql_personal, [user_id])
 
