@@ -119,7 +119,7 @@ def view_apply_jobs(request):
                     return message.response1('Error', 'searchJobError', data={})  
             else:
                 return message.tokenError('Error','tokenError')
-        else:
+        else: 
             return message.response('Error','InputError')
     except Exception as e:
         print(f"The Error is: {str(e)}")

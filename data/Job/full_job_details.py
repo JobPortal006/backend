@@ -26,7 +26,7 @@ def job_details(request):
             job_result=job_details_query.job_result(job_id,user_id,processed_job_ids) # Get the job data here
             user_job_apply = False
             if user_id is not None:
-                user_job_apply=job_details_query.check_user_id(user_id, job_id)
+                user_job_apply=job_details_query.check_user_id(user_id, job_id)# Check user is already apply for the job or not
             print(user_job_apply,'user_job_apply')
             if job_result is not None:# Check if search_result is not None before converting to a dictionary
                 job_result_dict = json.loads(job_result) # Convert search_result to a Python dictionary
