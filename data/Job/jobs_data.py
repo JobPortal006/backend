@@ -113,7 +113,7 @@ def company_name(cursor, request):
 @retry_database_operation
 def address_location(cursor, request):
   data = json.loads(request.body)
-  token = data.get('token')
+  token = data.get('result_token')
   user_id,registered_by,email = decode_token(token)
   print(user_id, registered_by,email)
   if user_id is not None:
