@@ -5,20 +5,14 @@ from data.Job import json_response
 # Data is send in response as (Data/Month/Year)
 def employer_post_jobs(employee_id, processed_job_ids):
     try:
-        result = None  # Initialize result variable
         with connection.cursor() as cursor:
             cursor.callproc('GetJobsDetailsByEmployeeId', [employee_id])
             results = cursor.fetchall()
-            print(result,'result-----------')
+            print(results, 'results-----------')  # Corrected from 'result' to 'results'
             if results:
-                # for row in results:
-                #     print(row,'row-----------')
-                job_id = results[0]
-                print(job_id,'job-id-------')
-                #     if job_id in processed_job_ids:
-                #         continue
-                #     processed_job_ids.add(job_id)
-                result = json_response.response(results,employee_id, job_id, cursor, processed_job_ids)
+                job_id = results[0][0]
+                print(job_id, 'job-id-------')
+                result = json_response.response(results, employee_id, job_id, cursor, processed_job_ids)
                 return result
             else:
                 print("No results found")
