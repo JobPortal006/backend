@@ -10,7 +10,7 @@ def job_result(job_id,user_id, processed_job_ids):
             results = cursor.fetchall()
             if results:
                 for row in results:
-                    job_id = row[0]
+                    job_id = row[0] 
                     result = json_response.response(results, user_id,job_id, cursor, processed_job_ids)  # Corrected variable name
                 return result
             else:

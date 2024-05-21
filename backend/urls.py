@@ -81,7 +81,7 @@ urlpatterns = [
     path('get_apply_job/',apply_job.fetch_apply_job),
     path('apply_job/',apply_job.apply_jobs),
     path('view_apply_jobs/',apply_job.view_apply_jobs),
-    path('get_view_apply_jobs/',apply_job.get_view_apply_jobs),
+    # path('get_view_apply_jobs/',apply_job.get_view_apply_jobs),
     
     path('user_job_apply_list/',user_job_apply_list.user_job_apply_list),
     path('user_profile_list/',user_job_apply_list.user_profile_list),

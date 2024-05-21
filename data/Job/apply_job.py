@@ -126,18 +126,18 @@ def view_apply_jobs(request):
         return message.tryExceptError(str(e))
 
 # Send job_post reponse here
-@csrf_exempt
-def get_view_apply_jobs(request):
-    try:
-        url_response=job_response
-        # print(url_response)
-        if url_response is not None and url_response != '':
-            return message.response1('Success', 'getJobDetails', url_response)
-        else:
-            return message.response1('Error', 'searchJobError', data={})  
-    except Exception as e:
-        print(f"The Error is: {str(e)}")
-        return message.tryExceptError(str(e))
+# @csrf_exempt
+# def get_view_apply_jobs(request):
+#     try:
+#         url_response=job_response
+#         # print(url_response)
+#         if url_response is not None and url_response != '':
+#             return message.response1('Success', 'getJobDetails', url_response)
+#         else:
+#             return message.response1('Error', 'searchJobError', data={})  
+#     except Exception as e:
+#         print(f"The Error is: {str(e)}")
+#         return message.tryExceptError(str(e))
    
 @csrf_exempt   
 def send_email(email):
