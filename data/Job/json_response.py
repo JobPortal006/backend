@@ -67,7 +67,7 @@ def response(results, user_id,job_id, cursor, processed_job_ids):
     data = []
     with connection.cursor() as cursor:
         for row in results:
-            # job_id = row[0]
+            job_id = row[0]
             # Check if job_id is already processed, skip if it is
             if job_id in processed_job_ids:
                 continue
