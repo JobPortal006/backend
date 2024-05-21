@@ -9,12 +9,10 @@ def employer_post_jobs(employee_id, processed_job_ids):
         with connection.cursor() as cursor:
             cursor.callproc('GetJobsDetailsByEmployeeId', [employee_id])
             results = cursor.fetchall()
-            print(result,'result-----------')
             if results:
                 # for row in results:
                 #     print(row,'row-----------')
                 job_id = results[0]
-                print(job_id,'job-id-------')
                 #     if job_id in processed_job_ids:
                 #         continue
                 #     processed_job_ids.add(job_id)
