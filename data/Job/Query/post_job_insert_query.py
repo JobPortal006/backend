@@ -119,6 +119,12 @@ def qualification(qualification):
             print(f"qualification ID: {qualification_id}")
             return qualification_id
         
+# Insert qualification_id int qualification_mapping table
+def qualification_insert(employee_id,qualification_id,job_id):
+    jobPost_sql = "INSERT INTO qualification_mapping(employee_id,qualification_id,job_id) VALUES (%s, %s, %s)"
+    jobPost_values = (employee_id,qualification_id,job_id)
+    con.execute(jobPost_sql, jobPost_values)
+        
 # Get the qualification id using qualification value
 # If qualification input is not present in the table, insert the qualification value into qualification table 
 def location(location):
@@ -145,12 +151,6 @@ def location(location):
 def location_insert(employee_id,location_id,job_id):
     jobPost_sql = "INSERT INTO location_mapping(employee_id,location_id,job_id) VALUES (%s, %s, %s)"
     jobPost_values = (employee_id,location_id,job_id)
-    con.execute(jobPost_sql, jobPost_values)
-
-# Insert qualification_id int qualification_mapping table
-def qualification_insert(employee_id,qualification_id,job_id):
-    jobPost_sql = "INSERT INTO qualification_mapping(employee_id,qualification_id,job_id) VALUES (%s, %s, %s)"
-    jobPost_values = (employee_id,qualification_id,job_id)
     con.execute(jobPost_sql, jobPost_values)
 
 # Get job_post id here

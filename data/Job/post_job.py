@@ -55,6 +55,7 @@ def post_jobs(request):
         # company_name = data.get('company_name')
         # email= data.get('email')
         additional_queries= data.get('additional_queries')
+        qualifications_list = data.get('qualification')
         token = data.get('token')
         employee_id,registered_by,email = decode_token(token)
         print(employee_id, registered_by,email)
@@ -62,7 +63,6 @@ def post_jobs(request):
         print(valuesCheck)
         if employee_id is not None:
             if valuesCheck:
-                qualifications_list = data.get('qualification')
                 # employee_id = post_job_insert_query.email_id(email)
                 # employee_id, registered_by, email = create_account_user_query.email_check(email)  # Get employee_id using company_name
                 company_id = post_job_insert_query.company_id(employee_id)  # Get company_id using company_name
