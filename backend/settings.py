@@ -37,7 +37,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'brochill547@gmail.com'
 EMAIL_HOST_PASSWORD = 'irvf jinb zccd aqra'
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.48','192.168.161.140','https://talenti.emeetify.com/Password','talenti.emeetify.com','13.51.66.252','13.111.17.12']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.42','192.168.161.140','https://talenti.emeetify.com/Password','talenti.emeetify.com','13.51.66.252','13.111.17.12']
 
 base_url = 'http://192.168.1.45:8000/'
 
@@ -93,20 +93,20 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'jobportal',
-        'USER': 'theuser',
-        'PASSWORD': 'thepassword',
-        'HOST': '13.51.66.252',
-        'PORT': '3306', 
-        'CONN_MAX_AGE': 600,  # Connection timeout in seconds (adjust as needed)
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'jobportal',
+#         'USER': 'theuser',
+#         'PASSWORD': 'thepassword',
+#         'HOST': '13.51.66.252',
+#         'PORT': '3306', 
+#         'CONN_MAX_AGE': 600,  # Connection timeout in seconds (adjust as needed)
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#         },
+#     }
+# }
 
 DATABASE_POOL_ARGS = {
     "pool_size": 20,
@@ -126,16 +126,16 @@ DATABASE_POOL_ARGS = {
 #         },
 #     }
 # }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'backend',
-#         'USER': 'root',
-#         'PASSWORD': 'mysqllocal',
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'jobportal',
+        'USER': 'root',
+        'PASSWORD': 'mysqllocal',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

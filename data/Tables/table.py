@@ -294,7 +294,8 @@ class JobNotification(Base):
     signup = relationship('Signup')
     job_post = relationship('JobPost')
 
-engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/jobportal')
+# engine = create_engine('mysql://theuser:thepassword@13.51.66.252:3306/jobportal')
+engine = create_engine('mysql://root:mysqllocal@localhost:3306/jobportal')
 Base.metadata.create_all(engine) 
 
 # Define the raw SQL string containing stored procedure definitions
